@@ -10,12 +10,15 @@ from matplotlib import pyplot as plt
 from sklearn import metrics
 from sklearn.decomposition import TruncatedSVD
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import train_test_split
-from sklearn.pipeline import Pipeline, FeatureUnion
+from sklearn.pipeline import Pipeline, FeatureUnion, make_pipeline
+from sklearn.preprocessing import Normalizer
 from sklearn.svm import LinearSVC
 from lazypredict.Supervised import LazyClassifier
+from modaresi.preprocessor import Preprocessor
 
 from process_files import load_data
 import utils
@@ -66,12 +69,13 @@ def load_train_and_test_sets(train_path, test_path = None, test = False):
             train_test_split(samples[:,1], samples[:,2:4], train_size=0.7,
                              test_size=0.3, stratify=samples[:,2:4], random_state=42)
     else:
-        samples_test = load_data(train_path, test)
+        samples_test = load_data(test_path, test)
         X_train = samples[:,1]
         y_train = samples[:,2:4]
         X_test = samples_test[:,1]
         y_test = samples_test[:,2:4]
-    
+    logger.info(np.shape(y_train))
+    logger.info(np.shape(y_test))
     return X_train, X_test, y_train[:,0], y_train[:,1], y_test[:,0], y_test[:,1]
 
 
@@ -156,8 +160,8 @@ def cross_validate_model(gender_clf, age_clf, X_train, y_train_gender, y_train_a
     and reports the scores.
     Alternative: sklearn.model_selection.cross_validate
     '''
-    scores_gender = cross_val_score(gender_clf, X_train, y_train_gender, scoring='accuracy', cv=skf)
-    scores_age = cross_val_score(age_clf, X_train, y_train_age, scoring='accuracy', cv=skf)
+    scores_gender = cross_val_score(gender_clf.pipeline, X_train, y_train_gender, scoring='accuracy', cv=skf)
+    scores_age = cross_val_score(age_clf.pipeline, X_train, y_train_age, scoring='accuracy', cv=skf)
 
     logger.info("@ %.2f seconds: Cross-validation finished", time.process_time())
 
@@ -165,9 +169,9 @@ def cross_validate_model(gender_clf, age_clf, X_train, y_train_gender, y_train_a
     # http://scikit-learn.org/stable/modules/cross_validation.html#computing-cross-validated-metrics
     # https://en.wikipedia.org/wiki/Standard_error#Assumptions_and_usage
     logger.info("Gender Scores = %s", scores_gender)
-    logger.info("%%Gender Accuracy: %0.2f (±%0.2f)" % (scores_gender.mean()*100, scores_gender.std()*2*100))
+    logger.info("%%Gender Accuracy: %0.2f (±%0.2f)" % (scores_gender.mean()*100, scores_gender.std()*100))
     logger.info("Age Scores = %s", scores_age)
-    logger.info("%%Age Accuracy: %0.2f (±%0.2f)" % (scores_age.mean()*100, scores_age.std()*2*100))
+    logger.info("%%Age Accuracy: %0.2f (±%0.2f)" % (scores_age.mean()*100, scores_age.std()*100))
     # ↳ https://docs.scipy.org/doc/numpy/reference/generated/numpy.std.html
 
 
@@ -185,7 +189,6 @@ def train_and_test_model(clf, X_train, y_train, X_test, y_test, output= "Gender"
 
     logger.info("@ %.2f seconds: Finished training the model and predicting class labels for the test set",
                 time.process_time())
-
     # Simple evaluation using numpy.mean
     logger.info("np.mean %%Accuracy: %f", np.mean(y_predicted == y_test) * 100)
 
@@ -210,8 +213,8 @@ def main():
     parser.add_argument('-o', '--output', default='models', help='Path to the test set')
 
     
-    TRAINING_PATH = "../datasets/2016/Training"
-    TEST_PATH = None
+    TRAINING_PATH = "../../modaresi16/magic/corpora/2016/Training"
+    TEST_PATH = "../../modaresi16/magic/corpora/2015/junto"
     PARAMS = {
         'word_ngram_range' : (1,3),
         'char_ngram_range' : (3,5),
@@ -221,20 +224,38 @@ def main():
     logger.info("Testing on %s", TEST_PATH if TEST_PATH!=None else TRAINING_PATH)
     logger.info("Params used: %s", json.dumps(PARAMS))
 
-    docs_train, docs_test, y_train_gender, y_train_age, y_test_gender, y_test_age = load_train_and_test_sets(TRAINING_PATH)
-    X_train, X_test, feature_names_ngrams = extract_features(docs_train, docs_test, PARAMS)
-    
-    gender_clf = LazyClassifier(verbose=0, ignore_warnings=True, custom_metric=None)
-    age_clf = LazyClassifier(verbose=0, ignore_warnings=True, custom_metric=None)
-    
-    models_gender, _ = gender_clf.fit(X_train, X_test, y_train_gender, y_test_gender)
-    models_age, _ = age_clf.fit(X_train, X_test, y_train_age, y_test_age)
-    logger.info(models_gender)
-    logger.info(models_age)
+    docs_train, docs_test, y_train_gender, y_train_age, y_test_gender, y_test_age = load_train_and_test_sets(TRAINING_PATH, TEST_PATH)
+    # X_train, X_test, feature_names_ngrams = extract_features(docs_train, docs_test, PARAMS)
+    # g_preprocess = Preprocessor('age')
+    # X_train = g_preprocess.fit_transform(docs_train)
+    # X_test = g_preprocess.transform(docs_test)
 
-    # cross_validate_model(gender_clf, age_clf, X_train, y_train_gender, y_train_age)
-    # train_and_test_model(gender_clf, X_train, y_train_gender, X_test, y_test_gender, "Gender")
-    # train_and_test_model(gender_clf, X_train, y_train_age, X_test, y_test_age, "Age")
+    # gender_clf = LazyClassifier(verbose=0, ignore_warnings=True, custom_metric=None)
+    # age_clf = LazyClassifier(verbose=0, ignore_warnings=True, custom_metric=None)
+    
+    # models_gender, _ = gender_clf.fit(X_train, X_test, y_train_gender, y_test_gender)
+    # models_age, _ = age_clf.fit(X_train, X_test, y_train_age, y_test_age)
+    # logger.info(models_gender)
+    # logger.info(models_age)
+    
+    # gender_clf = LogisticRegression(C=1e3,
+    #                               tol=0.01,
+    #                               multi_class='ovr',
+    #                               solver='liblinear',
+    #                               n_jobs=1,
+    #                               random_state=123)
+    # age_clf = LogisticRegression(C=1e3,
+    #                               tol=0.01,
+    #                               multi_class='ovr',
+    #                               solver='liblinear',
+    #                               n_jobs=1,
+    #                               random_state=123)
+    gender_pipe = Preprocessor(y_train_gender, 'gender')
+    age_pipe = Preprocessor(y_train_age, 'age')
+
+    cross_validate_model(gender_pipe, age_pipe, docs_train, y_train_gender, y_train_age)
+    train_and_test_model(gender_pipe.pipeline, docs_train, y_train_gender, docs_test, y_test_gender, "Gender")
+    train_and_test_model(age_pipe.pipeline, docs_train, y_train_age, docs_test, y_test_age, "Age")
     
 if __name__ == "__main__":
     logger = utils.configure_root_logger()

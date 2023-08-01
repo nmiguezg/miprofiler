@@ -4,6 +4,7 @@ from datetime import datetime
 import logging
 import os
 import sys
+import joblib
 
 def create_project_dir(name):
         # • Get the script path, script (module) name, etc., and deduce the project directory.
@@ -75,9 +76,29 @@ def configure_root_logger():
 
 def store_trained_model(clf, name):
     MODELS_DIR, _ = create_project_dir('models')
-    MODEL_FILE_NAME = name + '.pickle'
-    LOG_FILE_PATH = os.path.join(MODELS_DIR, MODEL_FILE_NAME)
+    MODEL_FILE_NAME = name + '.joblib'
+    MODEL_FILE_PATH = os.path.join(MODELS_DIR, MODEL_FILE_NAME)
+    joblib.dump(clf, MODEL_FILE_PATH, compress=0)
     
+def store_vectorizer(vec):
+    VEC_DIR, _ = create_project_dir('models')
+    VEC_FILE_NAME = 'vec.joblib'
+    VEC_FILE_PATH = os.path.join(VEC_DIR, VEC_FILE_NAME)
+    joblib.dump(vec, VEC_FILE_PATH, compress=0)
+    
+def get_trained_model(name):
+    """Returns stored trained model if present, else it throws an exception"""
+    MODELS_DIR, _ = create_project_dir('models')
+    MODEL_FILE_NAME = name + '.joblib'
+    MODEL_FILE_PATH = os.path.join(MODELS_DIR, MODEL_FILE_NAME)
+    if not os.path.exists(MODEL_FILE_PATH):
+        raise FileNotFoundError(MODEL_FILE_PATH)
+    clf = joblib.load(MODEL_FILE_PATH)
+    return clf
+
+def get_vectorizer():
+    """Returns stored trained model if present, else it throws an exception"""
+    return get_trained_model('vec')
     
 '''
 The following lines will be executed any time this .py file is run as a script or imported as a module.

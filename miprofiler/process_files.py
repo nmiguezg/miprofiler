@@ -50,10 +50,9 @@ def load_data(path:str, test = False):
         if not os.path.exists(path_truth_file):
             raise FileNotFoundError(path_truth_file)
         
-        header = ['id', 'gender', 'age']
-        truth = pd.read_csv(path_truth_file, sep=":::", names=header, engine='python')
-        
-        df = df.set_index('label').join(truth.set_index('id')).reset_index(names='label')
+        #header = ['id', 'gender', 'age']
+        truth = pd.read_csv(path_truth_file, sep=":::", header=None, engine='python')# names=header, engine='python')
+        df = df.set_index('label').join(truth.set_index(0)).reset_index(names='label')
         df = df.dropna()
         #df.to_csv(path + "data.csv")
     return df.values
