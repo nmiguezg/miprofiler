@@ -25,11 +25,18 @@ class CrossGenrePerofiler():
 
         fu = FeatureUnion(fs, n_jobs = 1)
         self.pipeline = Pipeline([('features', fu),
-                                  ('scale', Normalizer()),
-                                  ('classifier', get_classifier(method=method))])
+                                  ('scale', Normalizer())
+                                #   ('classifier', get_classifier(method=method))
+                                  ])
 
     def train(self, X_train, Y_train):
-        self.model = self.pipeline.fit(X_train, Y_train)
-
+        self.model = self.pipeline.fit_tr(X_train, Y_train)
+        
+    def fit_transform(self, X_train, Y_train):
+        return self.pipeline.fit_transform(X_train, Y_train)
+    
+    def transform(self, X_train):
+        return self.pipeline.transform(X_train)
+    
     def predict(self, X):
         return self.model.predict(X)

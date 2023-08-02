@@ -44,10 +44,12 @@ class SklearnBenchmark():
         #     print_accuracy(y_test_fold, y_pred_fold)
         #     fold = fold + 1
         # print("Mean accuracy: " + str(np.mean(acc)) + " std = " + str(np.std(acc)))
-        if len(X_test) > 0:
-            logger.info('Training on {} instances!'.format(len(X_train)))
-            profiler.train(X_train, y_train)
-            logger.info('Testing on {} instances!'.format(len(X_test)))
-            y_pred = profiler.predict(X_test)
-            print_confusion_matrix(y_test, y_pred)
-            print_accuracy(y_test, y_pred)
+        # if len(X_test) > 0:
+        # logger.info('Training on {} instances!'.format(len(X_train)))
+        logger.info('Training on 223 instances')
+        profiler.fit(X_train, y_train)
+        # logger.info('Testing on {} instances!'.format(len(X_test)))
+        logger.info('Testing on 223 instances')
+        y_pred = profiler.predict(X_test)
+        print_confusion_matrix(y_test, y_pred)
+        print_accuracy(y_test, y_pred)

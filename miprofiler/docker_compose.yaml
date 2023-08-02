@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  profilers:
+    container_name: profilers
+    build:
+      context: ./modaresi
+      dockerfile: ./modaresi/Dockerfile
+    ports:
+      - "5000:5000"
