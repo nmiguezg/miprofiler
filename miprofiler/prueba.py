@@ -1,7 +1,7 @@
 import joblib
 from sklearn import metrics
 from modaresi.preprocessor import Preprocessor
-from train import load_train_and_test_sets
+from modaresi.train import load_train_and_test_sets
 
 _, X, _, _,y_test, _ = load_train_and_test_sets("../../datasets/2016/Training", "../../datasets/2016/Test")
 Xt = Preprocessor('gender').preproccess(X)

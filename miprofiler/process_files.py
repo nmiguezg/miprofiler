@@ -26,7 +26,7 @@ def load_xml_files(path:str):
             for element in tree.getroot().iter():
                 if element.tag == 'document' and element.text not in {"", None}:
                     tweets.append(element.text)
-            data.append({"label": label, "posts" : '<EOP>'.join(tweets) + '<EOP>'})
+            data.append({"label": label, "posts" : '\n'.join(tweets) + '\n'})
         
     return data
 

@@ -15,7 +15,6 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline, FeatureUnion, make_pipeline
-from sklearn.preprocessing import Normalizer
 from sklearn.svm import LinearSVC
 from lazypredict.Supervised import LazyClassifier
 from modaresi.preprocessor import Preprocessor
