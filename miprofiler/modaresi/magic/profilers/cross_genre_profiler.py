@@ -30,7 +30,7 @@ class CrossGenrePerofiler():
                                   ])
 
     def train(self, X_train, Y_train):
-        self.model = self.pipeline.fit_tr(X_train, Y_train)
+        self.model = self.pipeline.fit(X_train, Y_train)
         
     def fit_transform(self, X_train, Y_train):
         return self.pipeline.fit_transform(X_train, Y_train)

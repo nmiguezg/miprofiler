@@ -36,7 +36,7 @@ class SklearnBenchmark():
         #     X_train_fold, y_train_fold = [X_train[i] for i in train_index], [y_train[i] for i in train_index]
         #     X_test_fold, y_test_fold = [X_train[i] for i in test_index], [y_train[i] for i in test_index]
         #     logger.info('Training on {} instances!'.format(len(train_index)))
-        #     profiler.train(X_train_fold, y_train_fold)
+        #     profiler.fit(X_train_fold, y_train_fold)
         #     logger.info('Testing on fold {} with {} instances'.format(
         #         fold, len(test_index)))
         #     y_pred_fold = profiler.predict(X_test_fold)
@@ -46,8 +46,8 @@ class SklearnBenchmark():
         # print("Mean accuracy: " + str(np.mean(acc)) + " std = " + str(np.std(acc)))
         # if len(X_test) > 0:
         # logger.info('Training on {} instances!'.format(len(X_train)))
-        logger.info('Training on 223 instances')
-        profiler.fit(X_train, y_train)
+        # logger.info('Training on 223 instances')
+        # profiler.fit(X_train, y_train)
         # logger.info('Testing on {} instances!'.format(len(X_test)))
         logger.info('Testing on 223 instances')
         y_pred = profiler.predict(X_test)
