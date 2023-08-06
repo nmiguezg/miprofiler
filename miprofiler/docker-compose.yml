@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  profilers:
+    container_name: profilers
+    build:
+      context: modaresi
+      dockerfile: Dockerfile
+    image: profilers:latest
+    command: /root/miniconda2/bin/flask run --host=0.0.0.0 --debugger
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_DEBUG=1
+    volumes:
+      - ./modaresi:/var/www/
+    ports:
+      - "5000:5000"
+  
