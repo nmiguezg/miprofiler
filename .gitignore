@@ -1,5 +1,6 @@
 pan20*
 old_profilers/pickle/*
+*.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
