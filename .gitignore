@@ -1,5 +1,5 @@
 pan20*
-miprofiler/modaresi/pickle/*
+miprofiler/old_profilers/pickle/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -163,4 +163,4 @@ cython_debug/
 #.idea/
 
 #xml
-miprofiler/modaresi/magic/corpora/*
+miprofiler/old_profilers/magic/corpora/*
