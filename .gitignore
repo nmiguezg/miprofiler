@@ -1,5 +1,5 @@
 pan20*
-miprofiler/old_profilers/pickle/*
+old_profilers/pickle/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -163,4 +163,4 @@ cython_debug/
 #.idea/
 
 #xml
-miprofiler/old_profilers/magic/corpora/*
+old_profilers/magic/corpora/*
