@@ -15,5 +15,3 @@ services:
       - ./old_profilers:/var/www/
     ports:
       - "5000:5000"
-  # web:
-  #   command: /home/nico/miniconda3/envs/BLM/bin/python app.py

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+      <meta charset="UTF-8">
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Dashboard que permite ver estadísticas de usuarios que comentaban sobre BLM así como perfilar nuevos usuarios.">
+      <!-- <link rel="stylesheet" type="text/css" href="css/index.css"> -->
+      <title>BLM Profiler</title>
+  </head>
+  <body>
+    <!-- header -->
+    <header>
+      <h1>BLM Profiler</h1>
+    </header>
+    <div class=container>
+      <h2>Perfilar colección</h2>
+      <form action="/profile" method="post" enctype="multipart/form-data">
+        <p>
+          <input type="file" name="file" accept=".csv, .txt">
+        </p>
+        <p>
+          Algoritmo
+          <select name="algoritmo">
+            <option value="modaresi">Modaresi</option>
+            <option value="grivas">Grivas</option><
+            <option value="los_calis">LosCalis</option>
+          </select>
+        </p>
+        <p>
+          <input type="submit" value="Perfilar">
+        </p>
+      </form>    
+    </div>
+  </body>
+</html>
