@@ -1,5 +1,6 @@
 pan20*
 old_profilers/pickle/*
+web/model/*
 *.csv
 
 # Byte-compiled / optimized / DLL files
