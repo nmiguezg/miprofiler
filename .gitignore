@@ -166,3 +166,4 @@ cython_debug/
 
 #xml
 old_profilers/magic/corpora/*
+BLM-profiler/public/coll.json

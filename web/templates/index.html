@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-      <meta charset="UTF-8">
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="description" content="Dashboard que permite ver estadísticas de usuarios que comentaban sobre BLM así como perfilar nuevos usuarios.">
-      <!-- <link rel="stylesheet" type="text/css" href="css/index.css"> -->
+      <link rel="stylesheet" type="text/css" href={{url_for('static', filename="css/index.css")}}>
+      <script src={{url_for('static', filename="js/index.js")}} defer></script>
       <title>BLM Profiler</title>
   </head>
   <body>
@@ -15,9 +15,10 @@
     </header>
     <div class=container>
       <h2>Perfilar colección</h2>
-      <form action="/profile" method="post" enctype="multipart/form-data">
+      <form id="profiler-form" enctype="multipart/form-data">
+        <!-- action="/profile" method="post" -->
         <p>
-          <input type="file" name="file" accept=".csv, .txt">
+          <input type="file" name="file" accept=".csv, .txt" required="True">
         </p>
         <p>
           Algoritmo
@@ -27,6 +28,7 @@
             <!-- <option value="los_calis">LosCalis</option> -->
           </select>
         </p>
+        <div id="spinner" class="spinner hidden" hidden="True"><br></div>
         <p>
           <input type="submit" value="Perfilar">
         </p>
