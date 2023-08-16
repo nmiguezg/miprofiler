@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css"
-import * as d3 from "d3"
-import data from "../public/coll.json"
+import data from "/src/coll.json"
+import BarChart from "./components/BarChart";
 export default function App() {
   const [dashboard, setDashboard] = useState(true)
 
@@ -20,63 +20,26 @@ function Title() {
   </header>;
 }
 function Dashboard({ setDashboard }) {
-  const main = useRef()
+  const [[acumAge, acumGender], setState] = useState([{}, {}])
   useEffect(() => {
     // Datos de ejemplo
-    const [acumAge, acumGender] = data.Users.reduce(([acumAge, acumGender], currentValue) => {
-      if (!(currentValue.age in acumAge)){
-        acumAge[currentValue.age]=0
+    const newState = data.Users.reduce(([acumAge, acumGender], currentValue) => {
+      if (!(currentValue.age in acumAge)) {
+        acumAge[currentValue.age] = 0
       }
-      if (!(currentValue.gender in acumGender)){
-        acumGender[currentValue.gender]=0
+      if (!(currentValue.gender in acumGender)) {
+        acumGender[currentValue.gender] = 0
       }
       acumAge[currentValue.age]++
       acumGender[currentValue.gender]++
       return [acumAge, acumGender]
-    }, [{},{}]);
-
-    // Tamaño del gráfico
-    var width = 200;
-    var height = 300;
-
-    // Crear el contenedor SVG
-    var svg = main.current
-      .append("svg")
-      .attr("width", width)
-      .attr("height", height);
-
-    // // Escala de ejes
-    // var xScale = d3.scaleBand()
-    //   .domain(data.map(d => d.categoria))
-    //   .range([0, width])
-    //   .padding(0.1);
-
-    // var yScale = d3.scaleLinear()
-    //   .domain([0, d3.max(data, d => d.valor)])
-    //   .range([height, 0]);
-
-    // // Crear las barras
-    // svg.selectAll("rect")
-    //   .data(data)
-    //   .enter()
-    //   .append("rect")
-    //   .attr("x", d => xScale(d.categoria))
-    //   .attr("y", d => yScale(d.valor))
-    //   .attr("width", xScale.bandwidth())
-    //   .attr("height", d => height - yScale(d.valor))
-    //   .attr("fill", "steelblue");
-
-    // // Agregar ejes
-    // svg.append("g")
-    //   .attr("transform", "translate(0," + height + ")")
-    //   .call(d3.axisBottom(xScale));
-
-    // svg.append("g")
-    //   .call(d3.axisLeft(yScale));
+    }, [{}, {}]);
+    setState(newState)
   }, [])
   return (
-    <main ref={main}>
-      Dashboard
+    <main >
+      <BarChart width="300" height="300" data={(acumAge)} />
+      <BarChart width="300" height="200" data={(acumGender)} />
     </main>)
 }
 
