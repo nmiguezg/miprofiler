@@ -27,19 +27,17 @@ export default function Dashboard() {
   return (
     <>
       <h2>Dashboard</h2>
+      <h3>Edad</h3>
       <main className="dashboard">
-        {/* <BarChart width="300" height="300" data={(acumAge)} /> */}
-        {/* <BarChart width="300" height="200" data={(acumGender)} /> */}
-        {/* <PieChart data={acumAge}/> */}
-        <h3>Edad</h3>
         <div >
           <BarChart data={acumAge} title={'Género'} />
         </div>
         <div className="pie-chart" >
           <PieChart data={acumAge} title={'Género'} />
         </div>
-        
-        <h3>Género</h3>
+      </main>
+      <h3>Género</h3>
+      <main className="dashboard">
         <div >
           <BarChart data={acumGender} title={'Género'} />
         </div>

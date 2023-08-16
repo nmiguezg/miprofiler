@@ -1,5 +1,21 @@
 import React from 'react';
-import Chart from 'chart.js/auto';
+import {
+  Chart,
+  Colors,
+  BarController,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Legend
+} from 'chart.js'
+
+Chart.register(
+  Colors,
+  BarController,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+);
 import { Bar } from 'react-chartjs-2';
 
 function getColor(i) {

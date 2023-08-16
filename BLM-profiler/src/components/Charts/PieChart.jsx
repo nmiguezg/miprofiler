@@ -1,5 +1,20 @@
 import React from 'react';
-import Chart from 'chart.js/auto';
+import {
+    Chart,
+    Colors,
+    ArcElement,
+    PieController,
+    Legend,
+    Tooltip
+  } from 'chart.js'
+  
+  Chart.register(
+    Colors,
+    ArcElement,
+    PieController,
+    Legend,
+    Tooltip,
+  );
 import { Pie } from 'react-chartjs-2';
 
 function getColor(i) {
