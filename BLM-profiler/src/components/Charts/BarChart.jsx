@@ -6,7 +6,6 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
-  Legend
 } from 'chart.js'
 
 Chart.register(
@@ -40,7 +39,7 @@ function getColor(i) {
     return backgroundColor[i];
 }
 
-export default function PieChart({ data, title }) {
+export default function PieChart({ data }) {
     const categories = Object.keys(data)
     const values = Object.values(data)
     const conf = {
@@ -69,7 +68,14 @@ export default function PieChart({ data, title }) {
                 },
             },
         },
+        plugins: {
+            legend: {
+                display: false,
+            },
+        },
+        mantainAspectRatio: false,
+        aspectRatio: 5/4,
         responsive: true,
     }
-    return <Bar data={conf} style={{ width: "400px", height: "200px"}} options={options} />;
+    return <Bar data={conf} options={options} />;
 }

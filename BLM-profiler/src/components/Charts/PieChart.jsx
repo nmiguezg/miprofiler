@@ -59,6 +59,7 @@ export default function PieChart({ data }) {
     };
     const options = {
         responsive: true,
+        mantainAspectRatio: false,
     }
     return <Pie data={conf} options={options}/>;
 }

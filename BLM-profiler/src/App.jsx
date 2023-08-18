@@ -2,6 +2,7 @@ import "./App.css"
 import { Link, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
+import ErrorPage from "./error-page";
 
 export default function App() {
 
@@ -11,6 +12,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/*" element={<ErrorPage />} />
+
       </Routes>
     </>)
 }

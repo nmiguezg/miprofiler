@@ -6,13 +6,13 @@
   align-items: baseline;
   justify-content: space-between;
 }
-.pie-chart {
+/* .pie-chart {
   max-height: fit-content
-}
+} */
 .dashboard {
   display: flex;
   align-content: center;
-  align-items: center;
+  align-items: last baseline;
   justify-content: space-between;
   flex-wrap: wrap;
 }
