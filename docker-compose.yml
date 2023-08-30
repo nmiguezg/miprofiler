@@ -7,10 +7,9 @@ services:
       context: profilers-service
       dockerfile: Dockerfile
     image: profilers:latest
-    command: /root/miniconda2/bin/flask run --host=0.0.0.0 --debugger
+    command: /root/miniconda2/bin/flask run --host=0.0.0.0
     environment:
       - FLASK_APP=app.py
-      - FLASK_DEBUG=1
     volumes:
       - ./profilers-service:/var/www/
     ports:
@@ -50,13 +49,15 @@ services:
       context: frontend
       dockerfile: Dockerfile
     image: web:latest
-    command: dockerize -wait tcp://profilers:5000 -timeout 40s npm run dev
+    command: dockerize -wait tcp://profilers:5000 -timeout 300s npm run dev
     depends_on:
       - profilers
       - api
       - mongodb
     networks:
       - profilers-network
+    volumes:
+      - ./frontend/src:/app/src
 
 networks:
   profilers-network:

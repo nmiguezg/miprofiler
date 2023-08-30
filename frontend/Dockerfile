@@ -4,7 +4,6 @@ WORKDIR /usr/app
 
 COPY ./package*.json ./
 
-RUN pwd
 
 RUN npm install
 

@@ -1,5 +1,5 @@
 pan20*
-old_profilers/pickle/*
+backend/pickle/*
 web/model/*
 *.csv
 *.json
