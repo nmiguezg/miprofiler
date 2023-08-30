@@ -40,11 +40,24 @@ def profile(profiler='modaresi'):
                 'age': pred[1][i]
                 }
             resp.append(r)
-
-        return jsonify({'Users': resp}), 200
+        categories = {
+            "gender": [
+                "MALE",
+                "FEMALE"
+            ],
+            "age": [
+                "18-24",
+                "25-34",
+                "35-49",
+                "50-xx"
+            ]
+        }
+        return jsonify({'Users': resp, "categories" : categories}), 200
 
     except Exception as e:
         return jsonify({'error': (u"Ocurrió un error al cargar el archivo CSV."+(traceback.format_exc()))}), 500
+
+
 @app.route('/profile/text', methods=['POST'])
 @app.route('/profile/text/<string:profiler>', methods=['POST'])
 def profile_text(profiler='modaresi'):

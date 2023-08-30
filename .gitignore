@@ -2,6 +2,7 @@ pan20*
 old_profilers/pickle/*
 web/model/*
 *.csv
+*.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

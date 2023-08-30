@@ -23,13 +23,13 @@ class Generic_profiler(ABC):
 
 class LosCalis_profiler(Generic_profiler):
     def __init__(self) -> None:
-        with open('model/encoders.pickle', 'rb') as handle:
+        with open('pickle/encoders.pickle', 'rb') as handle:
             self.enc_gender, self.enc_age = pickle.load(handle)
-        with open('model/tokenizer.pickle', 'rb') as handle:
+        with open('pickle/tokenizer.pickle', 'rb') as handle:
             tokenizer_bert, tokenizer_maria = pickle.load(handle)
         self.tokenizers = tokenizer_bert, tokenizer_maria
         # Cargar el archivo JSON que contiene la arquitectura
-        with open('model/modelo.json', 'r', encoding='utf-8') as json_file:
+        with open('pickle/modelo.json', 'r', encoding='utf-8') as json_file:
             loaded_model_json = json_file.read()
         self.model = tf.keras.models.model_from_json(loaded_model_json,
                                                      custom_objects={
@@ -37,7 +37,7 @@ class LosCalis_profiler(Generic_profiler):
                                                          "TFRobertaModel" : transformers.TFRobertaModel
                                                          }
                                                      )
-        self.model.load_weights('model/modelo.h5')
+        self.model.load_weights('pickle/modelo.h5')
         
     def process_csv(self, coll_csv, sep=' '):
         df = pd.read_csv(coll_csv)

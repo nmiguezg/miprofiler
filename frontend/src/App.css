@@ -6,9 +6,6 @@
   align-items: baseline;
   justify-content: space-between;
 }
-/* .pie-chart {
-  max-height: fit-content
-} */
 .dashboard {
   display: flex;
   align-content: center;
