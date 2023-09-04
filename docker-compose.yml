@@ -57,8 +57,10 @@ services:
     networks:
       - profilers-network
     volumes:
-      - ./frontend/src:/app/src
-
+      - type: bind
+        source: ./frontend
+        target: /app
+      - /app/node_modules
 networks:
   profilers-network:
     driver: bridge
