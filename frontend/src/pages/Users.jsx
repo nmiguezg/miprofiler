@@ -10,20 +10,16 @@ export default function Users() {
     const [offset, setOffset] = useState(0);
 
     function retrieveUsers(back = false) {
-        ProfileService.getUsers(LIMIT, offset).then((data) => { setUsers(data['usuarios']) });
-        if (back) {
-            setOffset(Math.max(offset - LIMIT, 0));
-        }
-        else {
-            setOffset(offset + LIMIT);
-        }
+        const newOffset = back ? Math.max(offset - LIMIT, 0) : offset + LIMIT;
+        ProfileService.getUsers(LIMIT, newOffset).then((data) => { setUsers(data['usuarios']) });
+        setOffset(newOffset);
     }
     useEffect(() => {
-        retrieveUsers();
+        ProfileService.getUsers(LIMIT, 0).then((data) => { setUsers(data['usuarios']) });
     }, []);
     return (
         <>
-            <article className="table">
+            <article>
                 <h2>Usuarios</h2>
                 {users != null ? (
                     <div className="pagination">
@@ -34,6 +30,8 @@ export default function Users() {
                                     <th style={{ width: "10%" }}>Edad</th>
                                     <th style={{ width: "15%" }}>Género</th>
                                     <th>Posts</th>
+                                    <th style={{ width: "15%" }}></th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -44,6 +42,7 @@ export default function Users() {
                                         <th style={{ width: "15%" }}>{user.genero}</th>
                                         <th style={{ height: "4.5em" }}
                                         >{user.posts[0].length > 100 ? user.posts[0].substring(0, 100) + "..." : user.posts[0].padEnd(100, ' ')}</th>
+                                        <th ><Link to={"/collection/" + user.id} state= {user}> Ver usuario</Link></th>
                                     </tr>))}
                             </tbody>
                         </table>

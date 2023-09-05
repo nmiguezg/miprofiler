@@ -2,16 +2,14 @@ FROM node:alpine
 
 WORKDIR /usr/app
 
-COPY ./package*.json ./
+ADD ./package*.json ./
 
 
 RUN npm install
 
-COPY ./ ./
+ADD ./ ./
 
 RUN npm run build
-
-EXPOSE 3000
 
 ENV DOCKERIZE_VERSION v0.7.0
 

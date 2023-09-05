@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 
 ADD . .
 
-CMD ["python", "app.py"]
+EXPOSE 8000

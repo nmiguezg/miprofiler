@@ -12,8 +12,6 @@ services:
       - FLASK_APP=app.py
     volumes:
       - ./profilers-service:/var/www/
-    ports:
-      - "5000:5000"
     networks:
       - profilers-network
   mongodb:
@@ -35,13 +33,12 @@ services:
     # command: python app.py
     volumes:
       - ./backend:/app
-    ports:
-      - "8000:8000"
     depends_on:
       - profilers
       - mongodb
     networks:
       - profilers-network
+    command: gunicorn -c server.conf.py wsgi:app
 
   web:
     container_name: web
@@ -49,6 +46,8 @@ services:
       context: frontend
       dockerfile: Dockerfile
     image: web:latest
+    ports:
+      - "3000:3000" 
     command: dockerize -wait tcp://profilers:5000 -timeout 300s npm run dev
     depends_on:
       - profilers
@@ -59,8 +58,8 @@ services:
     volumes:
       - type: bind
         source: ./frontend
-        target: /app
-      - /app/node_modules
+        target: /usr/app
+      - /usr/app/node_modules
 networks:
   profilers-network:
     driver: bridge

@@ -1,0 +1,18 @@
+.buttons{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+}
+.dashboard{
+    background-color:rgb(2, 30, 29);
+    border-radius: 1.5vh;
+    padding: 3vh 3vh;
+    display: flex;
+    justify-content: space-around;
+    /* justify-content: center; */
+    
+}
+/* .export{
+    background-color: rgb(4, 6, 42);
+    
+} */

@@ -43,7 +43,7 @@ export default class ProfileService {
                 res['usuarios'] = data?.map(d => ({
                     id: d.label,
                     genero: d.gender[0] == 'M' ? 'Masculino' : 'Femenino',
-                    edad: d.age == '50-xx' ? '50+' : d.age,
+                    edad: d.age.toLowerCase() == '50-xx' ? '50+' : d.age,
                     posts: d.post
                 })
                 )

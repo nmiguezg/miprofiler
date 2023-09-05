@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 import datetime
-import time
 import traceback
 from flask import Flask, render_template, request, jsonify
 import pandas as pd
@@ -24,10 +23,10 @@ bd = client[config['db']['name']]
 def index():
     return "<h1>Backend</h1>"
 @app.route("/profile", methods=['POST'])
-@app.route("/profile/<string:algoritmo>", methods=['POST'])
-def profile(algoritmo='modaresi'):
+def profile():
     try:
-        url = 'http://profilers:5000/profile/'+algoritmo
+        
+        url = 'http://profilers:5000/profile/' + request.form.get('algoritmo')
         file = request.files['file']
         files = {'collection': file}
         response = requests.post(url, files=files, timeout=1000)

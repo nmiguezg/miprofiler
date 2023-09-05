@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import ErrorPage from "./error-page";
 import Users from "./pages/Users";
+import User from "./pages/User";
 
 export default function App() {
 
@@ -15,7 +16,7 @@ export default function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/collection" element={<Users />} />
         <Route path="/*" element={<ErrorPage />} />
-
+        <Route path="/collection/:id" element={<User />} />
       </Routes>
     </>)
 }

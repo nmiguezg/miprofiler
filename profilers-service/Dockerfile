@@ -56,4 +56,6 @@ ADD https://cgit.freedesktop.org/libreoffice/dictionaries/plain/en/en_US.dic /ro
 ADD https://cgit.freedesktop.org/libreoffice/dictionaries/plain/es/es_ES.dic /root/hunspell/es_ANY.dic
 ADD https://cgit.freedesktop.org/libreoffice/dictionaries/plain/es/es_ES.aff /root/hunspell/es_ANY.aff
 RUN apt-get install -y libgl1-mesa-glx
-RUN pip install flask
+RUN pip install flask gunicorn
+
+EXPOSE 5000
