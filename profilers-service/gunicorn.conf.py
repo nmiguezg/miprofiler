@@ -1,4 +1,4 @@
 # gunicorn_config.conf
 workers = 1  # Number of worker processes
 bind = "0.0.0.0:5000"  # IP and port to bind
-timeout = 120  # Maximum time a request is allowed to process
+timeout = 200  # Maximum time a request is allowed to process
