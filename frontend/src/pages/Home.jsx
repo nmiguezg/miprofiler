@@ -34,7 +34,7 @@ export default function Home() {
   }
   function handleFileUpload(event) {
     if (event.target.form.elements['file'].files.length === 0) {
-      setFlag(false); 
+      setFlag(false);
       console.log('no file');
       return
     }
@@ -56,7 +56,7 @@ export default function Home() {
     };
   }
   return (
-    <div className="container">
+    <div className="content">
       <h2>Perfilar colección</h2>
       <form id="profiler-form" encType="multipart/form-data" onSubmit={handleSubmit}>
         <label>
@@ -75,5 +75,6 @@ export default function Home() {
         <input type="submit" name="submit" value="Perfilar"></input>
         {error && <p>Se ha producido un error al perfilar la colección</p>}
       </form>
-    </div>);
+    </div>
+  );
 }

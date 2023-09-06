@@ -37,7 +37,7 @@
     color: #dbdbdb;
     color: var(--text-main);
     background: #202b38;
-    background: var(--background);
+    background: var(--background-body);
     text-rendering: optimizeLegibility;
   }
   

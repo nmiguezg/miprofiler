@@ -28,7 +28,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  background: var(--background);
+  /* background: var(--background-body); */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -43,7 +43,17 @@ body {
   display: flex;
   flex-direction: column;
 }
-
+.content {
+  width: min(90%, 40rem);
+  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  border-radius: 8px;
+  padding: 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .dashboard {
   display: flex;
   align-content: center;

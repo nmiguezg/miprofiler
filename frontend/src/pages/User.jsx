@@ -13,8 +13,8 @@ export default function User() {
         setNumPost(Math.max(numPost - 1, 0));
     }
     return (
-        <>
-            <div className="header"><h3>Información de usuario</h3 >
+        <div className="content">
+            <div><h2>Información de usuario</h2>
                 <Link to="/collection">Volver</Link>
             </div>
             <article className="info">
@@ -38,6 +38,6 @@ export default function User() {
                     </div> */}
                 </ol>
             </article>
-        </>
+        </div>
     )
 }

@@ -18,8 +18,8 @@ export default function Users() {
         ProfileService.getUsers(LIMIT, 0).then((data) => { setUsers(data['usuarios']) });
     }, []);
     return (
-        <div className="container">
-            <article>
+        <div className="content">
+            <article className="info">
                 <h2>Usuarios</h2>
                 {users != null ? (
                     <div className="pagination">

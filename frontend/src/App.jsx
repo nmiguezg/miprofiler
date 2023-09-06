@@ -11,13 +11,15 @@ export default function App() {
   return (
     <>
       <Title />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/collection" element={<Users />} />
-        <Route path="/*" element={<ErrorPage />} />
-        <Route path="/collection/:id" element={<User />} />
-      </Routes>
+      <div className="container">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/collection" element={<Users />} />
+          <Route path="/*" element={<ErrorPage />} />
+          <Route path="/collection/:id" element={<User />} />
+        </Routes>
+      </div>
     </>)
 }
 
