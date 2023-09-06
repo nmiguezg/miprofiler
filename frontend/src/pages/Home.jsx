@@ -17,17 +17,19 @@ export default function Home() {
     const form = event.target;
     setError(null);
     setProfiling(true);
+    form.elements['submit'].disabled = true;
     ProfileService.profileUsers(
       form.elements['file'].files[0],
       form.elements['algoritmo'].value
     ).then((data) => {
-      setProfiling(false);
       sessionStorage.setItem('coll', JSON.stringify(data));
       navigate("/dashboard");
     }).catch((error) => {
       console.log(error);
       setError(error);
+    }).finally(() => {
       setProfiling(false);
+      form.elements['submit'].disabled = false;
     });
   }
   function handleFileUpload(event) {
@@ -54,7 +56,7 @@ export default function Home() {
     };
   }
   return (
-    <>
+    <div className="container">
       <h2>Perfilar colección</h2>
       <form id="profiler-form" encType="multipart/form-data" onSubmit={handleSubmit}>
         <label>
@@ -70,8 +72,8 @@ export default function Home() {
         </label>
         {flag && (validFile ? <div>Archivo válido</div> : <div>Archivo inválido</div>)}
         {profiling && <div id="spinner" className='spinner'></div>}
-        <input type="submit" value="Perfilar"></input>
+        <input type="submit" name="submit" value="Perfilar"></input>
         {error && <p>Se ha producido un error al perfilar la colección</p>}
       </form>
-    </>);
+    </div>);
 }

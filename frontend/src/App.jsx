@@ -23,13 +23,14 @@ export default function App() {
 
 function Title() {
   return (
-    <header className="header">
-      <h1>BLM Profiler</h1>
+    <navbar className="header">
+      <span className="logo">BLM Profiler</span>
       <nav className="nav">
         <li><Link to="/">Home</Link></li>
         <li><Link to="/dashboard">Dashboard</Link></li>
         <li><Link to="/collection">View users</Link></li>
       </nav>
-    </header>);
+    </navbar>
+  );
 }
 

@@ -17,6 +17,7 @@ config = configparser.ConfigParser()
 config.read("./resources/configuration_parameters.ini")
 client = MongoClient(f"mongodb://{config['db']['user']}:{config['db']['password']}@{config['db']['host']}:{config['db']['port']}/", maxPoolSize=10)
 create_db(client, config)
+print("Database created", flush=True)
 bd = client[config['db']['name']]
 
 @app.route("/")

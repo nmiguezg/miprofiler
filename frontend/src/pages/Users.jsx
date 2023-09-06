@@ -18,7 +18,7 @@ export default function Users() {
         ProfileService.getUsers(LIMIT, 0).then((data) => { setUsers(data['usuarios']) });
     }, []);
     return (
-        <>
+        <div className="container">
             <article>
                 <h2>Usuarios</h2>
                 {users != null ? (
@@ -58,6 +58,6 @@ export default function Users() {
                     </>
                 )}
             </article>
-        </>
+        </div>
     );
 }

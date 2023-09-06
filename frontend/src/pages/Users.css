@@ -7,7 +7,8 @@
 .table {
   table-layout: fixed !important;
   width: 100%;
-  font-weight: 300;
+  border-radius: 16px;  
+  box-shadow: 0 0 10px rgba(0,0,0,.2);
 }
 
 th,
@@ -24,8 +25,8 @@ td {
   background-color: rgba(3, 24, 24, 0.565);
   border-radius: 1vh;
   padding: 1vh;
-  max-height: 25em;
-  width: 30em;
+  max-height: 30em;
+  width: 35em;
   
   /* Altura máxima del contenedor */
   overflow-y: auto;
@@ -33,15 +34,6 @@ td {
 }
 /* .tile {
   background-color: º; */
-
-.header {
-  display: flex;
-  align-content: center;
-  flex-wrap: nowrap;
-  flex-direction: row;
-  align-items: baseline;
-  justify-content: space-between;
-}
 .list-item {
   /* margin: 2vh; */
   list-style: none;
@@ -52,7 +44,7 @@ td {
   background-color: rgba(3, 24, 24, 0.825);
   border-radius: 0.2vh;
   padding: 2vh;
-  cursor: pointer;
+  cursor:default;
 } 
 
 .list-heading{
