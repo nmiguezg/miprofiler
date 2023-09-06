@@ -18,7 +18,7 @@ export default function Users() {
         ProfileService.getUsers(LIMIT, 0).then((data) => { setUsers(data['usuarios']) });
     }, []);
     return (
-        <div className="content">
+        <>
             <article className="info">
                 <h2>Usuarios</h2>
                 {users != null ? (
@@ -42,7 +42,7 @@ export default function Users() {
                                         <th style={{ width: "15%" }}>{user.genero}</th>
                                         <th style={{ height: "4.5em" }}
                                         >{user.posts[0].length > 100 ? user.posts[0].substring(0, 100) + "..." : user.posts[0].padEnd(100, ' ')}</th>
-                                        <th ><Link to={"/collection/" + user.id} state= {user}> Ver usuario</Link></th>
+                                        <th ><Link to={"/collection/" + user.id} state={user}> Ver usuario</Link></th>
                                     </tr>))}
                             </tbody>
                         </table>
@@ -58,6 +58,6 @@ export default function Users() {
                     </>
                 )}
             </article>
-        </div>
+        </>
     );
 }
