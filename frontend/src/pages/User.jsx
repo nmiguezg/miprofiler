@@ -5,7 +5,7 @@ export default function User() {
     const { id, edad, genero, posts, collection, timestamp } = location.state;
     return (
         <>
-            <div className="header"><h2>Información de usuario</h2>
+            <div className="header"><h1>Información de usuario</h1>
                 <Link to="/users">Volver</Link>
             </div>
             <article className="info-user">

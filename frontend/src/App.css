@@ -43,16 +43,18 @@ body {
 }
 
 .container {
-  padding-top: 6rem;
+  padding-top: 3rem;
   align-items: center;
   display: flex;
   flex-direction: column;
 }
 input{
   padding: 1.2vh;
+  width: 100%;
 }
 
 .content {
+  margin-top: 3rem;
   border: 1px solid var(--border);
   width: min(90%, 40rem);
   box-shadow: 0 0 10px rgba(0, 0, 0, .2);
