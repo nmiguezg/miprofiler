@@ -1,5 +1,5 @@
 import "./App.css"
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import ErrorPage from "./error-page";
@@ -15,24 +15,24 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/collection" element={<Users />} />
+          <Route path="/users" element={<Users />} />
           <Route path="/*" element={<ErrorPage />} />
-          <Route path="/collection/:id" element={<User />} />
+          <Route path="/users/:id" element={<User />} />
         </Routes>
       </div>
     </>)
 }
 
 function Title() {
+  const navigate = useNavigate();
   return (
-    <navbar className="header">
-      <span className="logo">BLM Profiler</span>
-      <nav className="nav">
-        <li><Link to="/">Home</Link></li>
+    <nav className="navbar">
+      <span className="logo" onClick={()=>{return navigate("/")}}>BLM Profiler</span>
+      <div className="nav">
         <li><Link to="/dashboard">Dashboard</Link></li>
-        <li><Link to="/collection">View users</Link></li>
-      </nav>
-    </navbar>
+        <li><Link to="/users">Usuarios</Link></li>
+      </div>
+    </nav>
   );
 }
 

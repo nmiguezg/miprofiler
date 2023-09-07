@@ -57,22 +57,24 @@ export default function Home() {
   }
   return (
     <div className="content">
-      <h2>Perfilar colección</h2>
-      <form id="profiler-form" encType="multipart/form-data" onSubmit={handleSubmit}>
-        <label>
-          Archivo a perfilar
-          <input type="file" name="file" accept=".csv, .txt" required="True" onChange={handleFileUpload}></input>
-        </label>
-        <label>
-          Algoritmo
-          <select name="algoritmo">
-            <option value="modaresi">Modaresi</option>
-            <option value="grivas">Grivas</option>
-          </select>
-        </label>
+      <h1>Perfilar colección</h1>
+      <form className="profiler-form" encType="multipart/form-data" onSubmit={handleSubmit}>
+        <div className="form-fields">
+          <label>
+            Archivo a perfilar
+            <input type="file" name="file" accept=".csv, .txt" required="True" onChange={handleFileUpload}></input>
+          </label>
+          <label>
+            Algoritmo
+            <select name="algoritmo">
+              <option value="modaresi">Modaresi</option>
+              <option value="grivas">Grivas</option>
+            </select>
+          </label>
+        </div>
         {flag && (validFile ? <div>Archivo válido</div> : <div>Archivo inválido</div>)}
         {profiling && <div id="spinner" className='spinner'></div>}
-        <input type="submit" name="submit" value="Perfilar"></input>
+        <input type="submit" name="submit" className="submit" value="Perfilar"></input>
         {error && <p>Se ha producido un error al perfilar la colección</p>}
       </form>
     </div>
