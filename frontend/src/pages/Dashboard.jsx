@@ -1,12 +1,12 @@
 import PieChart from "../components/Charts/PieChart";
 import BarChart from "../components/Charts/BarChart";
+import ProfileService from "../services/ProfileService";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Dashboard.css";
 
 export default function Dashboard() {
   const [edad, setEdad] = useState(false);
-  const coll = JSON.parse(sessionStorage.getItem('coll'))
   function handleClick() {
     setEdad(!edad);
   }
@@ -18,7 +18,15 @@ export default function Dashboard() {
   //   document.body.appendChild(element); // Required for this to work in FireFox
   //   element.click();
   // }
-
+  const [coll, setColl] = useState(JSON.parse(sessionStorage.getItem('coll')));
+  useEffect(() => {
+    if (coll == null) {
+      ProfileService.getUsers(0, 0).then((data) => {
+        setColl(data);
+        sessionStorage.setItem('coll', JSON.stringify(data));
+      });
+    }
+  }, []);
   return (
     <div className="content">
       <h1>Dashboard</h1>

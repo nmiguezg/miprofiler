@@ -4,22 +4,6 @@ function handleErrors(response) {
     }
     return response.json();
 }
-// function validateCSVFile(file) {
-//     //sync function that opens the file and asserts that has a column named 'label', and a column named 'post'
-//     return new Promise((resolve, reject) => {
-//         const reader = new FileReader();
-//         reader.onload = function (e) {
-//             const csv = e.target.result.split('\n');
-//             const header = csv[0].split(',');
-//             if (header.includes('label') && header.includes('post')) {
-//                 resolve(true);
-//             } else {
-//                 reject('El archivo no tiene las columnas requeridas (label, post)');
-//             }
-//         };
-//         reader.readAsText(file);
-//     });
-// }
 
 export default class ProfileService {
     constructor() {
@@ -30,7 +14,6 @@ export default class ProfileService {
 
     static async profileUsers(file, algorithm) {
         const formData = new FormData();
-        // validateCSVFile(file).then(() => {}, () => { throw Error("File not valid: file must have two columns named label and post.") });
         formData.append('file', file);
         formData.append('algoritmo', algorithm);
         return fetch(`${this.endpoint}/profile`, {
@@ -79,7 +62,7 @@ export default class ProfileService {
                 res['usuarios'] = data.Users?.map(d => ({
                     id: d.label,
                     genero: d.gender[0] == 'M' ? 'Masculino' : 'Femenino',
-                    edad: d.age == '50-xx' ? '50+' : d.age,
+                    edad: d.age.toLocaleLowerCase() == '50-xx' ? '50+' : d.age,
                     posts: d.post,
                     timestamp: d.date,
                     collection: d.collection

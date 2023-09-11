@@ -12,8 +12,10 @@ export default function Users() {
 
     function retrieveUsers(back = false) {
         const newOffset = back ? Math.max(offset - LIMIT, 0) : offset + LIMIT;
-        ProfileService.getUsers(LIMIT, newOffset).then((data) => { setUsers(data['usuarios']) });
-        setOffset(newOffset);
+        ProfileService.getUsers(LIMIT, newOffset).then((data) => {
+            setUsers(data['usuarios']);
+            setOffset(newOffset);
+        });
     }
     useEffect(() => {
         ProfileService.getUsers(LIMIT, 0).then((data) => { setUsers(data['usuarios']) });
@@ -37,7 +39,7 @@ export default function Users() {
                                 <tbody>
                                     {users?.map((user) => (
                                         <tr key={user.id} className="user-row" onClick={() => navigate("/users/" + user.id, { state: user })}>
-                                            <th style={{ width: "10%" }}>{user.id.substring(0,10)}</th>
+                                            <th style={{ width: "10%" }}>{user.id.substring(0, 10)}</th>
                                             <th style={{ width: "10%" }}>{user.edad}</th>
                                             <th style={{ width: "15%" }}>{user.genero}</th>
                                             <th className="prescindible" style={{ height: "4.5em" }}
