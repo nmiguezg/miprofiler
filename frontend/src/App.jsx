@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import ErrorPage from "./error-page";
 import Users from "./pages/Users";
 import User from "./pages/User";
+import Login from "./pages/Login";
 
 export default function App() {
 
@@ -13,6 +14,7 @@ export default function App() {
       <Title />
       <div className="container">
         <Routes>
+          <Route path="/auth" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/users" element={<Users />} />
