@@ -1,11 +1,98 @@
-.header {
-  display: flex;
-  align-content: center;
-  flex-wrap: nowrap;
-  flex-direction: row;
-  align-items: baseline;
-  justify-content: space-between;
+* {
+  box-sizing: border-box;
+
 }
+
+button,
+input {
+  margin: 0;
+}
+
+div {
+  display: block;
+}
+
+.root {
+  min-height: 100vh;
+  width: 100%;
+}
+
+body {
+  display: block;
+  margin: 8px;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  border-bottom: 1px solid var(--border);
+  left: 0;
+  width: 100%;
+  background: var(--background-body);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  height: 3rem;
+  box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+}
+.logo{
+  cursor: pointer;
+  font-size: 1.3rem;
+  color: rgb(235 251 241);
+}
+@media screen and (max-width: 350px) {
+  .logo{
+    font-size: 1rem;
+  }
+  canvas{
+    width: 95%;
+  }
+}
+/* @media screen and (max-width: 630px) {
+  .profiler-form{
+    padding: 5vw;
+  }
+} */
+
+.container {
+  padding-top: 3rem;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+input{
+  padding: 1.2vh;
+  width: 100%;
+}
+
+.content {
+  margin-top: 6vh;
+  padding: 1.5vw;
+  width: min(90%, 50rem);
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+}
+
+.profiler-form {
+  padding: 2vh 5vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-fields {
+  display: flex;
+  gap: 0.7vh;
+  flex-wrap: wrap;
+}
+
 .dashboard {
   display: flex;
   align-content: center;
@@ -13,12 +100,18 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
+
+.submit {
+  position: initial;
+  margin-top: 4rem;
+}
+
 .nav {
   display: flex;
   align-content: center;
   flex-wrap: nowrap;
   flex-direction: row;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   list-style: simp-chinese-formal;
 }
@@ -46,22 +139,29 @@
 }
 
 .hidden {
-  display: none;
+  visibility: none;
 }
+
 h1 {
   font-size: 2.5rem;
   font-weight: 300;
   text-align: center;
   margin-bottom: 2rem;
 }
+
 h2 {
   font-size: 2rem;
   font-weight: 300;
   margin-bottom: 2rem;
 }
+
 h3 {
   font-size: 1.5rem;
   font-weight: 300;
   text-align: center;
   margin-bottom: 2rem;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
 }
