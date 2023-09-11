@@ -20,7 +20,7 @@ export default function Dashboard() {
   // }
 
   return (
-    <>
+    <div className="content">
       <h1>Dashboard</h1>
       {coll ?
         <>
@@ -56,6 +56,6 @@ export default function Dashboard() {
             <p>Todavía no hay usuarios perfilados, perfila una colección para poder ver sus estadísticas.</p>
             <Link to="/">Volver</Link>
           </>)}
-    </>
+    </div>
   );
 }

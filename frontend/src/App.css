@@ -41,6 +41,19 @@ body {
   font-size: 1.3rem;
   color: rgb(235 251 241);
 }
+@media screen and (max-width: 350px) {
+  .logo{
+    font-size: 1rem;
+  }
+  canvas{
+    width: 95%;
+  }
+}
+/* @media screen and (max-width: 630px) {
+  .profiler-form{
+    padding: 5vw;
+  }
+} */
 
 .container {
   padding-top: 3rem;
@@ -54,20 +67,21 @@ input{
 }
 
 .content {
-  margin-top: 3rem;
-  border: 1px solid var(--border);
-  width: min(90%, 40rem);
-  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
-  border-radius: 8px;
-  padding: 2rem;
-  height: 100%;
+  margin-top: 6vh;
+  padding: 1.5vw;
+  width: min(90%, 50rem);
+  min-height: 50vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
 }
 
 .profiler-form {
+  padding: 2vh 5vw;
   display: flex;
   flex-direction: column;
   align-items: center;
