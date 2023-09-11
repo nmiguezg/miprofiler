@@ -22,6 +22,9 @@ export default function Dashboard() {
   useEffect(() => {
     if (coll == null) {
       ProfileService.getUsers(0, 0).then((data) => {
+        if (data == null) {
+          return;
+        }
         setColl(data);
         sessionStorage.setItem('coll', JSON.stringify(data));
       });

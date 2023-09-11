@@ -18,8 +18,9 @@ export default function Users() {
         });
     }
     useEffect(() => {
-        ProfileService.getUsers(LIMIT, 0).then((data) => { setUsers(data['usuarios']) });
+        ProfileService.getUsers(LIMIT, 0).then((data) => { data && setUsers(data['usuarios']) });
     }, []);
+
     return (
         <div className="content">
             <h1>Usuarios</h1>
@@ -38,12 +39,18 @@ export default function Users() {
                                 </thead>
                                 <tbody>
                                     {users?.map((user) => (
-                                        <tr key={user.id} className="user-row" onClick={() => navigate("/users/" + user.id, { state: user })}>
-                                            <th style={{ width: "10%" }}>{user.id.substring(0, 10)}</th>
+                                        <tr key={user.id}
+                                            className="user-row"
+                                            onClick={() => navigate("/users/" + user.id, { state: user })}>
+                                            <th style={{ width: "10%" }}>
+                                                {typeof user.id === "string" ? user.id.substring(0, 10) : user.id}
+                                            </th>
                                             <th style={{ width: "10%" }}>{user.edad}</th>
                                             <th style={{ width: "15%" }}>{user.genero}</th>
-                                            <th className="prescindible" style={{ height: "4.5em" }}
-                                            >{user.posts[0].length > 50 ? user.posts[0].substring(0, 50) + "..." : user.posts[0].padEnd(50, ' ')}</th>
+                                            <th className="prescindible" style={{ height: "4.5em" }}>
+                                                {user.posts[0].length > 50 ?
+                                                    user.posts[0].substring(0, 50) + "..." : user.posts[0].padEnd(50, ' ')}
+                                            </th>
                                         </tr>))}
                                 </tbody>
                             </table>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProfileService from "../services/ProfileService";
 import { useNavigate } from "react-router-dom";
 
@@ -9,6 +9,11 @@ export default function Home() {
   const [flag, setFlag] = useState(false);
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   if (sessionStorage.getItem['userToken'] == null) {
+  //     navigate("/auth")
+  //   }
+  // }, [])
   function handleSubmit(event) {
     event.preventDefault();
     if (!validFile) {
@@ -58,11 +63,20 @@ export default function Home() {
   return (
     <div className="content">
       <h1>Perfilar colección</h1>
-      <form className="profiler-form" encType="multipart/form-data" onSubmit={handleSubmit}>
+      <form
+        className="profiler-form"
+        encType="multipart/form-data"
+        onSubmit={handleSubmit}>
         <div className="form-fields">
           <label>
             Archivo a perfilar
-            <input type="file" name="file" accept=".csv, .txt" required="True" onChange={handleFileUpload}></input>
+            <input
+              type="file"
+              name="file"
+              accept=".csv, .txt"
+              required="True"
+              onChange={handleFileUpload}>
+            </input>
           </label>
           <label>
             Algoritmo
@@ -72,8 +86,12 @@ export default function Home() {
             </select>
           </label>
         </div>
-        {flag && (validFile ? <div>Archivo válido</div> : <div>Archivo inválido</div>)}
-        {profiling && <div id="spinner" className='spinner'></div>}
+        {flag &&
+          (validFile ?
+            <div>Archivo válido</div> : <div>Archivo inválido</div>)}
+        <div id="spinner"
+          className={'spinner ' + (profiling ? "" : "hidden")} >
+        </div>
         <input type="submit" name="submit" className="submit" value="Perfilar"></input>
         {error && <p>Se ha producido un error al perfilar la colección</p>}
       </form>
