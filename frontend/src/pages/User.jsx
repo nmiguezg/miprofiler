@@ -6,7 +6,7 @@ export default function User() {
     return (
         <>
             <div className="header"><h1>Información de usuario</h1>
-                <Link to="/users">Volver</Link>
+                <Link to={-1}>Volver</Link>
             </div>
             <article className="info-user">
                 <div className="fields">

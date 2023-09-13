@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ProfileService from "../services/ProfileService";
+import ProfileService from "@/services/ProfileService";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {

@@ -1,0 +1,35 @@
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5vh;
+}
+
+.dashboard {
+    padding: 3vh 3vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.cards{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: fit-content;
+}
+
+.card {
+    font-weight: 300;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    padding: 1vh 1vw;
+    margin: 0.5vh 0.5vw;
+}
+/* .chart{
+    width: 13rem;
+} */
+/* .export{
+    background-color: rgb(4, 6, 42);
+    
+} */
