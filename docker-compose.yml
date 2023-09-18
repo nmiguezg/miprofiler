@@ -6,7 +6,7 @@ services:
     build:
       context: profilers-service
       dockerfile: Dockerfile
-    image: profilers:latest
+    image: miprofiler/profilers:latest
     command: /root/miniconda2/bin/gunicorn -c gunicorn.conf.py wsgi:app
     volumes:
       - ./profilers-service:/var/www/
@@ -27,7 +27,7 @@ services:
     build:
       context: backend
       dockerfile: Dockerfile
-    image: api:latest
+    image: miprofiler/api:latest
     # command: python app.py
     volumes:
       - ./backend:/app
@@ -43,7 +43,7 @@ services:
     build:
       context: frontend
       dockerfile: Dockerfile
-    image: web:latest
+    image: miprofiler/web:latest
     ports:
       - "3000:3000" 
     command: dockerize -wait tcp://profilers:5000 -timeout 300s npm run dev
