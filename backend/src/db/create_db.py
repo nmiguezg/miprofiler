@@ -1,6 +1,6 @@
 import json
 
-def create_db(client, config):
+def create_bd(client, config):
     # Eliminar la base de datos si existe
     if config['db']['name'] in client.list_database_names():
         client.drop_database(config['db']['name'])

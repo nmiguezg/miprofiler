@@ -7,7 +7,7 @@ import pandas as pd
 import requests
 import configparser
 from pymongo import MongoClient
-from db.create_db import create_db
+from db.create_db import create_bd
 import copy
 
 
@@ -15,9 +15,10 @@ app = Flask(__name__)
 
 config = configparser.ConfigParser()
 config.read("./resources/configuration_parameters.ini")
-client = MongoClient(f"mongodb://{config['db']['user']}:{config['db']['password']}@{config['db']['host']}:{config['db']['port']}/", maxPoolSize=10)
-create_db(client, config)
-print("Database created", flush=True)
+url = f"mongodb://{config['db']['user']}:{config['db']['password']}\
+    @{config['db']['host']}:{config['db']['port']}/"
+client = MongoClient(url, maxPoolSize=10)
+create_bd(client, config)
 bd = client[config['db']['name']]
 
 @app.route("/")

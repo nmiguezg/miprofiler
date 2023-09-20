@@ -28,7 +28,6 @@ function Title() {
     <nav className="navbar">
       <span className="logo" onClick={()=>{return navigate("/")}}>BLM Profiler</span>
       <div className="nav">
-
         { results && <li><Link to="/dashboard">Resultados</Link></li>}
       </div>
     </nav>

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
+import time
 import flask
 from flask import request, jsonify
 
@@ -10,9 +11,11 @@ app = flask.Flask(__name__)
 moda = Modaresi_profiler()
 grivas = Grivas_profiler()
 
+
 @app.route("/")
 def hello_world():
     return "<p>Backend profiler: modaresi and grivas</p>"
+
 
 @app.route('/profile', methods=['POST'])
 @app.route('/profile/<string:profiler>', methods=['POST'])
@@ -29,16 +32,19 @@ def profile(profiler='modaresi'):
             prof = grivas
         else:
             return jsonify({'error': u'El profiler seleccionado no es válido'.encode('utf-8')}), 400
+        start = time.time()
         # Leer el contenido del archivo CSV con Pandas
         users, docs = prof.process_csv(coll)
         pred = prof.predict(docs)
+        finish = time.time()
         resp = []
         for i, user in enumerate(users):
             r = {
                 'user': user,
+                'posts': docs[i],
                 'gender': pred[0][i],
                 'age': pred[1][i]
-                }
+            }
             resp.append(r)
         categories = {
             "gender": [
@@ -52,7 +58,8 @@ def profile(profiler='modaresi'):
                 "50-xx"
             ]
         }
-        return jsonify({'Users': resp, "categories" : categories}), 200
+        profiling_time = start- finish 
+        return jsonify({'users': resp, "categories": categories, "time": profiling_time}), 200
 
     except Exception as e:
         return jsonify({'error': (u"Ocurrió un error al cargar el archivo CSV."+(traceback.format_exc()))}), 500
@@ -71,5 +78,5 @@ def profile_text(profiler='modaresi'):
     r = {
         'gender': pred[0][0],
         'age': pred[1][0]
-        }
+    }
     return jsonify({'User': r})
