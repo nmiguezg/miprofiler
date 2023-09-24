@@ -29,13 +29,15 @@ services:
       dockerfile: Dockerfile
     image: miprofiler/api:latest
     # command: python app.py
-    volumes:
-      - ./backend:/app
     depends_on:
       - profilers
       - mongodb
     networks:
       - profilers-network
+    volumes:
+      - ./backend/src/:/app/
+    environment:
+      - PROFILERS_SERVICE_URL=http://profilers:5000/profile/
     command: gunicorn -c server.conf.py wsgi:app
 
   web:

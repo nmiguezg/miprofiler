@@ -22,36 +22,30 @@ export default class ProfileService {
         })
             .then(handleErrors)
             .then(data => {
-                const res = {}
-                res['usuarios'] = data?.map(d => ({
-                    id: d.label,
-                    genero: d.gender[0] == 'M' ? 'Masculino' : 'Femenino',
-                    edad: d.age.toLowerCase() == '50-xx' ? '50+' : d.age,
-                    posts: d.post
-                })
-                )
-                res['grupos'] = {
-                    edad: {
-                        '18-24': 0,
-                        '25-34': 0,
-                        '35-49': 0,
-                        '50+': 0
+                return {
+                    id: data.id,
+                    name: data.nombre,
+                    algorithm: data.algoritmo,
+                    creation_date: data.fecha_creacion,
+                    time: data.tiempo,
+                    users: {
+                        'totalUsers': data.users_stats.total_users,
+                        'age': {
+                            '18-24': data.users_stats['age']['18-24'],
+                            '25-34': data.users_stats['age']['25-34'],
+                            '35-49': data.users_stats['age']['35-49'],
+                            '+50': data.users_stats['age']['50-XX'],
+                        },
+                        'gender': {
+                            'Masculino': data.users_stats['gender']['MALE'],
+                            'Femenino': data.users_stats['gender']['FEMALE'],
+                        }
                     },
-                    genero: {
-                        'Masculino': 0,
-                        'Femenino': 0
-                    },
-                    algoritmo: algorithm
                 }
-                res['usuarios'].forEach(u => {
-                    res['grupos']['edad'][u.edad] += 1
-                    res['grupos']['genero'][u.genero] += 1
-                })
-                return res
 
             }).catch(error => { throw error });
     }
-    static async getUsers(limit=100, offset=0) {
+    static async getUsers(limit = 100, offset = 0) {
         return fetch(`${this.endpoint}/users?limit=${limit}&offset=${offset}`)
             .then(handleErrors)
             .then(data => {

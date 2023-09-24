@@ -40,11 +40,11 @@ export default function Dashboard() {
       <div className={styles.cards}>
         <div className={styles.card}>
           <p>Usuarios</p>
-          <h2>{coll['usuarios'].length}</h2>
+          <h2>{coll.users.totalUsers}</h2>
         </div>
         <div className={styles.card}>
           <p>Tiempo</p>
-          <h2>{"3222ms"}</h2>
+          <h2>{coll.time}</h2>
         </div>
         <div className={styles.card}>
           <p>Algoritmo</p>
@@ -59,7 +59,7 @@ export default function Dashboard() {
         <UsersTable></UsersTable>
         <div className={styles.card + " " + styles.chart}>
           <h2>Edad</h2>
-          <BarChart data={coll['grupos']['edad']} />
+          <BarChart data={coll['users']['edad']} />
         </div>
         <div className={styles.card + " " + styles.chart}>
           <h2>Género</h2>
