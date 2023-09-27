@@ -1,2 +1,3 @@
 - Rediseñar tabla: utilizar materialui, cambiar paginación a scroll o implementar correctaente paginación (con páginas numeradas)
 - Refactorizar backend (separar controlador de modelo): añadir entidad para colección,servicio de perfilado, crud...
+- Usar flask-validator para validar parámetros de entrada en el controlador de las colecciones.
