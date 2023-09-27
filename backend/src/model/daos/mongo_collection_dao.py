@@ -2,7 +2,8 @@ from model.exceptions import InstanceNotFoundException
 from model.daos.collection_dao import Collection_dao
 from model.daos.mongo_instance import Mongo_instance
 from model.entities.collection import Collection
-from bson.objectid import ObjectId
+from uuid import uuid4, UUID
+
 
 class Mongo_collection_dao(Collection_dao):
     def __init__(self):
@@ -10,22 +11,24 @@ class Mongo_collection_dao(Collection_dao):
         self.collection = db.create_collection("collection")
 
     def create(self, collection: Collection) -> Collection:
-        binary_id = self.collection.insert_one({
+        collection.id = uuid4()
+        self.collection.insert_one({
+            "_id": collection.id,
             "nombre": collection.nombre,
             "fecha_creacion": collection.fecha_creacion,
             "algoritmo": collection.algoritmo,
             "estadisticas": collection.users_stats,
             "tiempo": collection.tiempo
-        }).inserted_id
-        collection.id = (binary_id)
+        })
 
         return collection
 
-    def get_coleccion(self, id: str) -> Collection:
-        collection = self.collection.find_one({"_id": ObjectId(id)})
+    def get_coleccion(self, id: UUID) -> Collection:
+        collection = self.collection.find_one({"_id": UUID(id)})
         if (collection == None):
-            raise InstanceNotFoundException(f"No existe la colección con id: {id}.")
-        
+            raise InstanceNotFoundException(
+                f"No existe la colección con id: {id}.")
+
         return Collection(
             id=collection['_id'],
             nombre=collection['nombre'],
@@ -45,4 +48,4 @@ class Mongo_collection_dao(Collection_dao):
         })
 
     def remove_collection(self, id: str):
-        self.collection.delete_one({"_id": ObjectId(id)})
+        self.collection.delete_one({"_id": id})

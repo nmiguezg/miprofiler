@@ -39,7 +39,8 @@ services:
     environment:
       - PROFILERS_SERVICE_URL=http://profilers:5000/profile/
     command: gunicorn -c server.conf.py wsgi:app
-
+    ports:
+      - "8000:8000" 
   web:
     container_name: web
     build:

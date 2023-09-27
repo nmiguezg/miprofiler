@@ -1,5 +1,6 @@
 import sys
 import traceback
+from uuid import UUID
 import requests
 from model.entities.user import User
 from model.entities.collection import Collection
@@ -32,7 +33,7 @@ class Profiler_service():
                 raise ServerNotAvailableException(json)
             
             coll = Collection(
-                nombre=file.name,
+                nombre=file.filename,
                 algoritmo=algoritmo,
                 tiempo=json['time'],
                 users_stats=self.__calculate_user_stats(
@@ -48,15 +49,13 @@ class Profiler_service():
         except requests.exceptions.ReadTimeout:
             raise ServerTimeoutException()
         except Exception as e:
-            tb = sys.__traceback__
-
             raise RuntimeError(
                 "Error inserting the collection in the database" + traceback.format_exc())
 
 
-    def get_profiled_collection(self, id: str) -> Collection:
+    def get_profiled_collection(self, collection_id: UUID) -> Collection:
         try:
-            return self.collection_dao.get_coleccion(id)
+            return self.collection_dao.get_coleccion(collection_id)
         except Exception as e:
             raise RuntimeError(
                 "Error retrieving the collection from the database: " + traceback.format_exc())
@@ -85,8 +84,9 @@ class Profiler_service():
             }
         }
         for user in users:
+            gender = "MALE" if user['gender'][0] == 'M' else "FEMALE"
             stats['age'][user['age']] += 1
-            stats['gender'][user['gender']] += 1
+            stats['gender'][gender] += 1
 
         return stats
 

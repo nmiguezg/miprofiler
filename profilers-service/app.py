@@ -58,7 +58,7 @@ def profile(profiler='modaresi'):
                 "50-xx"
             ]
         }
-        profiling_time = start- finish 
+        profiling_time = finish-start
         return jsonify({'users': resp, "categories": categories, "time": profiling_time}), 200
 
     except Exception as e:

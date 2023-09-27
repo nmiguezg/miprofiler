@@ -16,7 +16,7 @@ def index():
     return "<h1>Backend</h1>"
 
 
-@app.route("/profile", methods=['POST'])
+@app.route("/profiler/profile", methods=['POST'])
 def profile():
     try:
         coll = profiler_service.profile_collection(
@@ -36,24 +36,36 @@ def profile():
         return jsonify({'error': traceback.format_exc()}), 500
 
 
-@app.route("/users", methods=['GET'])
-@app.route("/users/", methods=['GET'])
-def users(limit=0, offset=0):
-    if request.args.get('coll_id') == None:
-        return jsonify({"Error": "Collection identifier not specified."}), 400
+@app.route("/profiler/collections/<uuid:collection_id>", methods=['GET'])
+def get_collection(collection_id):
+    try:
+
+        coll = profiler_service.get_profiled_collection(collection_id)
+        return coll.__dict__, 200
+    except InstanceNotFoundException as e:
+        return jsonify({"error": e.msg}), 404
+    except RuntimeError as e:
+        return jsonify({'error': traceback.format_exc()}), 500
     
-    coll_id = request.args.get('coll_id')
+#TODO get sobre recurso coleccion
+
+@app.route("/profiler/collections/<uuid:collection_id>/users", methods=['GET'])
+def get_collection_users(collection_id, limit=0, offset=0):
     limit = request.args.get('limit')
-    if  limit!= None:
+    if limit != None:
         limit = int(limit)
+    else:
+        limit = 0
     offset = request.args.get('offset')
     if offset != None:
         offset = int(offset)
-    
+    else:
+        offset = 0
+
     try:
 
         users = profiler_service.get_collection_users(
-            id=coll_id, limit=limit, offset=offset
+            id=collection_id, limit=limit, offset=offset
         )
         dict_users = [user.__dict__ for user in users]
         return jsonify({'Users': dict_users}), 200
@@ -61,7 +73,6 @@ def users(limit=0, offset=0):
         return jsonify({"error": e.msg}), 404
     except RuntimeError as e:
         return jsonify({'error': traceback.format_exc()}), 500
-
 
 
 if __name__ == "__main__":
