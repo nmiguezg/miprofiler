@@ -23,7 +23,7 @@ class Mongo_collection_dao(Collection_dao):
 
         return collection
 
-    def get_coleccion(self, id: UUID) -> Collection:
+    def get_collection(self, id: UUID) -> Collection:
         collection = self.collection.find_one({"_id": UUID(id)})
         if (collection == None):
             raise InstanceNotFoundException(
@@ -36,7 +36,16 @@ class Mongo_collection_dao(Collection_dao):
             tiempo=collection['tiempo'],
             users_stats=collection['estadisticas'],
         )
-
+    def get_collections(self) -> list[Collection]:
+        collections = self.collection.find(options = {"sort":["fecha_creacion", "asc"]})
+        return map(lambda collection: Collection(
+            id=collection['_id'],
+            nombre=collection['nombre'],
+            algoritmo=collection['algoritmo'],
+            tiempo=collection['tiempo'],
+            users_stats=collection['estadisticas'],
+        ), collections)
+    
     def update_collection(self, collection: Collection):
         self.collection.update_one({"_id": collection.id}, {
             "_id": collection.id,

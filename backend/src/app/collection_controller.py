@@ -47,8 +47,16 @@ def get_collection(collection_id):
     except RuntimeError as e:
         return jsonify({'error': traceback.format_exc()}), 500
     
-#TODO get sobre recurso coleccion
-
+@app.route("/profiler/collections/", methods=['GET'])
+def get_collections():
+    try:
+        coll = profiler_service.get_collections_list()
+        return coll.__dict__, 200
+    except InstanceNotFoundException as e:
+        return jsonify({"error": e.msg}), 404
+    except RuntimeError as e:
+        return jsonify({'error': traceback.format_exc()}), 500
+    
 @app.route("/profiler/collections/<uuid:collection_id>/users", methods=['GET'])
 def get_collection_users(collection_id, limit=0, offset=0):
     limit = request.args.get('limit')

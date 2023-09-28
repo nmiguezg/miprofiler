@@ -55,7 +55,7 @@ class Profiler_service():
 
     def get_profiled_collection(self, collection_id: UUID) -> Collection:
         try:
-            return self.collection_dao.get_coleccion(collection_id)
+            return self.collection_dao.get_collection(collection_id)
         except Exception as e:
             raise RuntimeError(
                 "Error retrieving the collection from the database: " + traceback.format_exc())
@@ -68,7 +68,14 @@ class Profiler_service():
         except Exception as e:
             raise RuntimeError(
                 "Error inserting the collection in the database: " + traceback.format_exc())
-
+        
+    def get_collections_list(self, limit, offset)-> list[User]:
+        try:
+            collections = self.collection_dao.get_collections()
+            return collections
+        except Exception as e:
+            raise RuntimeError(
+                "Error inserting the collection in the database: " + traceback.format_exc())
     def __calculate_user_stats(self, users):
         stats = {
             "total_users": len(users),

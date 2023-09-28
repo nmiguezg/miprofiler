@@ -8,7 +8,11 @@ class Collection_dao(ABC):
         pass
 
     @abstractmethod
-    def get_coleccion(self, id: str):
+    def get_collection(self, id: str):
+        pass
+    
+    @abstractmethod
+    def get_collections(self):
         pass
 
     @abstractmethod
