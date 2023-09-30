@@ -12,7 +12,7 @@ class Collection():
         algoritmo: str,
         id: UUID | None = None,
         tiempo: int | None = None,
-        users_stats: list[dict] | None = None,
+        users_stats: dict | None = None,
     ) -> None:
         self.id = id
         self.nombre = nombre

@@ -1,8 +1,11 @@
 from uuid import UUID
+from model.entities.age import Age
+from model.entities.gender import Gender
 from model.daos.mongo_instance import Mongo_instance
 from model.daos.user_dao import User_dao
 from model.entities.user import User
 import pymongo
+
 
 class Mongo_user_dao(User_dao):
     def __init__(self):
@@ -40,3 +43,13 @@ class Mongo_user_dao(User_dao):
             ]
         except pymongo.errors.PyMongoError as e:
             raise RuntimeError(e)
+
+    # def get_filtered_users(self, coll_id: str, age: Age | None = None, gender: Gender | None = None) -> list[User]:
+    #     try:
+    #         filters= dict()
+    #         filters = [for filter in [age,gender] if ]
+    #         users = self.collection.find({"collection_id": coll_id}, {
+    #             "_id": False, "collection_id": False},
+    #             skip=skip, limit=limit)
+    #     except pymongo.errors.PyMongoError as e:
+    #         raise RuntimeError(e)

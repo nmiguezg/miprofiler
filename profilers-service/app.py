@@ -46,20 +46,8 @@ def profile(profiler='modaresi'):
                 'age': pred[1][i]
             }
             resp.append(r)
-        categories = {
-            "gender": [
-                "MALE",
-                "FEMALE"
-            ],
-            "age": [
-                "18-24",
-                "25-34",
-                "35-49",
-                "50-xx"
-            ]
-        }
         profiling_time = finish-start
-        return jsonify({'users': resp, "categories": categories, "time": profiling_time}), 200
+        return jsonify({'users': resp, "time": profiling_time}), 200
 
     except Exception as e:
         return jsonify({'error': (u"Ocurrió un error al cargar el archivo CSV."+(traceback.format_exc()))}), 500

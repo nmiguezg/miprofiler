@@ -11,6 +11,8 @@ from os import environ
 class Profiler_service():
     def __init__(self):
         self.url = environ.get("PROFILERS_SERVICE_URL")
+        if self.url == None:
+            raise RuntimeError("Env var PROFILERS_SERVICE_URL not declared.")
         self.algoritmos = ["modaresi", "grivas"]
         self.collection_dao = Mongo_collection_dao()
         self.user_dao = Mongo_user_dao()

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 import traceback
-from service.utils.exceptions import InputValidationException, ProfilerException
 from flask import Flask, request, jsonify
+from model.exceptions import InputValidationException
 from model.exceptions import InstanceNotFoundException, ServerNotAvailableException
 from model.exceptions import ServerTimeoutException, NotSupportedAlgorithmException
 from model.exceptions import InvalidFileException
@@ -21,13 +21,13 @@ def index():
 def profile():
     try:
         coll = profiler_service.profile_collection(
-            algoritmo=__get_mandatory_parameter(request, 'algoritmo'),
+            algoritmo=__get_mandatory_parameter(request, 'algoritmo', False),
             file=__get_mandatory_file(request, 'file')
         )
         return coll.__dict__, 201
-    except ServerTimeoutException | ServerNotAvailableException as e:
+    except (ServerTimeoutException, ServerNotAvailableException) as e:
         return e.json(), 500
-    except InvalidFileException | NotSupportedAlgorithmException | InputValidationException as e:
+    except (InvalidFileException, NotSupportedAlgorithmException, InputValidationException) as e:
         return e.json(), 400
 
 
@@ -81,8 +81,12 @@ def runtime_exception_handler(exception):
     }), 500
 
 
-def __get_mandatory_parameter(request, param_name):
-    param_value = request.args.get(param_name)
+def __get_mandatory_parameter(request, param_name, path=True):
+    if path:
+        param_value = request.args.get(param_name)
+    else:
+        param_value = request.form.get(param_name)
+
     if param_value is None:
         raise InputValidationException(
             f"Invalid Request: parameter {param_name} is mandatory")
