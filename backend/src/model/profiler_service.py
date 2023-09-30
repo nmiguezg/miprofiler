@@ -1,5 +1,3 @@
-import sys
-import traceback
 from uuid import UUID
 import requests
 from model.entities.user import User
@@ -17,8 +15,8 @@ class Profiler_service():
         self.collection_dao = Mongo_collection_dao()
         self.user_dao = Mongo_user_dao()
 
-    def profile_collection(self, file, algoritmo: str | None ) -> Collection:
-        if algoritmo not in self.algoritmos or algoritmo == None:
+    def profile_collection(self, file, algoritmo: str) -> Collection:
+        if algoritmo not in self.algoritmos:
             raise NotSupportedAlgorithmException(algoritmo)
 
         files = {'collection': file}
@@ -26,12 +24,12 @@ class Profiler_service():
         try:
             response = requests.post(
                 self.url+algoritmo, files=files, timeout=1000)
-            
+
             json = response.json()
 
             if response.status_code != 200:
                 raise ServerNotAvailableException(json)
-            
+
             coll = Collection(
                 nombre=file.filename,
                 algoritmo=algoritmo,
@@ -45,37 +43,25 @@ class Profiler_service():
             return coll
 
         except requests.exceptions.ConnectionError:
-            raise ServerNotAvailableException()
+            raise ServerNotAvailableException(
+                "The profiling server is not currently avaliable")
         except requests.exceptions.ReadTimeout:
-            raise ServerTimeoutException()
-        except Exception as e:
-            raise RuntimeError(
-                "Error inserting the collection in the database" + traceback.format_exc())
-
+            raise ServerTimeoutException(
+                "The profiler took too long profiling the collection, try uploading a smaller one")
 
     def get_profiled_collection(self, collection_id: UUID) -> Collection:
-        try:
-            return self.collection_dao.get_collection(collection_id)
-        except Exception as e:
-            raise RuntimeError(
-                "Error retrieving the collection from the database: " + traceback.format_exc())
+        return self.collection_dao.get_collection(collection_id)
 
-    def get_collection_users(self, id, limit, offset)-> list[User]:
-        try:
-            users = self.user_dao.get_collection_users(
-                id, limit=limit, skip=offset)
-            return users
-        except Exception as e:
-            raise RuntimeError(
-                "Error inserting the collection in the database: " + traceback.format_exc())
-        
-    def get_collections_list(self, limit, offset)-> list[User]:
-        try:
-            collections = self.collection_dao.get_collections()
-            return collections
-        except Exception as e:
-            raise RuntimeError(
-                "Error inserting the collection in the database: " + traceback.format_exc())
+    def get_collection_users(self, id, limit, offset) -> list[User]:
+        self.collection_dao.get_collection(id)
+        users = self.user_dao.get_collection_users(
+            id, limit=limit, skip=offset)
+        return users
+
+    def get_collections_list(self) -> list[Collection]:
+        collections = self.collection_dao.get_collections()
+        return collections
+
     def __calculate_user_stats(self, users):
         stats = {
             "total_users": len(users),

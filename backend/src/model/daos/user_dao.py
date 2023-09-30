@@ -1,3 +1,4 @@
+from uuid import UUID
 from model.entities.collection import Collection
 from abc import ABC, abstractmethod
 
@@ -7,7 +8,7 @@ from model.entities.user import User
 class User_dao(ABC):
 
     @abstractmethod
-    def create_collection_users(self, users: list[User | dict], coll_id: str):
+    def create_collection_users(self, users: list[User | dict], coll_id: UUID):
         pass
 
     @abstractmethod
