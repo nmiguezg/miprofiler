@@ -1,6 +1,5 @@
+from typing import Dict
 from uuid import UUID
-from model.entities.age import Age
-from model.entities.gender import Gender
 from model.daos.mongo_instance import Mongo_instance
 from model.daos.user_dao import User_dao
 from model.entities.user import User
@@ -26,9 +25,11 @@ class Mongo_user_dao(User_dao):
         except pymongo.errors.PyMongoError as e:
             raise RuntimeError(e)
 
-    def get_collection_users(self, coll_id: str, limit: int = 0, skip: int = 0) -> list[User]:
+    def get_collection_users(self, coll_id: str, filters,
+                             limit: int = 0, skip: int = 0) -> list[User]:
         try:
-            users = self.collection.find({"collection_id": coll_id}, {
+            filters = {**filters, "collection_id": coll_id}
+            users = self.collection.find(filters, {
                 "_id": False, "collection_id": False},
                 skip=skip, limit=limit)
 
@@ -44,12 +45,19 @@ class Mongo_user_dao(User_dao):
         except pymongo.errors.PyMongoError as e:
             raise RuntimeError(e)
 
-    # def get_filtered_users(self, coll_id: str, age: Age | None = None, gender: Gender | None = None) -> list[User]:
-    #     try:
-    #         filters= dict()
-    #         filters = [for filter in [age,gender] if ]
-    #         users = self.collection.find({"collection_id": coll_id}, {
-    #             "_id": False, "collection_id": False},
-    #             skip=skip, limit=limit)
-    #     except pymongo.errors.PyMongoError as e:
-    #         raise RuntimeError(e)
+    def get_filtered_users(self, coll_id: UUID, filters: Dict[str, str | UUID]) -> list[User]:
+        try:
+            filters = {**filters, "collection_id": coll_id}
+            users = self.collection.find(filters, {
+                "_id": False, "collection_id": False, "posts": False})
+            return [
+                User(
+                    id=user['id'],
+                    age=user['age'],
+                    gender=user['gender'],
+                    posts=[],
+                    collection_id=coll_id
+                ) for user in users
+            ]
+        except pymongo.errors.PyMongoError as e:
+            raise RuntimeError(e)

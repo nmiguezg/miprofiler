@@ -1,5 +1,6 @@
 from uuid import UUID
 import requests
+from model.services.User_stats import User_stats
 from model.entities.user import User
 from model.entities.collection import Collection
 from model.daos.mongo_collection_dao import Mongo_collection_dao
@@ -54,11 +55,13 @@ class Profiler_service():
     def get_profiled_collection(self, collection_id: UUID) -> Collection:
         return self.collection_dao.get_collection(collection_id)
 
-    def get_collection_users(self, id, limit, offset) -> list[User]:
+    def get_collection_users(self, id, limit, offset, filters) -> list[User]:
         self.collection_dao.get_collection(id)
         users = self.user_dao.get_collection_users(
-            id, limit=limit, skip=offset)
+            id, limit=limit, skip=offset, filters=filters)
         return users
+    def get_collection_stats(self, collection_id: UUID, filters) -> User_stats:
+        pass
 
     def get_collections_list(self) -> list[Collection]:
         collections = self.collection_dao.get_collections()

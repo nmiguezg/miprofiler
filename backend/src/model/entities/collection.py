@@ -1,7 +1,6 @@
 from datetime import datetime
 from uuid import UUID
-
-
+    
 class Collection():
     """Clase que representa una colección de usuarios,
       cada uno con un conjunto de posts, a perfilar."""

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 import traceback
+from service.dtos.Users_filters_dto import validate_filters
 from flask import Flask, request, jsonify
 from model.exceptions import InputValidationException
 from model.exceptions import InstanceNotFoundException, ServerNotAvailableException
 from model.exceptions import ServerTimeoutException, NotSupportedAlgorithmException
 from model.exceptions import InvalidFileException
-from model.profiler_service import Profiler_service
+from model.services.profiler_service import Profiler_service
 
 app = Flask(__name__)
 profiler_service = Profiler_service()
@@ -52,16 +53,30 @@ def get_collections():
 
 
 @app.route("/profiler/collections/<uuid:collection_id>/users", methods=['GET'])
-def get_collection_users(collection_id, limit=0, offset=0):
+def get_collection_users(collection_id):
     limit = __get_optional_int_parameter(request, "limit")
     offset = __get_optional_int_parameter(request, "offset")
+    filters = validate_filters(request.args)
 
     try:
         users = profiler_service.get_collection_users(
-            id=collection_id, limit=limit, offset=offset
+            id=collection_id, limit=limit, offset=offset, filters=filters
         )
         list_dicts = [user.__dict__ for user in users]
         return list_dicts, 200
+    except InstanceNotFoundException as e:
+        return e.json(), 404
+
+
+@app.route("/profiler/collections/<uuid:collection_id>/stats", methods=['GET'])
+def get_collection_stats(collection_id):
+    filters = validate_filters(request.args)
+
+    try:
+        stats = profiler_service.get_collection_stats(
+            collection_id==collection_id, filters=filters
+        )
+        return stats, 200
     except InstanceNotFoundException as e:
         return e.json(), 404
 
