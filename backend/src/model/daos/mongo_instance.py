@@ -17,8 +17,8 @@ class Mongo_instance():
         client = MongoClient(url, maxPoolSize=10, uuidRepresentation='standard')
 
         # Eliminar la base de datos si existe
-        if config['db']['name'] in client.list_database_names():
-                client.drop_database(config['db']['name'])
+        # if config['db']['name'] in client.list_database_names():
+        #         client.drop_database(config['db']['name'])
                 
         cls.instance = client[config['db']['name']]
 

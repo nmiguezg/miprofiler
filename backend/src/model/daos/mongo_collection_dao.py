@@ -9,7 +9,11 @@ from uuid import uuid4, UUID
 class Mongo_collection_dao(Collection_dao):
     def __init__(self):
         db = Mongo_instance.get_instance()
-        self.collection = db.create_collection("collection")
+        db.collection
+        try:
+            self.collection = db.create_collection("collection")
+        except pymongo.errors.CollectionInvalid as e:
+            self.collection = db['collection']
 
     def create(self, collection: Collection) -> Collection:
         try:

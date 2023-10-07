@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
+from io import StringIO
 import traceback
-from service.dtos.Users_filters_dto import validate_filters
+from service.dtos.user_dto import User_dto
+from service.dtos.collection_file_dto import Collection_file_dto
+from service.dtos.users_filters_dto import validate_filters
 from flask import Flask, request, jsonify
 from model.exceptions import InputValidationException
 from model.exceptions import InstanceNotFoundException, ServerNotAvailableException
@@ -13,17 +16,14 @@ app = Flask(__name__)
 profiler_service = Profiler_service()
 
 
-@app.route("/")
-def index():
-    return "<h1>Backend</h1>"
-
-
 @app.route("/profiler/profile", methods=['POST'])
 def profile():
     try:
+        coll_dto = __get_mandatory_file(request, 'file')
         coll = profiler_service.profile_collection(
             algoritmo=__get_mandatory_parameter(request, 'algoritmo', False),
-            file=__get_mandatory_file(request, 'file')
+            filename=coll_dto.filename,
+            content=coll_dto.content
         )
         return coll.__dict__, 201
     except (ServerTimeoutException, ServerNotAvailableException) as e:
@@ -54,29 +54,31 @@ def get_collections():
 
 @app.route("/profiler/collections/<uuid:collection_id>/users", methods=['GET'])
 def get_collection_users(collection_id):
-    limit = __get_optional_int_parameter(request, "limit")
-    offset = __get_optional_int_parameter(request, "offset")
-    filters = validate_filters(request.args)
+    limit = __get_optional_int_parameter(request, "limit", default_value=10)
+    offset = __get_optional_int_parameter(request, "offset", default_value=0)
+    filters = validate_filters(request.get_json())
+
 
     try:
         users = profiler_service.get_collection_users(
-            id=collection_id, limit=limit, offset=offset, filters=filters
+            collection_id=collection_id, limit=limit, offset=offset, filters=filters
         )
-        list_dicts = [user.__dict__ for user in users]
-        return list_dicts, 200
+        user_dtos = [User_dto(**user.model_dump()).model_dump()
+                     for user in users]
+        return user_dtos, 200
     except InstanceNotFoundException as e:
         return e.json(), 404
 
 
 @app.route("/profiler/collections/<uuid:collection_id>/stats", methods=['GET'])
 def get_collection_stats(collection_id):
-    filters = validate_filters(request.args)
+    filters = validate_filters(request.get_json())
 
     try:
         stats = profiler_service.get_collection_stats(
-            collection_id==collection_id, filters=filters
+            collection_id=collection_id, filters=filters
         )
-        return stats, 200
+        return stats.model_dump(), 200
     except InstanceNotFoundException as e:
         return e.json(), 404
 
@@ -116,11 +118,17 @@ def __get_optional_int_parameter(request, param_name, default_value=0):
 
 
 def __get_mandatory_file(request, param_name):
-    param_value = request.files[param_name]
-    if param_value is None:
+    file = request.files[param_name]
+
+    if file is None:
         raise InputValidationException(
             f"Invalid Request: file {param_name} is mandatory")
-    return param_value
+    collection_dto = Collection_file_dto(
+        filename=file.filename,
+        filetype=file.filename.split(".")[-1],
+        content=StringIO(file.read().decode("utf-8"))
+    )
+    return collection_dto
 
 
 if __name__ == "__main__":

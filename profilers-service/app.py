@@ -41,7 +41,6 @@ def profile(profiler='modaresi'):
         for i, user in enumerate(users):
             r = {
                 'user': user,
-                'posts': docs[i],
                 'gender': pred[0][i],
                 'age': pred[1][i]
             }

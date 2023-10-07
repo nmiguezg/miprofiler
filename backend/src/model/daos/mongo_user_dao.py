@@ -9,23 +9,26 @@ import pymongo
 class Mongo_user_dao(User_dao):
     def __init__(self):
         db = Mongo_instance.get_instance()
-        self.collection = db.create_collection("user")
+        try:
+            self.collection = db.create_collection("user")
+        except pymongo.errors.CollectionInvalid as e:
+            self.collection = db['user']
 
-    def create_collection_users(self, users: list[dict], coll_id: UUID) -> None:
+    def create_collection_users(self, users: list[User], coll_id: UUID) -> None:
         try:
             self.collection.insert_many([
                 {
-                    'id': user['user'],
-                    'age': user['age'],
-                    'gender': user['gender'],
-                    'posts': user['posts'],
+                    'id': user.id,
+                    'age': user.age,
+                    'gender': user.gender,
+                    'posts': user.posts,
                     'collection_id': coll_id
                 } for user in users
             ])
         except pymongo.errors.PyMongoError as e:
             raise RuntimeError(e)
 
-    def get_collection_users(self, coll_id: str, filters,
+    def get_collection_users(self, coll_id: UUID, filters,
                              limit: int = 0, skip: int = 0) -> list[User]:
         try:
             filters = {**filters, "collection_id": coll_id}
@@ -50,13 +53,12 @@ class Mongo_user_dao(User_dao):
             filters = {**filters, "collection_id": coll_id}
             users = self.collection.find(filters, {
                 "_id": False, "collection_id": False, "posts": False})
+
             return [
                 User(
                     id=user['id'],
                     age=user['age'],
-                    gender=user['gender'],
-                    posts=[],
-                    collection_id=coll_id
+                    gender=user['gender']
                 ) for user in users
             ]
         except pymongo.errors.PyMongoError as e:

@@ -1,5 +1,6 @@
 from uuid import UUID
 import requests
+import pandas as pd
 from model.services.User_stats import User_stats
 from model.entities.user import User
 from model.entities.collection import Collection
@@ -18,31 +19,32 @@ class Profiler_service():
         self.collection_dao = Mongo_collection_dao()
         self.user_dao = Mongo_user_dao()
 
-    def profile_collection(self, file, algoritmo: str) -> Collection:
+    def profile_collection(self, filename, content, algoritmo: str) -> Collection:
         if algoritmo not in self.algoritmos:
             raise NotSupportedAlgorithmException(algoritmo)
 
-        files = {'collection': file}
-        self.__validate_file(file=file)
         try:
             response = requests.post(
-                self.url+algoritmo, files=files, timeout=1000)
+                self.url+algoritmo, files={'collection': (filename, content)}, timeout=1000)
 
             json = response.json()
+            content.seek(0)
+            users_posts = self.__group_user_posts(content=content)
 
             if response.status_code != 200:
                 raise ServerNotAvailableException(json)
-
+            users = [User(**user, posts=users_posts[user['user']])
+                     for user in json['users']]
             coll = Collection(
-                nombre=file.filename,
+                nombre=filename,
                 algoritmo=algoritmo,
                 tiempo=json['time'],
                 users_stats=self.__calculate_user_stats(
-                    json['users'])
+                    users)
             )
             coll = self.collection_dao.create(coll)
             self.user_dao.create_collection_users(
-                json['users'], coll_id=coll.id)
+                users, coll_id=coll.id)
             return coll
 
         except requests.exceptions.ConnectionError:
@@ -55,17 +57,29 @@ class Profiler_service():
     def get_profiled_collection(self, collection_id: UUID) -> Collection:
         return self.collection_dao.get_collection(collection_id)
 
-    def get_collection_users(self, id, limit, offset, filters) -> list[User]:
-        self.collection_dao.get_collection(id)
+    def get_collection_users(self, collection_id: UUID, limit, offset, filters) -> list[User]:
+        self.collection_dao.get_collection(collection_id)
         users = self.user_dao.get_collection_users(
-            id, limit=limit, skip=offset, filters=filters)
+            collection_id, limit=limit, skip=offset, filters=filters)
         return users
+
     def get_collection_stats(self, collection_id: UUID, filters) -> User_stats:
-        pass
+        self.collection_dao.get_collection(collection_id)
+        filtered_users = self.user_dao.get_filtered_users(
+            coll_id=collection_id, filters=filters)
+        return User_stats(**self.__calculate_user_stats(filtered_users))
 
     def get_collections_list(self) -> list[Collection]:
         collections = self.collection_dao.get_collections()
         return collections
+
+    def __group_user_posts(self, content):
+        df = pd.read_csv(content, encoding='utf-8')
+        df['post'] = df['post'].transform(lambda x: str(x))
+        df = df.groupby(['label'])['post'].apply(list).reset_index()
+        df = df.drop_duplicates(subset='label').reset_index(drop=True)
+        df.rename(columns={'post': 'posts'}, inplace=True)
+        return df.set_index('label')['posts'].to_dict()
 
     def __calculate_user_stats(self, users):
         stats = {
@@ -82,27 +96,7 @@ class Profiler_service():
             }
         }
         for user in users:
-            gender = "MALE" if user['gender'][0] == 'M' else "FEMALE"
-            stats['age'][user['age']] += 1
-            stats['gender'][gender] += 1
+            stats['age'][user.age] += 1
+            stats['gender'][user.gender] += 1
 
         return stats
-
-    def __validate_file(self, file):
-        if file == None:
-            raise InvalidFileException(
-                "No se ha subido ningún archivo para ser perfilado")
-        if not file.filename.endswith(".csv"):
-            raise InvalidFileException(
-                "El archivo subido no tiene el formato adecuado")
-        # try:
-        #     lector_csv = csv.reader(file)
-
-        #     columns = next(lector_csv)
-
-        #     # Verificar que las columnas "id" y "posts" estén presentes
-        #     if not {"id", "posts"} <= set(columns):
-        #         raise InvalidFileException(
-        #             "El archivo debe contener al menos las siguientes columnas {id, posts}")
-        # except Exception as e:
-        #     raise RuntimeError(e.args)
