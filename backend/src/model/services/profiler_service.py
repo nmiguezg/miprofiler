@@ -1,6 +1,6 @@
 from uuid import UUID
 import requests
-from model.services.User_stats import User_stats
+from model.services.user_stats import User_stats
 from model.entities.user import User
 from model.entities.collection import Collection
 from model.daos.mongo_collection_dao import Mongo_collection_dao
