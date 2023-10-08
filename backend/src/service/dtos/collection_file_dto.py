@@ -1,8 +1,9 @@
 import csv
 from io import StringIO
-from typing import Any, Literal 
+from typing import Any, Literal
 from model.exceptions import InvalidFileException
 from pydantic import BaseModel as PydanticBaseModel
+import pandas as pd
 
 
 class BaseModel(PydanticBaseModel):
@@ -28,7 +29,16 @@ class Collection_file_dto(BaseModel):
             if not {"label", "post"} <= set(columns):
                 raise InvalidFileException(
                     "El archivo debe contener al menos las siguientes columnas {label, posts}: " + str(columns))
-        
+
             self.content.seek(0)
         except Exception as e:
             raise RuntimeError(e.args)
+
+    def get_users_posts(self):
+        self.content.seek(0)
+        df = pd.read_csv(self.content, encoding='utf-8')
+        df['post'] = df['post'].transform(lambda x: str(x))
+        df = df.groupby(['label'])['post'].apply(list).reset_index()
+        df = df.drop_duplicates(subset='label').reset_index(drop=True)
+        df.rename(columns={'post': 'posts'}, inplace=True)
+        return df.set_index('label')['posts'].to_dict()

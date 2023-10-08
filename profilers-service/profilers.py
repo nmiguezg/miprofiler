@@ -1,6 +1,5 @@
 import pickle
 from sklearn.externals import joblib
-import pandas as pd
 from magic.profilers.cross_genre_profiler import CrossGenrePerofiler
 from abc import ABCMeta, abstractmethod
 
@@ -10,12 +9,8 @@ class Generic_profiler():
     @abstractmethod
     def predict(self, X_test):
         pass
-    def process_csv(self, coll_csv, sep=' '):
-        df = pd.read_csv(coll_csv)
-        df['post'] = df['post'].transform(lambda x: str(x))
-        df = df.groupby(['label'])['post'].apply(sep.join).reset_index()
-        df = df.drop_duplicates(subset='label').reset_index(drop=True)
-        return df['label'], df['post']
+    def join_posts(self, users_posts, sep=' '):
+        return [sep.join(posts) for posts in users_posts]
     
 class Modaresi_profiler(Generic_profiler):
     def __init__(self):
@@ -39,8 +34,8 @@ class Modaresi_profiler(Generic_profiler):
         y_pred_gender = self.clf_gender.predict(X_test_gender)
         y_pred_age = self.clf_age.predict(X_test_age)
         return y_pred_gender, y_pred_age
-    def process_csv(self, coll_csv, sep="\n"):
-        return super(Modaresi_profiler, self).process_csv(coll_csv, sep)
+    def join_posts(self, coll_csv, sep="\n"):
+        return super(Modaresi_profiler, self).join_posts(coll_csv, sep)
     
 class Grivas_profiler(Generic_profiler):
     def __init__(self):

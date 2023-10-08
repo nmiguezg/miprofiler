@@ -1,6 +1,5 @@
 from uuid import UUID
 import requests
-import pandas as pd
 from model.services.User_stats import User_stats
 from model.entities.user import User
 from model.entities.collection import Collection
@@ -19,20 +18,18 @@ class Profiler_service():
         self.collection_dao = Mongo_collection_dao()
         self.user_dao = Mongo_user_dao()
 
-    def profile_collection(self, filename, content, algoritmo: str) -> Collection:
+    def profile_collection(self, filename, users_posts, algoritmo: str) -> Collection:
         if algoritmo not in self.algoritmos:
             raise NotSupportedAlgorithmException(algoritmo)
 
         try:
             response = requests.post(
-                self.url+algoritmo, files={'collection': (filename, content)}, timeout=1000)
+                self.url+algoritmo, json=users_posts, timeout=1000)
 
             json = response.json()
-            content.seek(0)
-            users_posts = self.__group_user_posts(content=content)
-
             if response.status_code != 200:
                 raise ServerNotAvailableException(json)
+
             users = [User(**user, posts=users_posts[user['user']])
                      for user in json['users']]
             coll = Collection(
@@ -72,14 +69,6 @@ class Profiler_service():
     def get_collections_list(self) -> list[Collection]:
         collections = self.collection_dao.get_collections()
         return collections
-
-    def __group_user_posts(self, content):
-        df = pd.read_csv(content, encoding='utf-8')
-        df['post'] = df['post'].transform(lambda x: str(x))
-        df = df.groupby(['label'])['post'].apply(list).reset_index()
-        df = df.drop_duplicates(subset='label').reset_index(drop=True)
-        df.rename(columns={'post': 'posts'}, inplace=True)
-        return df.set_index('label')['posts'].to_dict()
 
     def __calculate_user_stats(self, users):
         stats = {

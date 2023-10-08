@@ -23,7 +23,7 @@ def profile():
         coll = profiler_service.profile_collection(
             algoritmo=__get_mandatory_parameter(request, 'algoritmo', False),
             filename=coll_dto.filename,
-            content=coll_dto.content
+            users_posts=coll_dto.get_users_posts()
         )
         return coll.__dict__, 201
     except (ServerTimeoutException, ServerNotAvailableException) as e:

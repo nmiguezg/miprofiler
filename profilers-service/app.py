@@ -21,11 +21,8 @@ def hello_world():
 @app.route('/profile/<string:profiler>', methods=['POST'])
 def profile(profiler='modaresi'):
     try:
-        # Verificar que se haya enviado un archivo CSV en la solicitud
-        if 'collection' not in request.files:
-            return jsonify({'error': u'No se proporcionó ningún archivo CSV.'}), 400
+        user_posts = request.get_json()
 
-        coll = request.files['collection']
         if profiler == 'modaresi':
             prof = moda
         elif profiler == 'grivas':
@@ -33,14 +30,15 @@ def profile(profiler='modaresi'):
         else:
             return jsonify({'error': u'El profiler seleccionado no es válido'.encode('utf-8')}), 400
         start = time.time()
-        # Leer el contenido del archivo CSV con Pandas
-        users, docs = prof.process_csv(coll)
+        users = user_posts.keys()
+        docs = prof.join_posts(user_posts.values())
+
         pred = prof.predict(docs)
         finish = time.time()
         resp = []
         for i, user in enumerate(users):
             r = {
-                'user': user,
+                'user': int(user),
                 'gender': pred[0][i],
                 'age': pred[1][i]
             }
