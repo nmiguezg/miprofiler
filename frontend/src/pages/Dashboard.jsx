@@ -1,36 +1,37 @@
 import PieChart from "@/components/Charts/PieChart";
 import BarChart from "@/components/Charts/BarChart";
-import ProfileService from "@/services/ProfileService";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import styles from "./styles/dashboard.module.css";
 import UsersTable from "@/components/UsersTable/UsersTable"
+import ProfilerService from "../services/ProfilerService";
 
 export default function Dashboard() {
-  function exportCollection() {
-    const element = document.createElement("a");
-    const file = new Blob([JSON.stringify(coll)], { type: 'json' });
-    element.href = URL.createObjectURL(file);
-    element.download = "collection.json";
-    document.body.appendChild(element); // Required for this to work in FireFox
-    element.click();
-  }
+  const collId = useLocation().pathname.split('/')[2];
   const [coll, setColl] = useState(JSON.parse(sessionStorage.getItem('coll')));
   useEffect(() => {
+    console.log(collId);
+
     if (coll == null) {
-      ProfileService.getUsers(0, 0).then((data) => {
-        if (data == null) {
-          return;
-        }
-        setColl(data);
-        sessionStorage.setItem('coll', JSON.stringify(data));
-      });
+      const collection = JSON.parse(sessionStorage.getItem('coll'));
+      if (collection != null && collId === collection.id) {
+        setColl(collection);
+        return;
+      }
+      ProfilerService.getCollectionById(collId)
+        .then((data) => {
+          console.log(data);
+          setColl(data);
+          sessionStorage.setItem('coll', JSON.stringify(data));
+        }).catch((error) => {
+          console.log(error);
+        });
     }
   }, []);
   if (coll == null) {
     return (
       <>
-        <p>Todavía no hay usuarios perfilados, perfila una colección para poder ver sus estadísticas.</p>
+        <p>Path no válido, la colección que estás intentando ver no existe. Vuelve para poder perfilar una colección.</p>
         <Link to="/">Volver</Link>
       </>
     )
@@ -52,18 +53,18 @@ export default function Dashboard() {
         </div>
         <div className={styles.card}>
           <p>Colección</p>
-          <h2>BLM.csv</h2>
+          <h2>{coll.name}</h2>
         </div>
       </div>
       <div className={styles.charts}>
         <UsersTable></UsersTable>
         <div className={styles.card + " " + styles.chart}>
           <h2>Edad</h2>
-          <BarChart data={coll['users']['edad']} />
+          <BarChart data={coll['users']['age']} />
         </div>
         <div className={styles.card + " " + styles.chart}>
           <h2>Género</h2>
-          <PieChart data={coll['grupos']['genero']} />
+          <PieChart data={coll['users']['gender']} />
         </div>
       </div>
       {/* <aside>

@@ -15,6 +15,9 @@ from model.services.profiler_service import Profiler_service
 app = Flask(__name__)
 profiler_service = Profiler_service()
 
+@app.route("/", methods=['GET'])
+def index():
+    return "Welcome to the Profiler Service" + request.url + "\n"
 
 @app.route("/profiler/profile", methods=['POST'])
 def profile():
@@ -56,7 +59,7 @@ def get_collections():
 def get_collection_users(collection_id):
     limit = __get_optional_int_parameter(request, "limit", default_value=10)
     offset = __get_optional_int_parameter(request, "offset", default_value=0)
-    filters = validate_filters(request.get_json())
+    filters = validate_filters(request.args.to_dict())
 
 
     try:
@@ -72,7 +75,7 @@ def get_collection_users(collection_id):
 
 @app.route("/profiler/collections/<uuid:collection_id>/stats", methods=['GET'])
 def get_collection_stats(collection_id):
-    filters = validate_filters(request.get_json())
+    filters = validate_filters(request.args.to_dict())
 
     try:
         stats = profiler_service.get_collection_stats(

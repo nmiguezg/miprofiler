@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ProfileService from "@/services/ProfileService";
+import ProfilerService from "../../services/ProfilerService";
 import styles from "./users.module.css"
 import { Link, useNavigate } from "react-router-dom";
 
@@ -8,17 +8,20 @@ const LIMIT = 5;
 export default function Users() {
     const [users, setUsers] = useState(null);
     const [offset, setOffset] = useState(0);
+    const collId = sessionStorage.getItem('collId');
     const navigate = useNavigate();
 
     function retrieveUsers(back = false) {
         const newOffset = back ? Math.max(offset - LIMIT, 0) : offset + LIMIT;
-        ProfileService.getUsers(LIMIT, newOffset).then((data) => {
-            setUsers(data['usuarios']);
-            setOffset(newOffset);
-        });
+        ProfilerService.findUsers(collId, LIMIT, newOffset)
+            .then((data) => {
+                setUsers(data);
+                setOffset(newOffset);
+            });
     }
     useEffect(() => {
-        ProfileService.getUsers(LIMIT, 0).then((data) => { data && setUsers(data['usuarios']) });
+        ProfilerService.findUsers(collId, LIMIT, 0)
+            .then((data) => { data && setUsers(data) });
     }, []);
 
     if (users == null) {

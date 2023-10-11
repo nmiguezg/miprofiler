@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ProfileService from "@/services/ProfileService";
+import ProfilerService from "../services/ProfilerService";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
@@ -23,12 +23,13 @@ export default function Home() {
     setError(null);
     setProfiling(true);
     form.elements['submit'].disabled = true;
-    ProfileService.profileUsers(
+    ProfilerService.profileUsers(
       form.elements['file'].files[0],
       form.elements['algoritmo'].value
     ).then((data) => {
       sessionStorage.setItem('coll', JSON.stringify(data));
-      navigate("/dashboard");
+      sessionStorage.setItem('collId', data.id);
+      navigate("/dashboard/{data.id}", { state: data });
     }).catch((error) => {
       console.log(error);
       setError(error);

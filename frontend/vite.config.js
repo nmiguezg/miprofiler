@@ -17,11 +17,10 @@ export default defineConfig({
       usePolling: true
     },
     proxy: {
-      '/api': {
-        target: 'http://api:8000',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
+      '^/(.*)api': {
+        target: `http://api:8000`,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
     },
     hmr: {
       clientPort: 3000,
