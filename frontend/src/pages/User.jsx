@@ -3,7 +3,7 @@ import styles from "./styles/user.module.css"
 
 export default function User() {
     const location = useLocation();
-    const { id, edad, genero, posts, collection, timestamp } = location.state;
+    const { id, edad, genero, posts } = location.state;
     return (
         <>
             <div className={styles.header}><h1>Información de usuario</h1>
@@ -14,7 +14,6 @@ export default function User() {
                     <p>Id: {id}</p>
                     <p>Edad: {edad}</p>
                     <p>Género: {genero}</p>
-                    <p>Colección: {collection}</p>
                 </div>
                 <ol className={styles.posts}>
                     <div className={styles.listHeading}>Publicaciones</div>

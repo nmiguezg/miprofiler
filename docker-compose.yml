@@ -56,6 +56,8 @@ services:
       - mongodb
     networks:
       - profilers-network
+    environment:
+      - API_HOST=api
     volumes:
       - type: bind
         source: ./frontend

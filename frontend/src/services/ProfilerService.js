@@ -44,7 +44,7 @@ export default class ProfilerService {
         const queryParams = new URLSearchParams({
             limit: limit,
             offset: offset,
-            ...filters
+            ...this.#formatFilters(filters)
         });
 
         return fetch(`${this.endpoint}/collections/${coll_id}/users?${queryParams}`)
@@ -64,12 +64,12 @@ export default class ProfilerService {
     }
     static async getUsersStats(coll_id, filters = {}) {
         const queryParams = new URLSearchParams({
-            ...filters
+            ...this.#formatFilters(filters)
         });
 
         return fetch(`${this.endpoint}/collections/${coll_id}/stats?${queryParams}`)
             .then(handleErrors)
-            .then(this._getUsersStats)
+            .then(this.#getUsersStats)
             .catch(error => { throw error });
     }
     static #processColl = data => {
@@ -77,10 +77,20 @@ export default class ProfilerService {
             id: data.id,
             name: data.nombre,
             algorithm: data.algoritmo,
-            creation_date: data.fecha_creacion,
+            timestamp: data.fecha_creacion,
             time: data.tiempo,
             users: this.#getUsersStats(data.users_stats),
         }
+    }
+    static #formatFilters = filters => {
+        const filtersTd = {}
+        if (filters.age && filters.age == '50+') {
+            filtersTd.age = '50-XX'
+        }
+        if (filters.gender) {
+            filtersTd.gender = filters.gender == 'Masculino' ? 'MALE' : 'FEMALE'
+        }
+        return filtersTd;
     }
     static #getUsersStats = users_stats => {
         {

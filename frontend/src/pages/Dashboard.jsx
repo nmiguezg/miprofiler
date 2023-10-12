@@ -7,24 +7,30 @@ import UsersTable from "@/components/UsersTable/UsersTable"
 import ProfilerService from "../services/ProfilerService";
 
 export default function Dashboard() {
-  const collId = useLocation().pathname.split('/')[2];
-  const [coll, setColl] = useState(JSON.parse(sessionStorage.getItem('coll')));
+  const location = useLocation();
+  const collId = location.pathname.split('/')[2];
+  const [coll, setColl] = useState(location.state);
+  const [filters, setFilters] = useState({});
+  const [usersStats, setUsersStats] = useState(location.state.users);
+
   useEffect(() => {
-    if (coll == null) {
-      const collection = JSON.parse(sessionStorage.getItem('coll'));
-      if (collection != null && collId === collection.id) {
-        setColl(collection);
-        return;
-      }
+    if (location.state == null && filters == null) {
       ProfilerService.getCollectionById(collId)
         .then((data) => {
           setColl(data);
-          sessionStorage.setItem('coll', JSON.stringify(data));
+          setUsersStats(data.users);
+        }).catch((error) => {
+          console.log(error);
+        });
+    } else if (filters != null) {
+      ProfilerService.getUsersStats(collId, filters)
+        .then((data) => {
+          setUsersStats(data);
         }).catch((error) => {
           console.log(error);
         });
     }
-  }, []);
+  }, [collId, filters, location.state]);
   function handleChartClick(event, elements) {
     if (elements.length > 0) {
       const category = elements[0]._model.label;
@@ -49,7 +55,7 @@ export default function Dashboard() {
         </div>
         <div className={styles.card}>
           <p>Tiempo de perfilado</p>
-          <h2>{Number.parseFloat(coll.time).toFixed(4)}</h2>
+          <h2>{Number.parseFloat(coll.time).toFixed(3)}</h2>
         </div>
         <div className={styles.card}>
           <p>Algoritmo</p>
@@ -59,21 +65,38 @@ export default function Dashboard() {
           <p>Colección</p>
           <h2>{coll.name}</h2>
         </div>
+        <div className={styles.card}>
+          <p>Filtros</p>
+          {(filters.age || filters.gender) &&
+            <>
+              <h2>
+                {filters.age && 'Edad: ' + filters.age}
+                {filters.gender && 'Género: ' + filters.gender}
+
+              </h2>
+              <button onClick={() => setFilters({})}>Limpiar</button>
+            </>
+          }
+
+        </div>
+
       </div>
       <div className={styles.charts}>
-        <UsersTable collId={collId}></UsersTable>
+        <UsersTable collId={collId} filters={filters}></UsersTable>
         <div className={styles.card + " " + styles.chart}>
           <h2>Edad</h2>
           <BarChart
-            data={coll['users']['age']}
-            onElementsClick={handleChartClick}
+            data={filters.gender ? usersStats['age']: coll['users']['age']}
+            filters={filters}
+            setFilters={setFilters}
           />
         </div>
         <div className={styles.card + " " + styles.chart}>
           <h2>Género</h2>
           <PieChart
-            data={coll['users']['gender']}
-            onElementsClick={handleChartClick}
+            data={filters.age ? usersStats['gender']: coll['users']['gender']}
+            filters={filters}
+            setFilters={setFilters}
           />
         </div>
       </div>

@@ -9,7 +9,6 @@ from uuid import uuid4, UUID
 class Mongo_collection_dao(Collection_dao):
     def __init__(self):
         db = Mongo_instance.get_instance()
-        db.collection
         try:
             self.collection = db.create_collection("collection")
         except pymongo.errors.CollectionInvalid as e:
@@ -44,6 +43,7 @@ class Mongo_collection_dao(Collection_dao):
                 algoritmo=collection['algoritmo'],
                 tiempo=collection['tiempo'],
                 users_stats=collection['estadisticas'],
+                fecha_creacion=collection['fecha_creacion']
             )
         except pymongo.errors.PyMongoError as e:
             raise RuntimeError(e)
@@ -60,6 +60,7 @@ class Mongo_collection_dao(Collection_dao):
                 algoritmo=collection['algoritmo'],
                 tiempo=collection['tiempo'],
                 users_stats=collection['estadisticas'],
+                fecha_creacion=collection['fecha_creacion']
             ), collections))
         except pymongo.errors.PyMongoError as e:
             raise RuntimeError(e)

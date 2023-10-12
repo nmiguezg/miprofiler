@@ -7,10 +7,9 @@ export default function Collections() {
 
   useEffect(() => {
     ProfilerService.findCollections().then((data) => {
-        setCollections(data);
-        console.log(data);
-        });
-    }, []);
+      setCollections(data);
+    });
+  }, []);
 
   return (
     <div>
@@ -18,9 +17,11 @@ export default function Collections() {
       <table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Actions</th>
+            <th>Fichero</th>
+            <th>Algoritmo</th>
+            <th>Fecha</th>
+            <th>Usuarios</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -28,8 +29,13 @@ export default function Collections() {
             <tr key={collection.id}>
               <td>{collection.name}</td>
               <td>{collection.algorithm}</td>
+              <td>{new Date(collection.timestamp * 1000).toLocaleString()}</td>
+              <td>{collection.users.totalUsers}</td>
               <td>
-                <Link to={`/collections/${collection.id}`}>View</Link>
+                <Link
+                  to={`/collections/${collection.id}`}
+                  state={collection}
+                >View</Link>
               </td>
             </tr>
           ))}

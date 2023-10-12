@@ -27,8 +27,6 @@ export default function Home() {
       form.elements['file'].files[0],
       form.elements['algoritmo'].value
     ).then((data) => {
-      sessionStorage.setItem('coll', JSON.stringify(data));
-      sessionStorage.setItem('collId', data.id);
       navigate(`/collections/${data.id}`, { state: data });
     }).catch((error) => {
       console.log(error);

@@ -34,7 +34,7 @@ class Mongo_user_dao(User_dao):
             filters = {**filters, "collection_id": coll_id}
             users = self.collection.find(filters, {
                 "_id": False, "collection_id": False},
-                skip=skip, limit=limit)
+                skip=skip, limit=limit).sort("id", pymongo.ASCENDING)
 
             return [
                 User(

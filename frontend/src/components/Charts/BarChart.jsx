@@ -53,7 +53,7 @@ const options = {
         datalabels: {
             align: "end",
             anchor: "middle",
-            font: { weight: 550},
+            font: { weight: 550 },
             color: 'rgba(255,255,255, 1)',
         },
         tooltip: {
@@ -87,13 +87,12 @@ const options = {
     },
     minBarLength: 1,
     inflateAmount: 'auto',
-    onClick: (event, elements) => {
-        console.log(elements);
-    },
-
 }
 
-export default function PieChart({ data, onHandleChartClick }) {
+import PropTypes from 'prop-types';
+
+export default function PieChart({ data, filters, setFilters }) {
+
     const categories = Object.keys(data)
     const values = Object.values(data)
     const conf = {
@@ -109,5 +108,20 @@ export default function PieChart({ data, onHandleChartClick }) {
 
         ],
     };
-    return <Bar data={conf} options={options} />;
+    const barChartOptions = {
+        ...options, onClick:
+            (event, elements) => {
+                if (elements.length > 0
+                    && filters.age !== categories[elements[0].index]) {
+                    setFilters({ age: categories[elements[0].index] });
+
+                }
+            }
+    }
+    return <Bar data={conf} options={barChartOptions} />;
 }
+PieChart.propTypes = {
+    data: PropTypes.object.isRequired,
+    setFilters: PropTypes.func.isRequired,
+    filters: PropTypes.object.isRequired,
+};

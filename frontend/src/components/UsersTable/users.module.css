@@ -1,12 +1,14 @@
 .pagination {
   border-radius: 8px;
   border: 1px solid var(--border);
-  margin-bottom:2vh;
+  margin-bottom: 2vh;
   overflow-y: auto;
 }
+
 p {
   padding: 0 1vh;
 }
+
 th,
 td {
   width: auto;
@@ -15,7 +17,8 @@ td {
   text-align: center;
   /* Alineación del texto al centro */
 }
-.userRow{
+
+.userRow {
   cursor: pointer;
 }
 
@@ -26,12 +29,16 @@ td {
   justify-content: center;
   margin: 0.5vh 0.5vw;
 }
-.buttons{
+
+.buttons {
   display: flex;
   gap: 0.5vw;
 }
+
 @media screen and (max-width: 750px) {
-  table tr td:nth-of-type(3n), table th.prescindible {
-    display:none
+
+  table tr td:nth-of-type(3n),
+  table th.prescindible {
+    display: none
   }
 }
