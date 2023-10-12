@@ -11,7 +11,27 @@ export default function Dashboard() {
   const collId = location.pathname.split('/')[2];
   const [coll, setColl] = useState(location.state);
   const [filters, setFilters] = useState({});
-  const [usersStats, setUsersStats] = useState(location.state.users);
+  const [usersStats, setUsersStats] = useState(location.state ? location.state.users : null);
+  useEffect(() => {
+    if (location.state == null) {
+      ProfilerService.getCollectionById(collId)
+        .then((data) => {
+          setColl(data);
+          setUsersStats(data.users);
+        }).catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [collId, location.state]);
+
+  useEffect(() => {
+    ProfilerService.getUsersStats(collId, filters)
+      .then((data) => {
+        setUsersStats(data);
+      }).catch((error) => {
+        console.log(error);
+      });
+  }, [collId, filters]);
 
   useEffect(() => {
     if (location.state == null && filters == null) {
@@ -31,13 +51,6 @@ export default function Dashboard() {
         });
     }
   }, [collId, filters, location.state]);
-  function handleChartClick(event, elements) {
-    if (elements.length > 0) {
-      const category = elements[0]._model.label;
-      const filteredUsers = coll.users.filter((user) => user.category === category);
-      setColl({ ...coll, users: { ...coll.users, filteredUsers } });
-    }
-  }
   if (coll == null) {
     return (
       <>
@@ -86,7 +99,7 @@ export default function Dashboard() {
         <div className={styles.card + " " + styles.chart}>
           <h2>Edad</h2>
           <BarChart
-            data={filters.gender ? usersStats['age']: coll['users']['age']}
+            data={filters.gender ? usersStats['age'] : coll['users']['age']}
             filters={filters}
             setFilters={setFilters}
           />
@@ -94,7 +107,7 @@ export default function Dashboard() {
         <div className={styles.card + " " + styles.chart}>
           <h2>Género</h2>
           <PieChart
-            data={filters.age ? usersStats['gender']: coll['users']['gender']}
+            data={filters.age ? usersStats['gender'] : coll['users']['gender']}
             filters={filters}
             setFilters={setFilters}
           />
