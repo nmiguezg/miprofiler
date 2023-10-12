@@ -29,7 +29,7 @@ export default function Home() {
     ).then((data) => {
       sessionStorage.setItem('coll', JSON.stringify(data));
       sessionStorage.setItem('collId', data.id);
-      navigate("/dashboard/{data.id}", { state: data });
+      navigate(`/collections/${data.id}`, { state: data });
     }).catch((error) => {
       console.log(error);
       setError(error);

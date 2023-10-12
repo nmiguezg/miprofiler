@@ -87,10 +87,13 @@ const options = {
     },
     minBarLength: 1,
     inflateAmount: 'auto',
+    onClick: (event, elements) => {
+        console.log(elements);
+    },
 
 }
 
-export default function PieChart({ data }) {
+export default function PieChart({ data, onHandleChartClick }) {
     const categories = Object.keys(data)
     const values = Object.values(data)
     const conf = {

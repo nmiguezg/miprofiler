@@ -10,8 +10,6 @@ export default function Dashboard() {
   const collId = useLocation().pathname.split('/')[2];
   const [coll, setColl] = useState(JSON.parse(sessionStorage.getItem('coll')));
   useEffect(() => {
-    console.log(collId);
-
     if (coll == null) {
       const collection = JSON.parse(sessionStorage.getItem('coll'));
       if (collection != null && collId === collection.id) {
@@ -20,7 +18,6 @@ export default function Dashboard() {
       }
       ProfilerService.getCollectionById(collId)
         .then((data) => {
-          console.log(data);
           setColl(data);
           sessionStorage.setItem('coll', JSON.stringify(data));
         }).catch((error) => {
@@ -28,6 +25,13 @@ export default function Dashboard() {
         });
     }
   }, []);
+  function handleChartClick(event, elements) {
+    if (elements.length > 0) {
+      const category = elements[0]._model.label;
+      const filteredUsers = coll.users.filter((user) => user.category === category);
+      setColl({ ...coll, users: { ...coll.users, filteredUsers } });
+    }
+  }
   if (coll == null) {
     return (
       <>
@@ -44,12 +48,12 @@ export default function Dashboard() {
           <h2>{coll.users.totalUsers}</h2>
         </div>
         <div className={styles.card}>
-          <p>Tiempo</p>
-          <h2>{coll.time}</h2>
+          <p>Tiempo de perfilado</p>
+          <h2>{Number.parseFloat(coll.time).toFixed(4)}</h2>
         </div>
         <div className={styles.card}>
           <p>Algoritmo</p>
-          <h2>Modaresi</h2>
+          <h2>{coll.algorithm}</h2>
         </div>
         <div className={styles.card}>
           <p>Colección</p>
@@ -57,14 +61,20 @@ export default function Dashboard() {
         </div>
       </div>
       <div className={styles.charts}>
-        <UsersTable></UsersTable>
+        <UsersTable collId={collId}></UsersTable>
         <div className={styles.card + " " + styles.chart}>
           <h2>Edad</h2>
-          <BarChart data={coll['users']['age']} />
+          <BarChart
+            data={coll['users']['age']}
+            onElementsClick={handleChartClick}
+          />
         </div>
         <div className={styles.card + " " + styles.chart}>
           <h2>Género</h2>
-          <PieChart data={coll['users']['gender']} />
+          <PieChart
+            data={coll['users']['gender']}
+            onElementsClick={handleChartClick}
+          />
         </div>
       </div>
       {/* <aside>

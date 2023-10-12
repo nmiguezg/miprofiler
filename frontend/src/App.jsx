@@ -1,5 +1,6 @@
 import "./App.css"
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import Collections from './pages/Collections';
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import ErrorPage from "./pages/error-page";
@@ -13,9 +14,10 @@ export default function App() {
       <div className="container">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/dashboard/:id" element={<Dashboard />} />
+          <Route path="/collections" element={<Collections />} />
+          <Route path="/collections/:id" element={<Dashboard />} />
           <Route path="/*" element={<ErrorPage />} />
-          <Route path="/users/:id" element={<User />} />
+          <Route path="/collections/:id/users/:id" element={<User />} />
         </Routes>
       </div>
     </>)
@@ -28,7 +30,7 @@ function Title() {
     <nav className="navbar">
       <span className="logo" onClick={()=>{return navigate("/")}}>BLM Profiler</span>
       <div className="nav">
-        { results && <li><Link to="/dashboard">Resultados</Link></li>}
+        <li><Link to="/collections">Collections</Link></li>
       </div>
     </nav>
   );

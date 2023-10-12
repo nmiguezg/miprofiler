@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import ProfilerService from "../../services/ProfilerService";
 import styles from "./users.module.css"
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
+
+
 
 const LIMIT = 5;
 
-export default function Users() {
+export default function UsersTable({ collId }) {
     const [users, setUsers] = useState(null);
     const [offset, setOffset] = useState(0);
-    const collId = sessionStorage.getItem('collId');
     const navigate = useNavigate();
 
     function retrieveUsers(back = false) {
@@ -35,32 +37,32 @@ export default function Users() {
         <div className={styles.infoUsers}>
             <>
                 <div className={styles.pagination}>
-                    <table aria-errormessage="error-access">
-                        <thead>
-                            <tr>
-                                <th style={{ width: "10%" }}>Id</th>
-                                <th style={{ width: "10%" }}>Edad</th>
-                                <th style={{ width: "15%" }}>Género</th>
-                                <th className={styles.prescindible}>Publicaciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <Table aria-errormessage="error-access">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell style={{ width: "10%" }}>Id</TableCell>
+                                <TableCell style={{ width: "10%" }}>Edad</TableCell>
+                                <TableCell style={{ widTableCell: "15%" }}>Género</TableCell>
+                                <TableCell className={styles.prescindible}>Publicaciones</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
                             {users?.map((user) => (
-                                <tr key={user.id}
+                                <TableRow key={user.id}
                                     className={styles.userRow}
-                                    onClick={() => navigate("/users/" + user.id, { state: user })}>
-                                    <th style={{ width: "10%" }}>
+                                    onClick={() => navigate("users/" + user.id, { state: user })}>
+                                    <TableCell style={{ width: "10%" }}>
                                         {typeof user.id === "string" ? user.id.substring(0, 10) : user.id}
-                                    </th>
-                                    <th style={{ width: "10%" }}>{user.edad}</th>
-                                    <th style={{ width: "15%" }}>{user.genero}</th>
-                                    <th className={styles.prescindible} style={{ height: "4.5em" }}>
+                                    </TableCell>
+                                    <TableCell style={{ width: "10%" }}>{user.edad}</TableCell>
+                                    <TableCell style={{ width: "15%" }}>{user.genero}</TableCell>
+                                    <TableCell className={styles.prescindible} style={{ height: "4.5em" }}>
                                         {user.posts[0].length > 50 ?
                                             user.posts[0].substring(0, 50) + "..." : user.posts[0].padEnd(50, ' ')}
-                                    </th>
-                                </tr>))}
-                        </tbody>
-                    </table>
+                                    </TableCell>
+                                </TableRow>))}
+                        </TableBody>
+                    </Table>
 
                 </div>
                 <div className={styles.buttons}>

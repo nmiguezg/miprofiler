@@ -28,7 +28,7 @@ export default class ProfilerService {
         return fetch(`${this.endpoint}/collections`)
             .then(handleErrors)
             .then(collList => {
-                return collList?.map(coll => { this.#processColl(coll) })
+                return collList?.map(coll => {return this.#processColl(coll)})
             })
             .catch(error => { throw error });
     }
@@ -54,7 +54,7 @@ export default class ProfilerService {
                     return null
                 }
                 return data?.map(d => ({
-                    id: d.label,
+                    id: d.id,
                     genero: d.gender[0] == 'M' ? 'Masculino' : 'Femenino',
                     edad: d.age.toLocaleLowerCase() == '50-xx' ? '50+' : d.age,
                     posts: d.posts,
