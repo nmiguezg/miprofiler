@@ -1,52 +1,64 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProfilerService from "../../services/ProfilerService";
 import styles from "./users.module.css"
 import { useNavigate } from "react-router-dom";
 
 
-const LIMIT = 5;
+const LIMIT = 20;
 
 export default function UsersTable({ collId, filters }) {
-    const [users, setUsers] = useState(null);
-    const [offset, setOffset] = useState(0);
+    const [users, setUsers] = useState([]);
+    const [areMore, setAreMore] = useState(true);
+    const [offset, setOffset] = useState(LIMIT);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const tableRef = useRef(null);
 
-    function retrieveUsers(back = false) {
-        const newOffset = back ? Math.max(offset - LIMIT, 0) : offset + LIMIT;
+    function retrieveUsers() {
+        const newOffset = offset + LIMIT;
+        setLoading(true);
         ProfilerService.findUsers(collId, LIMIT, newOffset, filters)
-            .then((data) => {
-                setUsers(data);
+            .then(data => {
+                setUsers((prevUsers) => [...prevUsers, ...data.users]);
+                setAreMore(data.hasMore);
                 setOffset(newOffset);
+                setLoading(false);
             });
     }
     useEffect(() => {
+        setOffset(LIMIT);
+        setLoading(true);
         ProfilerService.findUsers(collId, LIMIT, 0, filters)
-            .then((data) => { data && setUsers(data) });
+            .then(data => {
+                console.log(data);
+                data && setUsers(data.users);
+                setAreMore(data.hasMore);
+                setLoading(false);
+            });
     }, [filters, collId]);
 
-    if (users == null) {
-        return (
-            <>
-                <p>Todavía no hay usuarios perfilados, perfila una colección para poder ver sus usuarios.</p>
-            </>
-        )
+    function handleScroll() {
+        const table = tableRef.current;
+        if (table.scrollHeight - table.scrollTop <= table.clientHeight + 100 && !loading) {
+            areMore && retrieveUsers();
+        }
     }
     return (
         <div className={styles.infoUsers}>
             <>
-                <div className={styles.pagination}>
+                <div className={styles.pagination} onScroll={handleScroll} ref={tableRef}>
                     <table aria-errormessage="error-access">
-                        <thead>
-                            <tr>
+                        <thead className={styles.stickyHeader}>
+                            <tr >
                                 <th style={{ width: "10%" }}>Id</th>
                                 <th style={{ width: "10%" }}>Edad</th>
                                 <th style={{ width: "15%" }}>Género</th>
                                 <th className={styles.prescindible}>Publicaciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {users?.map((user) => (
-                                <tr key={user.id}
+                        <tbody className={styles.tbody}>
+                            {users?.map((user, index) => (
+                                <tr className={styles.tr} key={index}
                                     // className={styles.userRow}
                                     onClick={() => navigate("users/" + user.id, { state: user })}>
                                     <th style={{ width: "10%" }}>
@@ -54,18 +66,14 @@ export default function UsersTable({ collId, filters }) {
                                     </th>
                                     <th style={{ width: "10%" }}>{user.edad}</th>
                                     <th style={{ width: "15%" }}>{user.genero}</th>
-                                    <th className={styles.prescindible} style={{ height: "4.5em" }}>
+                                    <th className={styles.prescindible}>
                                         {user.posts[0].length > 50 ?
-                                            user.posts[0].substring(0, 50) + "..." : user.posts[0].padEnd(50, ' ')}
+                                            user.posts[0].substring(0, 50) + "..." : user.posts[0]}
                                     </th>
                                 </tr>))}
                         </tbody>
                     </table>
-
-                </div>
-                <div className={styles.buttons}>
-                    <button onClick={() => retrieveUsers(true)}>Anterior</button>
-                    <button onClick={() => retrieveUsers()}>Siguiente</button>
+                    {loading && <p>Loading...</p>}
                 </div>
             </>
         </div>

@@ -25,12 +25,11 @@ export default function App() {
 
 function Title() {
   const navigate = useNavigate();
-  const results = sessionStorage.getItem('coll') !== null;
   return (
     <nav className="navbar">
       <span className="logo" onClick={()=>{return navigate("/")}}>BLM Profiler</span>
       <div className="nav">
-        <li><Link to="/collections">Collections</Link></li>
+        <li><Link to="/collections">Colecciones</Link></li>
       </div>
     </nav>
   );

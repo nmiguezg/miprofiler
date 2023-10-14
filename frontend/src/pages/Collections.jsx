@@ -13,13 +13,13 @@ export default function Collections() {
 
   return (
     <div>
-      <h1>Collections</h1>
+      <h1>Colecciones</h1>
       <table>
         <thead>
           <tr>
             <th>Fichero</th>
             <th>Algoritmo</th>
-            <th>Fecha</th>
+            <th>Fecha creación</th>
             <th>Usuarios</th>
             <th>Acciones</th>
           </tr>
@@ -35,7 +35,7 @@ export default function Collections() {
                 <Link
                   to={`/collections/${collection.id}`}
                   state={collection}
-                >View</Link>
+                >Ver</Link>
               </td>
             </tr>
           ))}

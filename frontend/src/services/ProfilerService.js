@@ -28,7 +28,7 @@ export default class ProfilerService {
         return fetch(`${this.endpoint}/collections`)
             .then(handleErrors)
             .then(collList => {
-                return collList?.map(coll => {return this.#processColl(coll)})
+                return collList?.map(coll => { return this.#processColl(coll) })
             })
             .catch(error => { throw error });
     }
@@ -49,16 +49,14 @@ export default class ProfilerService {
 
         return fetch(`${this.endpoint}/collections/${coll_id}/users?${queryParams}`)
             .then(handleErrors)
-            .then(data => {
-                if (data.length == 0) {
-                    return null
-                }
-                return data?.map(d => ({
+            .then(({content, hasMore}) => {
+                const users = content?.map(d => ({
                     id: d.id,
                     genero: d.gender[0] == 'M' ? 'Masculino' : 'Femenino',
-                    edad: d.age.toLocaleLowerCase() == '50-xx' ? '50+' : d.age,
+                    edad: d.age.toLocaleLowerCase() == '50-xx' ? '+50' : d.age,
                     posts: d.posts,
                 }))
+                return {users, hasMore}
             })
             .catch(error => { throw error });
     }
@@ -84,8 +82,8 @@ export default class ProfilerService {
     }
     static #formatFilters = filters => {
         const filtersTd = {}
-        if (filters.age && filters.age == '50+') {
-            filtersTd.age = '50-XX'
+        if (filters.age) {
+            filtersTd.age = filters.age == '+50' ? '50-XX' : filters.age
         }
         if (filters.gender) {
             filtersTd.gender = filters.gender == 'Masculino' ? 'MALE' : 'FEMALE'

@@ -84,7 +84,6 @@ export default function PieChart({ data, filters, setFilters }) {
             (event, elements) => {
                 if (elements.length > 0 
                     && filters.gender !== categories[elements[0].index]) {
-                    console.log('gender' + categories[elements[0].index])
                     setFilters({ gender: categories[elements[0].index] });
 
                 }

@@ -4,7 +4,7 @@ from annotated_types import Ge
 from typing_extensions import Dict
 
 
-class User_stats(BaseModel):
+class User_stats_to(BaseModel):
     age: Dict[str, Annotated[int, Ge(0)]] = {}
     gender: Dict[str, Annotated[int, Ge(0)]] = {}
     total_users: Annotated[int, Ge(0)] = 0

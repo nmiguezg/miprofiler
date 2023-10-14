@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Tuple
 from uuid import UUID
 from model.entities.collection import Collection
 from abc import ABC, abstractmethod
@@ -14,8 +14,9 @@ class User_dao(ABC):
 
     @abstractmethod
     def get_collection_users(self, coll_id: str, filters: Dict[str, Dict],
-                             limit: int = 0, skip: int = 0) -> list[User]:
+                             limit: int = 0, skip: int = 0) -> Tuple[list[User], bool]:
         pass
 
+    @abstractmethod
     def get_filtered_users(self, coll_id: str, filters: Dict[str, Dict]) -> list[User]:
         pass

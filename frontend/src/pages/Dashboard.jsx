@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import styles from "./styles/dashboard.module.css";
 import UsersTable from "@/components/UsersTable/UsersTable"
+import InfoCard from "@/components/Cards/InfoCard";
 import ProfilerService from "../services/ProfilerService";
 
 export default function Dashboard() {
@@ -62,22 +63,10 @@ export default function Dashboard() {
   return (
     <div className={styles.dashboard}>
       <div className={styles.cards}>
-        <div className={styles.card}>
-          <p>Usuarios</p>
-          <h2>{coll.users.totalUsers}</h2>
-        </div>
-        <div className={styles.card}>
-          <p>Tiempo de perfilado</p>
-          <h2>{Number.parseFloat(coll.time).toFixed(3)}</h2>
-        </div>
-        <div className={styles.card}>
-          <p>Algoritmo</p>
-          <h2>{coll.algorithm}</h2>
-        </div>
-        <div className={styles.card}>
-          <p>Colección</p>
-          <h2>{coll.name}</h2>
-        </div>
+        <InfoCard title="Número de usuarios" data={coll.users.totalUsers} />
+        <InfoCard title="Tiempo de perfilado" data={Number.parseFloat(coll.time).toFixed(3)} />
+        <InfoCard title="Algoritmo" data={coll.algorithm} />
+        <InfoCard title="Colección" data={coll.name} />
         <div className={styles.card}>
           <p>Filtros</p>
           {(filters.age || filters.gender) &&

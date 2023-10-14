@@ -15,9 +15,11 @@ from model.services.profiler_service import Profiler_service
 app = Flask(__name__)
 profiler_service = Profiler_service()
 
+
 @app.route("/", methods=['GET'])
 def index():
     return "Welcome to the Profiler Service" + request.url + "\n"
+
 
 @app.route("/profiler/profile", methods=['POST'])
 def profile():
@@ -60,15 +62,14 @@ def get_collection_users(collection_id):
     limit = __get_optional_int_parameter(request, "limit", default_value=10)
     offset = __get_optional_int_parameter(request, "offset", default_value=0)
     filters = validate_filters(request.args.to_dict())
-
-
     try:
-        users = profiler_service.get_collection_users(
+        users, has_more = profiler_service.get_collection_users(
             collection_id=collection_id, limit=limit, offset=offset, filters=filters
         )
         user_dtos = [User_dto(**user.model_dump()).model_dump()
                      for user in users]
-        return user_dtos, 200
+
+        return jsonify({"content": user_dtos, "hasMore": has_more}), 200
     except InstanceNotFoundException as e:
         return e.json(), 404
 

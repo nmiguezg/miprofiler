@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ProfilerService from "../services/ProfilerService";
 import { useNavigate } from "react-router-dom";
+import Spinner from "@/components/Utils/Spinner";
 
 export default function Home() {
   const [profiling, setProfiling] = useState(false);
@@ -88,9 +89,7 @@ export default function Home() {
         {flag &&
           (validFile ?
             <div>Archivo válido</div> : <div>Archivo inválido</div>)}
-        <div id="spinner"
-          className={'spinner ' + (profiling ? "" : "hidden")} >
-        </div>
+        <Spinner condition={profiling} />
         <input type="submit" name="submit" className="submit" value="Perfilar"></input>
         {error && <p>Se ha producido un error al perfilar la colección</p>}
       </form>

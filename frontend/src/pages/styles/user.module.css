@@ -3,15 +3,15 @@ p {
 }
 
 .posts {
-    margin: 0 auto;
+    margin-top: 0;
     margin-bottom: 2vh;
     align-items: center;
     border: 1px solid var(--border);
-    background-color: var(--background-alt);
     border-radius: 1vh;
-    padding: 1vh;
-    max-height: 65vh;
-    width: min(35em, 90%);
+    padding: 0;
+    max-height: 70vh;
+    min-height: 65vh;
+    width: min(40em, 90%);
     /* Altura máxima del contenedor */
     overflow-y: auto;
 }
@@ -29,30 +29,32 @@ p {
 }
 
 .listHeading {
+    position: sticky;
+    top: 0;
+    background-color: var(--background-body);
     list-style: none;
     padding: 2vh;
     font-size: larger;
     font-weight: bold;
     text-align: center;
-    position: sticky;
-    z-index: 100;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.273);
 }
 
-.infoUsers {
+.infoUser {
+    padding: 0 1vh;
+    gap: 0 1vw;
     display: flex;
     flex-wrap: wrap;
-    width: min(90%, 45rem);
+    align-items: flex-start;
     justify-content: center;
 }
 
-.fields {
+.cards {
     display: flex;
+    flex-direction: column;
+    gap: 0.2vh;
     flex-wrap: wrap;
-    margin: 0 auto;
-    padding: 1vh;
-    border-radius: 1vh;
     height: fit-content;
-    justify-content: center;
 }
 
 .header {

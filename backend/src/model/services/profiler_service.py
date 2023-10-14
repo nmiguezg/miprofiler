@@ -1,6 +1,7 @@
+from typing import List, Tuple
 from uuid import UUID
 import requests
-from model.services.user_stats import User_stats
+from model.services.To.user_stats import User_stats_to
 from model.entities.user import User
 from model.entities.collection import Collection
 from model.daos.mongo_collection_dao import Mongo_collection_dao
@@ -54,17 +55,17 @@ class Profiler_service():
     def get_profiled_collection(self, collection_id: UUID) -> Collection:
         return self.collection_dao.get_collection(collection_id)
 
-    def get_collection_users(self, collection_id: UUID, limit, offset, filters) -> list[User]:
+    def get_collection_users(self, collection_id: UUID, limit, offset, filters) -> Tuple[List[User], bool]:
         self.collection_dao.get_collection(collection_id)
-        users = self.user_dao.get_collection_users(
+        users, has_more = self.user_dao.get_collection_users(
             collection_id, limit=limit, skip=offset, filters=filters)
-        return users
+        return users, has_more
 
-    def get_collection_stats(self, collection_id: UUID, filters) -> User_stats:
+    def get_collection_stats(self, collection_id: UUID, filters) -> User_stats_to:
         self.collection_dao.get_collection(collection_id)
         filtered_users = self.user_dao.get_filtered_users(
             coll_id=collection_id, filters=filters)
-        return User_stats(**self.__calculate_user_stats(filtered_users))
+        return User_stats_to(**self.__calculate_user_stats(filtered_users))
 
     def get_collections_list(self) -> list[Collection]:
         collections = self.collection_dao.get_collections()

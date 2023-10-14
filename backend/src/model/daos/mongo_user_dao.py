@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Tuple
 from uuid import UUID
 from model.daos.mongo_instance import Mongo_instance
 from model.daos.user_dao import User_dao
@@ -29,7 +29,7 @@ class Mongo_user_dao(User_dao):
             raise RuntimeError(e)
 
     def get_collection_users(self, coll_id: UUID, filters,
-                             limit: int = 0, skip: int = 0) -> list[User]:
+                             limit: int = 0, skip: int = 0) -> Tuple[list[User], bool]:
         try:
             filters = {**filters, "collection_id": coll_id}
             users = self.collection.find(filters, {
@@ -44,7 +44,8 @@ class Mongo_user_dao(User_dao):
                     posts=user['posts'],
                     collection_id=coll_id
                 ) for user in users
-            ]
+            ], users.count() >= skip + limit
+        
         except pymongo.errors.PyMongoError as e:
             raise RuntimeError(e)
 
