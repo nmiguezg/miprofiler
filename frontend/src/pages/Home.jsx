@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ProfilerService from "../services/ProfilerService";
 import { useNavigate } from "react-router-dom";
 import Spinner from "@/components/Utils/Spinner";
@@ -10,11 +10,6 @@ export default function Home() {
   const [flag, setFlag] = useState(false);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (sessionStorage.getItem['userToken'] == null) {
-  //     navigate("/auth")
-  //   }
-  // }, [])
   function handleSubmit(event) {
     event.preventDefault();
     if (!validFile) {

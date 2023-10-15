@@ -14,19 +14,37 @@
 }
 
 .cards {
+    gap: 1vh min(1vw, 8px);
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     height: fit-content;
     margin: 1vh 0;
+    justify-content: center;
 }
-
+.chart {
+    gap: 1vh min(1vw, 8px);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: fit-content;
+    margin: 1vh 0;
+    justify-content: center;
+    width: min(90%, 20rem);
+    font-weight: 300;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    padding: 1vh 1vw;
+    margin: 0.5vh 0.5vw;
+}
 .charts {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     height: fit-content;
     margin: 1vh 0;
+    justify-content: center;
 }
 
 .card {

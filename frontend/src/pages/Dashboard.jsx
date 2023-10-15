@@ -63,10 +63,10 @@ export default function Dashboard() {
   return (
     <div className={styles.dashboard}>
       <div className={styles.cards}>
-        <InfoCard title="Número de usuarios" data={coll.users.totalUsers} />
+        <InfoCard title="Usuarios" data={coll.users.totalUsers} />
         <InfoCard title="Tiempo de perfilado" data={Number.parseFloat(coll.time).toFixed(3)} />
         <InfoCard title="Algoritmo" data={coll.algorithm} />
-        <InfoCard title="Colección" data={coll.name} />
+        <InfoCard className={styles.card} title="Colección" data={coll.name} />
         <div className={styles.card}>
           <p>Filtros</p>
           {(filters.age || filters.gender) &&
@@ -85,7 +85,7 @@ export default function Dashboard() {
       </div>
       <div className={styles.charts}>
         <UsersTable collId={collId} filters={filters}></UsersTable>
-        <div className={styles.card + " " + styles.chart}>
+        <div className={styles.chart}>
           <h2>Edad</h2>
           <BarChart
             data={filters.gender ? usersStats['age'] : coll['users']['age']}
@@ -93,7 +93,7 @@ export default function Dashboard() {
             setFilters={setFilters}
           />
         </div>
-        <div className={styles.card + " " + styles.chart}>
+        <div className={styles.chart}>
           <h2>Género</h2>
           <PieChart
             data={filters.age ? usersStats['gender'] : coll['users']['gender']}

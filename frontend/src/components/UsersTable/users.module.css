@@ -56,8 +56,7 @@ td {
 }
 @media screen and (max-width: 750px) {
 
-  table tr td:nth-of-type(3n),
-  table th.prescindible {
+  .prescindible {
     display: none
   }
 }

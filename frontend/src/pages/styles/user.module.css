@@ -52,7 +52,7 @@ p {
 .cards {
     display: flex;
     flex-direction: column;
-    gap: 0.2vh;
+    gap: 2vh 2vw;
     flex-wrap: wrap;
     height: fit-content;
 }
@@ -65,4 +65,12 @@ p {
     align-items: baseline;
     justify-content: space-between;
     gap: 2rem;
+}
+@media screen and (max-width: 850px) {
+    .cards {
+        
+        flex-direction: row;
+        justify-content: space-between;
+        width: initial;
+    }
 }

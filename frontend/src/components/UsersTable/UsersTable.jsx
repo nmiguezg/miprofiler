@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import ProfilerService from "../../services/ProfilerService";
 import styles from "./users.module.css"
 import { useNavigate } from "react-router-dom";
+import Spinner from "../Utils/Spinner";
 
 
 const LIMIT = 20;
@@ -34,6 +35,7 @@ export default function UsersTable({ collId, filters }) {
                 data && setUsers(data.users);
                 setAreMore(data.hasMore);
                 setLoading(false);
+                tableRef.current.scrollTo(0, 0);
             });
     }, [filters, collId]);
 
@@ -73,7 +75,7 @@ export default function UsersTable({ collId, filters }) {
                                 </tr>))}
                         </tbody>
                     </table>
-                    {loading && <p>Loading...</p>}
+                    <Spinner condition={loading} />
                 </div>
             </>
         </div>

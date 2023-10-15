@@ -4,7 +4,8 @@
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
     padding: 1vh 1vw;
-    margin: 0.5vh 0.5vw;
+    flex-basis: calc(33.33% - 1rem); /* Add this line to set the flex-basis to a fixed value */
+
 }
 .title {
     font-size: 1.3rem;
