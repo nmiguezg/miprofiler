@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export default function InfoCard({ title, data, bigTitle=false }) {
     return (
-        <div className={styles.card}>
+        <div className={`${styles.card} ${styles.small}`}>
             <p className={`${bigTitle && styles.title}`}>{title}</p>
             <h2 className={styles.data}>{data}</h2>
         </div >

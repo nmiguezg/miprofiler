@@ -6,7 +6,7 @@ export default function User() {
     const location = useLocation();
     const { id, edad, genero, posts } = location.state;
     return (
-        <>
+        <div className={styles.content}>
             <div className={styles.header}><h1>Información de usuario</h1>
                 <Link to={-1}>Volver</Link>
             </div>
@@ -24,6 +24,6 @@ export default function User() {
                     ))}
                 </ol>
             </article>
-        </>
+        </div>
     )
 }

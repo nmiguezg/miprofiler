@@ -1,7 +1,6 @@
-p {
-    padding: 0 1vh;
+.content{
+    width: 100%;
 }
-
 .posts {
     margin-top: 0;
     margin-bottom: 2vh;
@@ -14,6 +13,8 @@ p {
     width: min(40em, 90%);
     /* Altura máxima del contenedor */
     overflow-y: auto;
+    margin: 1vh 0;
+    font-weight: 360;
 }
 
 .listItem {
@@ -35,7 +36,7 @@ p {
     list-style: none;
     padding: 2vh;
     font-size: larger;
-    font-weight: bold;
+    font-weight: 400;
     text-align: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.273);
 }
@@ -52,9 +53,11 @@ p {
 .cards {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 2vh 2vw;
     flex-wrap: wrap;
     height: fit-content;
+    margin: 1vh 0;
 }
 
 .header {
@@ -63,14 +66,14 @@ p {
     flex-wrap: nowrap;
     flex-direction: row;
     align-items: baseline;
-    justify-content: space-between;
-    gap: 2rem;
+    justify-content: center;
+    gap: 4rem;
 }
 @media screen and (max-width: 850px) {
     .cards {
-        
         flex-direction: row;
-        justify-content: space-between;
-        width: initial;
+    }
+    .header{    
+        gap: 4vw;
     }
 }
