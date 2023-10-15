@@ -82,9 +82,9 @@ export default function PieChart({ data, filters, setFilters }) {
     const pieChartOptions = {
         ...options, onClick:
             (event, elements) => {
-                if (elements.length > 0 
+                if (elements.length > 0
                     && filters.gender !== categories[elements[0].index]) {
-                    setFilters({ gender: categories[elements[0].index] });
+                    setFilters({ ...filters, gender: categories[elements[0].index] });
 
                 }
             }

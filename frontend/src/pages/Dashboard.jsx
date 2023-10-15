@@ -5,7 +5,8 @@ import { useState, useEffect } from "react";
 import styles from "./styles/dashboard.module.css";
 import UsersTable from "@/components/UsersTable/UsersTable"
 import InfoCard from "@/components/Cards/InfoCard";
-import ProfilerService from "../services/ProfilerService";
+import DropDownButton from "@/components/Utils/DropDownButton";
+import ProfilerService from "@/services/ProfilerService";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -69,18 +70,23 @@ export default function Dashboard() {
         <InfoCard className={styles.card} title="Colección" data={coll.name} />
         <div className={styles.card}>
           <p>Filtros</p>
-          {(filters.age || filters.gender) &&
-            <>
-              <h2>
-                {filters.age && 'Edad: ' + filters.age}
-                {filters.gender && 'Género: ' + filters.gender}
-
-              </h2>
-              <button onClick={() => setFilters({})}>Limpiar</button>
-            </>
-          }
+          <p>Edad: {filters.age &&
+            filters.age && <ClearButton action={() => setFilters({ ...filters, age: undefined })} />} </p>
+          <p>Género: {filters.gender &&
+            filters.gender && <ClearButton action={() => setFilters({ ...filters, gender: undefined })} />} </p>
 
         </div>
+        <div>
+          <DropDownButton name="Edad"
+            options={Object.keys(coll.users.age)}
+            handleSelection={(category) => { setFilters({ ...filters, age: category }) }}
+          />
+          <DropDownButton name="Género"
+            options={Object.keys(coll.users.gender)}
+            handleSelection={(category) => { setFilters({ ...filters, gender: category }) }}
+          />
+        </div>
+
 
       </div>
       <div className={styles.charts}>
@@ -88,7 +94,7 @@ export default function Dashboard() {
         <div className={styles.chart}>
           <h2>Edad</h2>
           <BarChart
-            data={filters.gender ? usersStats['age'] : coll['users']['age']}
+            data={usersStats['age']}
             filters={filters}
             setFilters={setFilters}
           />
@@ -96,7 +102,7 @@ export default function Dashboard() {
         <div className={styles.chart}>
           <h2>Género</h2>
           <PieChart
-            data={filters.age ? usersStats['gender'] : coll['users']['gender']}
+            data={usersStats['gender']}
             filters={filters}
             setFilters={setFilters}
           />
@@ -107,4 +113,10 @@ export default function Dashboard() {
   </aside> */}
     </div>
   );
+}
+function ClearButton({ action }) {
+  return (
+    <svg onClick={action} style={{ cursor: "pointer", color: "red" }} xmlns="http://www.w3.org/2000/svg" height="30" viewBox="0 0 24 24" width="30"><path d="M0 0h24v24H0z" fill="none" /><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /></svg>
+
+  )
 }

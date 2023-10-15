@@ -113,7 +113,7 @@ export default function PieChart({ data, filters, setFilters }) {
             (event, elements) => {
                 if (elements.length > 0
                     && filters.age !== categories[elements[0].index]) {
-                    setFilters({ age: categories[elements[0].index] });
+                    setFilters({ ...filters, age: categories[elements[0].index] });
                 }
             }
     }
