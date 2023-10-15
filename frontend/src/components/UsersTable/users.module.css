@@ -55,7 +55,6 @@ td {
   font-weight: 360;
 }
 @media screen and (max-width: 750px) {
-
   .prescindible {
     display: none
   }
