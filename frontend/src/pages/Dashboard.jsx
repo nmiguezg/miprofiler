@@ -7,6 +7,8 @@ import UsersTable from "@/components/UsersTable/UsersTable"
 import InfoCard from "@/components/Cards/InfoCard";
 import DropDownButton from "@/components/Utils/DropDownButton";
 import ProfilerService from "@/services/ProfilerService";
+import FilterList from "../components/FilterList/FilterList";
+import FilterItem from "../components/FilterList/FilterItem";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -63,32 +65,45 @@ export default function Dashboard() {
   }
   return (
     <div className={styles.dashboard}>
-      <div className={styles.cards}>
-        <InfoCard title="Usuarios" data={coll.users.totalUsers} />
-        <InfoCard title="Tiempo de perfilado" data={Number.parseFloat(coll.time).toFixed(3)} />
-        <InfoCard title="Algoritmo" data={coll.algorithm} />
-        <InfoCard className={styles.card} title="Colección" data={coll.name} />
-        <div className={styles.card}>
-          <p>Filtros</p>
-          <p>Edad: {filters.age &&
-            filters.age && <ClearButton action={() => setFilters({ ...filters, age: undefined })} />} </p>
-          <p>Género: {filters.gender &&
-            filters.gender && <ClearButton action={() => setFilters({ ...filters, gender: undefined })} />} </p>
-
+      <div className={styles['first-row']}>
+      <div className={styles['filter-card']}>
+          <div className={styles['filters-container']}>
+            <DropDownButton name="Edad"
+              options={Object.keys(coll.users.age)}
+              handleSelection={(category) => { setFilters({ ...filters, age: category }) }}
+            />
+            <DropDownButton name="Género"
+              options={Object.keys(coll.users.gender)}
+              handleSelection={(category) => { setFilters({ ...filters, gender: category }) }}
+            />
+          </div>
+          
         </div>
-        <div>
-          <DropDownButton name="Edad"
-            options={Object.keys(coll.users.age)}
-            handleSelection={(category) => { setFilters({ ...filters, age: category }) }}
-          />
-          <DropDownButton name="Género"
-            options={Object.keys(coll.users.gender)}
-            handleSelection={(category) => { setFilters({ ...filters, gender: category }) }}
-          />
+        <div className={styles.cards}>
+          <InfoCard title="Usuarios" data={coll.users.totalUsers} />
+          <InfoCard title="Tiempo de perfilado" data={Number.parseFloat(coll.time).toFixed(3)} />
+          <InfoCard title="Algoritmo" data={coll.algorithm} />
+          <InfoCard title="Colección" data={coll.name} />
         </div>
-
-
+        <FilterList>
+            {filters.age &&
+              <FilterItem
+                name={"edad"}
+                value={filters.age}
+                action={() => { setFilters({ ...filters, age: undefined }) }}
+              />}
+            {filters.gender &&
+              <FilterItem
+                name={"género"}
+                value={filters.gender}
+                action={() => { setFilters({ ...filters, gender: undefined }) }}
+              />}
+          </FilterList>
       </div>
+      
+
+
+
       <div className={styles.charts}>
         <UsersTable collId={collId} filters={filters}></UsersTable>
         <div className={styles.chart}>
@@ -107,16 +122,11 @@ export default function Dashboard() {
             setFilters={setFilters}
           />
         </div>
+        
       </div>
       {/* <aside>
     <button className="export" onClick={exportCollection}>Export</button>
   </aside> */}
     </div>
   );
-}
-function ClearButton({ action }) {
-  return (
-    <svg onClick={action} style={{ cursor: "pointer", color: "red" }} xmlns="http://www.w3.org/2000/svg" height="30" viewBox="0 0 24 24" width="30"><path d="M0 0h24v24H0z" fill="none" /><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /></svg>
-
-  )
 }

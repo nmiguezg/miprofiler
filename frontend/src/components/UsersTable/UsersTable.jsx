@@ -31,7 +31,6 @@ export default function UsersTable({ collId, filters }) {
         setLoading(true);
         ProfilerService.findUsers(collId, LIMIT, 0, filters)
             .then(data => {
-                console.log(data);
                 data && setUsers(data.users);
                 setAreMore(data.hasMore);
                 setLoading(false);
@@ -75,7 +74,7 @@ export default function UsersTable({ collId, filters }) {
                                 </tr>))}
                         </tbody>
                     </table>
-                    <Spinner condition={loading} />
+                    <Spinner condition={loading} leftSpace={false}/>
                 </div>
             </>
         </div>

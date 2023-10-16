@@ -4,7 +4,14 @@
     align-items: center;
     gap: 0.5vh;
 }
-
+.first-row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 3vw;
+}
 .dashboard {
     padding: 3vh 3vw;
     display: flex;
@@ -22,6 +29,13 @@
     margin: 1vh 0;
     justify-content: center;
 }
+.filter-card {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+
 .chart {
     gap: 1vh min(1vw, 8px);
     display: flex;
@@ -47,13 +61,14 @@
     justify-content: center;
 }
 
-.card {
-    font-weight: 300;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
-    padding: 1vh 1vw;
-    margin: 0.5vh 0.5vw;
+.filters-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1vh;
+    margin-bottom: 1vh;
+    flex-wrap: wrap;
 }
 
 /* .chart{

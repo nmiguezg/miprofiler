@@ -1,0 +1,31 @@
+:root{
+    --filters-container-color: rgb(156, 121, 251);
+    --filters-content-color: rgb(223, 224, 252);
+
+}
+.filterList {
+    font-weight: 400;
+    padding: 0;
+    margin: 0rem 0.5rem;
+    letter-spacing: 0.001rem;
+    min-width: 12rem
+}
+
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--filters-container-color);
+    color: var(--filters-content-color);
+    margin-bottom: 0.45rem;
+    padding: 0.25rem;
+    border-radius: 5px;
+}
+.icon{
+    color: var(--filters-container-color);
+    cursor: pointer;
+    margin: 0.1rem;
+}
+.filter-item span{
+    margin: 0.05rem 0.2rem;
+}
