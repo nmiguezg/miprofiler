@@ -67,8 +67,11 @@ export default function Dashboard() {
     <div className={styles.dashboard}>
       <div className={styles['first-row']}>
         <div className={styles['filter-card']}>
-          <div className={styles['filters-container']}>
-            
+          <h2 id="labelDropdowns">
+            Filtrar
+          </h2>
+          <div aria-labelledby="labelDropdowns" className={styles['filters-container']}>
+
             <DropDownButton name="Edad"
               options={Object.keys(coll.users.age)}
               handleSelection={(category) => { setFilters({ ...filters, age: category }) }}
@@ -82,7 +85,7 @@ export default function Dashboard() {
         </div>
         <div className={styles.cards}>
           <InfoCard title="Usuarios" data={coll.users.totalUsers} />
-          <InfoCard title="Tiempo de perfilado" data={Number.parseFloat(coll.time).toFixed(3)+ " s"} />
+          <InfoCard title="Tiempo de perfilado" data={Number.parseFloat(coll.time).toFixed(3) + " s"} />
           <InfoCard title="Algoritmo" data={coll.algorithm} />
           <InfoCard title="Colección" data={coll.name} />
         </div>
