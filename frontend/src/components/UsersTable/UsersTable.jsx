@@ -44,6 +44,11 @@ export default function UsersTable({ collId, filters }) {
             areMore && retrieveUsers();
         }
     }
+    function handleNavigation(user) {
+        if (window.innerWidth < 750) {
+            navigate("users/" + user.id, { state: user });
+        }
+    }
     return (
         <div className={styles.infoUsers}>
             <>
@@ -61,20 +66,24 @@ export default function UsersTable({ collId, filters }) {
                             {users?.map((user, index) => (
                                 <tr className={styles.tr} key={index}
                                     // className={styles.userRow}
-                                    onClick={() => navigate("users/" + user.id, { state: user })}>
+                                    onClick={() => handleNavigation(user)}
+                                >
                                     <th style={{ width: "10%" }}>
                                         {typeof user.id === "string" ? user.id.substring(0, 10) : user.id}
                                     </th>
                                     <th style={{ width: "10%" }}>{user.edad}</th>
                                     <th style={{ width: "15%" }}>{user.genero}</th>
                                     <th className={styles.prescindible}>
-                                        {user.posts[0].length > 50 ?
-                                            user.posts[0].substring(0, 50) + "..." : user.posts[0]}
+                                        <a style={{ cursor: "pointer" }}
+                                            onClick={() => navigate("users/" + user.id, { state: user })}>
+                                            {user.posts[0].length > 50 ?
+                                                user.posts[0].substring(0, 50) + "..." : user.posts[0]}
+                                        </a>
                                     </th>
                                 </tr>))}
                         </tbody>
                     </table>
-                    <Spinner condition={loading} leftSpace={false}/>
+                    <Spinner condition={loading} leftSpace={false} />
                 </div>
             </>
         </div>

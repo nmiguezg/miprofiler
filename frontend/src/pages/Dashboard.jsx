@@ -66,8 +66,9 @@ export default function Dashboard() {
   return (
     <div className={styles.dashboard}>
       <div className={styles['first-row']}>
-      <div className={styles['filter-card']}>
+        <div className={styles['filter-card']}>
           <div className={styles['filters-container']}>
+            
             <DropDownButton name="Edad"
               options={Object.keys(coll.users.age)}
               handleSelection={(category) => { setFilters({ ...filters, age: category }) }}
@@ -77,30 +78,30 @@ export default function Dashboard() {
               handleSelection={(category) => { setFilters({ ...filters, gender: category }) }}
             />
           </div>
-          
+
         </div>
         <div className={styles.cards}>
           <InfoCard title="Usuarios" data={coll.users.totalUsers} />
-          <InfoCard title="Tiempo de perfilado" data={Number.parseFloat(coll.time).toFixed(3)} />
+          <InfoCard title="Tiempo de perfilado" data={Number.parseFloat(coll.time).toFixed(3)+ " s"} />
           <InfoCard title="Algoritmo" data={coll.algorithm} />
           <InfoCard title="Colección" data={coll.name} />
         </div>
         <FilterList>
-            {filters.age &&
-              <FilterItem
-                name={"edad"}
-                value={filters.age}
-                action={() => { setFilters({ ...filters, age: undefined }) }}
-              />}
-            {filters.gender &&
-              <FilterItem
-                name={"género"}
-                value={filters.gender}
-                action={() => { setFilters({ ...filters, gender: undefined }) }}
-              />}
-          </FilterList>
+          {filters.age &&
+            <FilterItem
+              name={"edad"}
+              value={filters.age}
+              action={() => { setFilters({ ...filters, age: undefined }) }}
+            />}
+          {filters.gender &&
+            <FilterItem
+              name={"género"}
+              value={filters.gender}
+              action={() => { setFilters({ ...filters, gender: undefined }) }}
+            />}
+        </FilterList>
       </div>
-      
+
 
 
 
@@ -122,7 +123,7 @@ export default function Dashboard() {
             setFilters={setFilters}
           />
         </div>
-        
+
       </div>
       {/* <aside>
     <button className="export" onClick={exportCollection}>Export</button>

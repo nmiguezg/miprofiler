@@ -48,14 +48,18 @@ td {
 }
 .tr{
   height: 5vh;
-  cursor: pointer;
-
 }
 .tbody{
   font-weight: 360;
 }
+.prescindible {
+  text-align: left;
+}
 @media screen and (max-width: 750px) {
   .prescindible {
     display: none
+  }
+  tr{
+    cursor: pointer;
   }
 }

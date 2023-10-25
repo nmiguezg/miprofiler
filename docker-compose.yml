@@ -49,7 +49,7 @@ services:
     image: miprofiler/web:latest
     ports:
       - "3000:3000" 
-    # command: dockerize -wait tcp://profilers:5000 -timeout 300s npm run dev
+    command: dockerize -wait tcp://profilers:5000 -timeout 300s npm run dev
     depends_on:
       - profilers
       - api
