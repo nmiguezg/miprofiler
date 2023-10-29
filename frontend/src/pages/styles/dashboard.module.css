@@ -45,7 +45,7 @@
     margin: 1vh 0;
     justify-content: center;
     width: min(90%, 20rem);
-    font-weight: 300;
+    font-weight: 700;
     border: 1px solid var(--border);
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);

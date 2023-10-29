@@ -40,6 +40,7 @@ body {
 .logo{
   cursor: pointer;
   font-size: 1.3rem;
+  font-weight: 700;
   color: rgb(235 251 241);
 }
 @media screen and (max-width: 350px) {
@@ -122,6 +123,7 @@ input{
 }
 
 .nav {
+  font-weight: 550;
   display: flex;
   align-content: center;
   flex-wrap: nowrap;
@@ -133,13 +135,8 @@ input{
 
 h1 {
   font-size: 2.5rem;
-  font-weight: 300;
   text-align: center;
   margin-bottom: 2rem;
-}
-
-h2 {
-  font-weight: 300;
 }
 
 body {

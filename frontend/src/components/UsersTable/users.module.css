@@ -37,6 +37,7 @@ td {
 }
 
 .stickyHeader {
+  font-weight: 700;
   position: sticky;
   top: 0;
   z-index: 0;
@@ -50,7 +51,7 @@ td {
   height: 5vh;
 }
 .tbody{
-  font-weight: 360;
+  font-weight: 500;
 }
 .prescindible {
   text-align: left;

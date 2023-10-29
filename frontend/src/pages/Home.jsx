@@ -86,7 +86,13 @@ export default function Home() {
           (validFile ?
             <div ><CheckCircleIcon /> Archivo válido</div> : <div>Archivo inválido</div>)}
         <Spinner condition={profiling} />
-        <input type="submit" name="submit" className="submit" value="Perfilar"></input>
+        <input
+          type="submit"
+          name="submit"
+          className="submit"
+          value="Perfilar"
+          disabled={flag && !validFile}
+        />
         {error && <p>Se ha producido un error al perfilar la colección</p>}
       </form>
     </div>

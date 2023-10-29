@@ -27,7 +27,7 @@ const options = {
             ticks: {
                 color: 'rgba(255,255,255,0.8)',
                 font: {
-                    weight: "300",
+                    weight: "400",
                 },
             },
             grid: {
@@ -38,7 +38,7 @@ const options = {
             ticks: {
                 color: 'rgba(255,255,255,0.8)',
                 font: {
-                    weight: "300",
+                    weight: "400",
                 },
             },
             grid: {

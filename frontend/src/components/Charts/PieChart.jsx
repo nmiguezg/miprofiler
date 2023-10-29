@@ -33,7 +33,7 @@ const options = {
                 color: "#E3E6EF",
                 font: {
                     size: 11,
-                    weight: 300,
+                    weight: 400,
                 },
             },
         },
