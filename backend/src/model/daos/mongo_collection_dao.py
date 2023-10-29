@@ -51,7 +51,7 @@ class Mongo_collection_dao(Collection_dao):
     def get_collections(self) -> list[Collection]:
         try:
             collections = self.collection.find({}).sort(
-                'fecha_creacion', pymongo.ASCENDING)
+                'fecha_creacion', pymongo.DESCENDING)
             collections = list(collections)
 
             return list(map(lambda collection: Collection(
