@@ -8,6 +8,7 @@ import {
     BarElement,
     Tooltip,
 } from 'chart.js'
+import { useEffect, useRef } from 'react';
 
 Chart.register(
     Colors,
@@ -92,7 +93,14 @@ const options = {
 import PropTypes from 'prop-types';
 
 export default function PieChart({ data, filters, setFilters }) {
-
+    const maxRef = useRef(Object.values(data).reduce((a, b) => a + b, 0));
+    useEffect(() => {
+        const newMax = Object.values(data).reduce((a, b) => a + b, 0);
+        if (newMax > maxRef.current) {
+            maxRef.current = newMax;
+        }
+    }, [data]);
+    console.log(maxRef.current);
     const categories = Object.keys(data)
     const values = Object.values(data)
     const conf = {
@@ -115,7 +123,14 @@ export default function PieChart({ data, filters, setFilters }) {
                     && filters.age !== categories[elements[0].index]) {
                     setFilters({ ...filters, age: categories[elements[0].index] });
                 }
-            }
+            },
+        scales: {
+            ...options.scales,
+            y: {
+                ...options.scales.y,
+                // max: maxRef.current,
+            },
+        }
     }
     return <Bar data={conf} options={barChartOptions} />;
 }

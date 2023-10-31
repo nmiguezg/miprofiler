@@ -1,0 +1,59 @@
+\chapter{Desarrollo}
+\label{chap:desarrollo}
+\section{Sprints}
+\subsection{Sprint 0: 8-2-2023 a 14-3-2023}
+:
+\begin{itemize}
+    \item Configuración del entorno: búsqueda y experimentación con librerías de procesado del lenguaje natural como Spacy o NLTK
+    \item Introducción a estado del arte del perfilado automático de usuarios en edad y género.
+\end{itemize}
+
+\subsection{Sprint 1: 14-3-2023 a 29-3-2023}
+:
+\begin{itemize}
+    \item Experimentando técnicas de preprocesado de los textos de la colección como: lematización, sustitución de emojis por sus significado, etc.
+    \item Investigación y búsqueda de conjuntos de entrenamiento en idioma español para la tarea de perfilado automático de usuarios.
+    \item Estudio del lenguaje empleado en el corpus BLM con el objetivo de
+    ***** meter la cabeza en el problema*****
+\end{itemize}
+
+\subsection{Sprint 2: 29-3-2023 a 17-4-2023}
+:
+\begin{itemize}
+    \item Búsqueda, comparación y selección de algoritmos de perfilado automático
+    \item Selección de conjuntos de entrenamiento a usar para entrenar los modelos seleccionados.
+\end{itemize}
+
+\subsection{Sprint 3: 17-4-2023 a 20-6-2023}%este alomejor hay que dividirlo en 2, no sé...
+:
+\begin{itemize}
+    \item Carga de la colección BLM, agrupación de los usuarios y preprocesado de los posts.
+    \item Adaptación y ejecución de pruebas con algoritmo LosCalis. Investigación de malos resultados obtenidos e intento de realización de mejoras: cambios de preprocesado, hiperparámetros, asignación de pesos a salidas en la red.
+    \item Creación de scraper de twitter para poblar los ficheros que constituyen el dataset de 2016.
+\end{itemize}
+
+\subsection{Sprint 4: 20-6-2023 a 20-7-2023}
+:
+\begin{itemize}
+    \item Ejecución en batches del scraper para descargar la colección entera.
+    \item Adaptación y ejecución de algoritmos de modaresi y grivas.
+    \item Realización de pruebas con estos (pruebas con distintos parámetros, features, preprocesado).
+    \item Documentación de resultados y redacción de los dos primeros capítulos de la memoria  (\ref{chap:introducion} y \ref{chap:fundamentos}).
+\end{itemize}
+\subsection{Sprint 5: 20-7-2023 a 5-8-2023}
+\begin{itemize}
+    \item Inicio del backend: creación del endpoint, entrenamiento y guardado de algoritmos de perfilado para producción.
+    \item Diseño arquitectura backend.
+    \item Containerización
+\end{itemize}
+\subsection{Sprint 6: 6-8-2023 a 21-8-2023}
+\begin{itemize}
+    \item Desarrollo modelo base de datos.
+    \item Diseño e implementación del frontend.
+\end{itemize}
+\subsection{Sprint 7: 21-8-2023 a 11-8-2023}
+\begin{itemize}
+    \item Como usuario quiero poder ver los distintos datos demográficos de los usuarios de la colección en forma de lista.
+    \item Como usuario quiero ver en detalle los posts que ha publicado un usuario concreto de la colección.
+    \item Estilado de elementos del frontend.
+\end{itemize}
