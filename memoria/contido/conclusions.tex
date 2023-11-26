@@ -1,7 +1,46 @@
-\chapter{Conclusións}
-\label{chap:conclusions}
+\chapter{Conclusiones}
+\label{chap:conclusiones}
 
-\lettrine{D}{erradeiro} capítulo da memoria, onde se presentará a
-situación final do traballo, as leccións aprendidas, a relación coas
-competencias da titulación en xeral e a mención en particular,
-posibles liñas futuras,\dots
+%\lettrine{D}{erradeiro} capítulo da memoria, onde se presentará a situación final do traballo, as leccións aprendidas, a relación coas competencias da titulación en xeral e a mención en particular, posibles liñas futuras,\dots
+\lettrine{E}{l} presente capítulo describe la situación actual del proyecto donde se evalúa el sistema con respecto a los objetivos iniciales. También se realiza una valoración sobre las lecciones aprendidas durante su desarrollo, a nivel académico y personal. Finalmente, se detallan las líneas más interesantes que se pueden abordar en un trabajo futuro.
+\section{Evaluación del proyecto}
+Este trabajo tenía como premisa, el objetivo de crear una herramienta que permitiera extraer información acerca del archivo social en idioma español creado por \citet{heritage_BLM}, compuesto por publicaciones de usuarios anónimos, que debatían en redes, sobre las protestas raciales asociadas al movimiento \acrshort{blm}. Concretamente, se pretendía obtener información con respecto a atributos demográficos, edad y género principalmente, sobre los usuarios de este archivo con la intención de poder responder preguntas acerca de la identidad de los mismos. 
+
+Con esto en mente, se desarrolló una herramienta capaz de predecir el género y la edad acerca de una colección que contenga miles de usuarios de manera rápida y eficiente. Esta presenta una interfaz sencilla, intuitiva y \textit{responsive} que a la vez es estética y permite ver de manera rápida las estadísticas generales de la colección y características específicas de cada usuario en detalle. Asimismo, proporciona la posibilidad de hacer un filtrado para conocer de mejor manera la interacción entre las distintas variables como género con edad y viceversa. Además, esta dispone de varios algoritmos de perfilado de usuarios en español, cuyo rendimiento se puede catalogar como bastante satisfactorio teniendo en cuenta el estado del arte actual. 
+
+Esta herramienta cuenta con un diseño modular y cuidado resultado de seguir unas buenas prácticas de ingeniería del software, que facilita la extensibilidad, rendimiento y escalabilidad del sistema.
+
+\section{Lecciones aprendidas}
+Durante el desarrollo de este trabajo, uno de los retos más exigentes del mismo ha pasado por la planificación y planificación de las tareas técnicas de la primera fase de investigación. Las elevadas expectativas derivadas del escaso conocimiento inicial del alumno en materia de perfilado de usuarios ha dificultado una correcta definición de los objetivos de las tareas de Scrum en esta primera fase. 
+
+Este hecho ha derivado en una baja productividad que a su vez ha propiciado pequeños retrasos respecto a las estimaciones iniciales, de estas primeras tareas. No obstante, posteriormente se ha conseguido encaminar el rumbo del proyecto satisfactoriamente, gracias en gran medida al apoyo en la parte metodológica de los directores que me han orientado para el establecimiento de unas metas alcanzables y realistas. Esta experiencia me ha hecho mucho más consciente de la gran importancia de seguir unas pautas metodológicas de forma estricta y constante, relacionadas con un planteamiento preciso de los objetivos y situación del proyecto en cada momento.
+
+Desde el punto de vista académico, este trabajo me ha ayudado a consolidar y valorar en mayor medida muchos de los conocimientos adquiridos a lo largo de mi etapa educativa en este grado. Asignaturas de la mención en computación como Aprendizaje Automático, Recuperación de la Información han sido las que me han brindado las bases más importantes para la fase de investigación del proyecto, siendo esta una de las más interesantes, a la vez que exigentes del proyecto. De asignaturas como Diseño Software, Internet y Sistemas Distribuidos me han proporcionado las competencias necesarias para poder comprender la importancia que tiene realizar un diseño software y una arquitectura con un nivel de calidad adecuados a un proyecto de la magnitud de un TFG.
+
+Además, siento que el haber abordado un proyecto de esta magnitud, me ha ayudado a convertirme en un estudiante de ingeniería informática mucho más capaz y con una perspectiva mucho más amplia acerca de mis propias posibilidades en esta profesión.
+%Por lo tanto, se presenta como una herramienta muy valiosa en diversos campos como la sociología, política o marketing.
+% De esta forma se presenta una herramienta muy valiosa que puede ayudar a conocer las causas de movimientos sociales, obtener un perfil de los usuarios de una temática
+
+
+\section{Trabajo futuro}
+Las tareas y metas que se plantean como más atractivas para ser abordadas en unos siguientes pasos se pueden dividir en dos grupos distintos según su objetivo. Por un lado, tenemos todas aquellas tareas más enfocadas hacia la investigación del perfilado de usuarios consistentes en: la mejora del rendimiento, ampliación de las capacidades y aumento de los algoritmos de perfilado existentes. Por otro lado, están aquellas más relacionadas con el desarrollo de ingeniería de software orientadas ampliación de las funcionalidades de la plataforma actual.
+
+\subsection{Mejora algoritmos de perfilado}
+En cuanto a las tareas más orientadas hacia el plano de la investigación del perfilado y la mejora de los algoritmos existentes, todas ellas pasan por el siguiente requisito: La creación de un conjunto de datos a gran escala sobre publicaciones en español de usuarios etiquetados con características demográficas y de personalidad.
+
+Como ya se ha comentado en el capítulo~\ref{chap:fundamentos} de la memoria, un gran limitante a la hora de conseguir unos mejores resultados y más robustos modelos en general ha sido el \textit{dataset} de entrenamiento. La falta de un conjunto de datos de entrenamiento (especialmente en idioma español) a gran escala que fuera a la vez equilibrado y sin ruido o usuarios repetidos, ha mermado el rendimiento de los algoritmos utilizados sobre todo el de~\citet{loscalis22} que al ser basado en aprendizaje profundo, sufre más notoriamente estas limitaciones.
+
+La posibilidad de contar con un buen conjunto de datos de buen tamaño abriría un montón de posibilidades en cuanto a la experimentación con los nuevos modelos de lenguaje basados en \textit{transformers} \citep{devlin2019bert, liu2019roberta, BETO, MarIA, gpt2020language}.
+
+Además el desarrollo de este conjunto con usuarios etiquetados con rasgos de personalidad u otro tipo de características personales como nivel de ingresos, estudios, o inclinación política; permitiría realizar un perfilado mucho más completo e interesante acerca de las colecciones y usuarios objetivo.
+
+\subsection{Ampliación funcionalidades aplicación}
+En cuanto al resto de tareas relacionadas con la ingeniería del software y el aumento de la funcionalidad y capacidades de la herramienta existente, encontramos muchas más variedad y posibilidades. Entre las más atractivas tenemos las siguientes:
+\begin{itemize}
+    \item La capacidad de realizar un perfilado de una aplicación de forma asíncrona. El hecho de poder tener una cola de tareas, permitiría ejecutar el perfilado de colecciones de mucho mayor tamaño y usar algoritmos más lentos como es el caso del de \citet{loscalis22} que finalmente no se añadió a la solución final. Este quizá sea la tarea más prioritaria en el momento actual para la mejora de la escalabilidad de la plataforma.
+    \item La funcionalidad de exportar los resultados del perfilado de una colección incluyendo gráficos y visualizaciones en distintos formatos. Esto no supondría un gran esfuerzo y permitiría hacer mucho más portables los resultados obtenidos, para enseñarlos en una presentación, por ejemplo.
+    \item La visualización de características textuales sobre el estilo de redacción y palabras utilizadas según categoría perfilada, como género o edad. El mostrar visualizaciones acerca de: las palabras o expresiones más utilizadas según género o el número de signos de puntuación, faltas gramaticales, emoticonos, etc. permitiría comprender el funcionamiento de los algoritmos así como aumentar la información acerca de los grupos demográficos de una colección.
+\end{itemize}
+
+%En definitiva, existen infinidad de posibilidades a la hora de aumentar las capacidades y utilidad de nuestro producto, tanto de la parte de la mejora del perfilado de usuario como acerca de la plataforma de perfilado en sí.
+%\subsection{Conclusión}

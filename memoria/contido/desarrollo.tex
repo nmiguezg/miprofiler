@@ -1,59 +1,111 @@
 \chapter{Desarrollo}
 \label{chap:desarrollo}
-\section{Sprints}
-\subsection{Sprint 0: 8-2-2023 a 14-3-2023}
-:
+\lettrine{E}{ste} capítulo contiene la descripción en detalle de las tareas e historias de usuario llevadas a cabo en cada incremento realizado durante el transcurso de este proyecto. Aquí, se les da contexto y se expone el proceso llevado a cabo para su realización, incluyendo decisiones de diseño tomadas durante las mismas.
+
+\section{Sprint 1: Configuración del entorno e investigación del estado del arte}
+Este período constituye el primer incremento del proyecto propiamente dicho\footnote{Aunque antes se realizaran ciertas tareas de configuración del entorno y introducción al estado del arte se incluyen en este incremento debido a la poca carga de trabajo de las mismas.}. Junto al segundo \textit{sprint} constituyen los incrementos con menor carga de trabajo del mismo. Las tareas llevadas a cabo durante el este período se pueden dividir en dos conjuntos según la naturaleza más teórica o más práctica de las mismas.
+
+Empezando por las tarea de naturaleza más teórica, está la introducción y familiarización con el estado del arte de la temática a desenvolver. Para ello se optó por el estudio acerca del perfilado automático de usuarios a través de diversos trabajos \citep{profiling_urdu, radivchev2019celebrity, pronouns_paper}. Esta tarea generó la necesidad de comprender las técnicas y conceptos de procesado de lenguaje natural usados en los mismos.
+
+En paralelo, se realizaba la tarea más práctica de configuración del entorno y experimentación con bibliotecas de \acrshort{nlp}. Las dos librerías fundamentales que se utilizaron fueron \textit{Spacy}\footnote{\url{https://spacy.io/}} y \textit{NLTK}\footnote{\url{https://www.nltk.org/}}\footnote{A pesar del uso inicial de estas librerías, a modo de herramientas de estudio, en este incremento; el hecho de que no se utilizaran para el desarrollo de la aplicación final es el motivo por el que se decidió no incluirlas en la sección~\ref{chap:tecnologias} de tecnologías usadas.}.
+
+A la vez que se iban viendo las técnicas usadas en los trabajos estudiados, se aplicaban las mismas para la experimentación en cuanto al preprocesado de los textos de la colección objetivo. De esta forma, se seleccionaba aquellas que se pensaran que iban a ser más efectivas en el contexto de los textos a perfilar: comentarios de redes sociales donde predomina un lenguaje informal, plagado de vulgarismo y emoticonos. Es decir, también se iba realizando una exploración previa acerca de las características de la colección y problemas que pudieran surgir. Con estas circunstancias se dio importancia a técnicas de preprocesado como lematización de las palabras, o sustición de emojis por su significado. 
+
+\section{Sprint 2: Comparación y selección de algoritmos y \textit{datasets}}
+En este segundo \textit{sprint}, la primera tarea abordada en el mismo consistió en resolver el problema explicado en la sección \ref{sec:datasets} de la memoria. Este consistía en no poder disponer de un subconjunto de usuarios ya etiquetados a modo de \textit{dataset} de entrenamiento de la colección objetivo liberada por \citet{heritage_BLM}. Como se comenta en el apartado mencionado, la solución al mismo pasó por la selección y obtención de un corpus de entrenamiento externo, disponible; que se realizó en este incremento.
+
+Al margen de eso, la otra tarea fundamental fue la de la búsqueda, investigación y selección de algoritmos de perfilado automático en español del estado del arte, que se explica en detalle en la sección~\ref{sec:estado_arte}. En este momento, la variedad de aproximaciones distintas en algoritmos de perfilado automático basados en texto, sumada a la relativa complejidad de los modelos del estado del arte en este campo hizo que nos centráramos en la tarea de adaptar a nuestro problema alguno de los algoritmos de perfilado con buen rendimiento demostrado, que se encontraran disponibles en forma de código abierto. Pues, el intentar construir diferentes algoritmos de perfilado propios, 
+partiendo de cero o aún tratando replicar el trabajo realizado por otro autor, incrementaría el riesgo de desviarnos demasiado del objetivo final del proyecto, debido a la dificultad de la tarea.
+
+Además también en este período también se procedió a realizar la carga del corpus de \acrshort{blm} en forma de fichero en un formato orientado a datos que pudiera ser más manejable desde librerías de \acrshort{aa}. En este paso se incluye la agrupación de usuarios y el filtrado de ruido en el corpus como publicaciones vacías.
+
+\section{Sprint 3: Algoritmo de \citet{loscalis22} y \textit{scraper}}
+
+En este \textit{sprint}, se procedió a realizar la adaptación del \textit{profiler} usado en la primera aproximación del capítulo~\ref{chap:fundamentos} de la memoria. Esta adaptación conforma un primer paso de la historia de usuario \hyperref[tab:user-stories]{E1}, la cual se puede catalogar más bien como una épica que una historia de usuario corriente.
+
+Para la adaptación de este algoritmo a nuestro problema, el primer paso fue tratar de replicar los resultados obtenidos por \citet{loscalis22} en la competición del IberLef 2022 \citep{iberlef2022}, basándonos en el código fuente del mismo\footnote{Disponible en \url{https://github.com/ssantamaria94/PoliticES2022/blob/main/PoliticES.ipynb}.}. Esto fue menos sencillo de lo que pudiera parecer en un comienzo debido a varios factores:
+
 \begin{itemize}
-    \item Configuración del entorno: búsqueda y experimentación con librerías de procesado del lenguaje natural como Spacy o NLTK
-    \item Introducción a estado del arte del perfilado automático de usuarios en edad y género.
+    \item La nula experiencia del estudiante con una librería avanzada de redes neuronales como es Tensorflow.
+    \item El gran coste computacional del modelo que acarrea la necesidad del uso de hardware especializado, como es el caso de una \acrshort{tpu} para las pasos de creación, entrenamiento y predicción de nuevas instancias.
+    \item El hecho de que las versiones actuales de Tensorflow no son compatibles por algún motivo con la implementación concreta del modelo de \citet{loscalis22}. El problema radicaba en que el código no daba ningún error de usuario, sin embargo, al realizar el entrenamiento el modelo no convergía exitosamente hacia un mínimo local, lo que era bastante confuso para el estudiante pues se sabía que el mismo debía dar buenos resultados. Este error se solucionó usando la versión concreta especificada en las \textit{working notes} de los autores.
 \end{itemize}
 
-\subsection{Sprint 1: 14-3-2023 a 29-3-2023}
-:
+Al mismo tiempo que se realizaba esta adaptación, se procedió a la creación del \textit{scraper} para la descarga del conjunto de datos explicada en el apartado~\ref{subsec:dataset2016}. Como se comentó en esa sección, la descarga de la totalidad del \textit{dataset}, resultó en un pequeño cuello de botella para el progreso del \textit{sprint}, durando varios días debido a la lentitud de la ejecución del \textit{scraper}.
+
+Una vez realizada la adaptación al problema en cuestión del modelo, se procedió a la toma de resultados y posterior intento de mejora del rendimiento del algoritmo (el cual resultó poco fructífero) que se documentaron en el apartado~\ref{subsec:1aprox}.
+
+\section{Sprint 4: Algoritmos restantes y obtención de resultados}
+
+En este período se priorizó la ejecución de otras dos tareas relacionadas con la épica \hyperref[tab:user-stories]{E1} como: la adaptación de los algoritmos de \citet{grivas2015author, modaresi:2016}. \footnote{Disponibles en \url{https://github.com/pan-webis-de/grivas15} y \url{https://github.com/pan-webis-de/modaresi16} respectivamente.}
+
+La adaptación de estos dos algoritmos fue similar. Ambos están escritos en una versión antigua de Python (anterior a la 3), se cree que la 2.7. El caso es que al ser \gls{legacy-code}, siguiendo la guía de ejecución basada en la creación de un entorno virtual de python, como se indicaba en el repositorio de \citet{grivas2015author} no era posible ejecutar el algoritmo mencionado aún utilizando la versión 2.7 de python, debido a problemas con las dependencias. Por otra parte, el algoritmo de \citet{modaresi:2016} proponía su ejecución a través de un contenedor Docker el cual ya estaba especificado en el repositorio. Sin embargo, en la práctica tampoco era posible ejecutarlo debido a que la imagen base del mismo estaba obsoleta. Por otro lado, también se trató de crear un entorno virtual local para la ejecución de este último, que igualmente resulto inútil.
+
+Ante estos problemas, la alternativa que se presentaba como más prometedora era la de hacer una migración de este código obsoleto hacia unas versiones más recientes del lenguaje y sus dependencias, que contaran soporte actual. Sin embargo, esta alternativa también se descartó principalmente por un motivo: estas implementaciones usaban algunas librerías propias de los autores\footnote{Como es el caso de \url{https://pypi.org/project/tictacs/}} u otras ya obsoletas, las cuales sería necesario reemplazar ya que no están mantenidas actualmente. 
+
+La idea de hacer modificaciones demasiado grandes en estas implementaciones era algo no deseado debido a que podía hacer imposible la replicación de los resultados obtenidos por estos, el cual era un objetivo prioritario. Con lo cual, la otra opción que se probó fue la de tratar modificar el contenedor Docker de \citet{modaresi:2016} para hacerlo funcional. Esto se consiguió tras varios intentos fallidos con distintas imágenes base hasta que una de \textit{Ubuntu:18.04} dio con el cable. Tras conseguir hacerlo operativo para el algoritmo de \citet{modaresi:2016}, se hicieron unas pequeñas modificaciones y también se pudo utilizar para la implementación de \citet{grivas2015author}.
+
+Después de completar estas tareas, se procedió a la ejecución de pruebas con estos modelos que se documentaron en los apartados \ref{subsec:2aprox} y \ref{subsec:3aprox} de la memoria. 
+
+\section{Sprint 5: Desarrollo del micro-servicio de perfilado}
+Durante este incremento, se procedió a la redacción de los dos primeros capítulos de esta memoria a partir los resultados obtenidos en los últimos incrementos. Estos correspondían, a la parte con una vertiente más orientada a la investigación del proyecto. A partir, de este momento se comenzó con el desarrollo en sí de la aplicación final.
+
+Para ello, se comenzó con el backend para dar el penúltimo paso para el desarrollo de la épica \hyperref[tab:user-stories]{E1}, antes del desarrollo de la interfaz de usuario. Así se entrenaron los modelos elegidos para producción y se guardaron estos en un fichero binario mediante la librería Joblib\footnote{\url{https://joblib.readthedocs.io/en/stable/}}. Para de esta forma, poder cargar estos modelos más rápidamente, sin necesidad de entrenarlos cada vez al arrancar la aplicación, favoreciendo el rendimiento y escalabilidad (\hyperref[tab:user-stories]{RNF-5}) de la misma. Por otro lado, mediante Flask se creó una API REST muy simple con un único \textit{endpoint} para la operación de perfilado de un \textit{dataset}. Esta aplicación instanciaría los modelos de perfilado al arrancar para luego poder llamarlos ante una petición. Esta pequeña API es la que constituiría el micro-servicio de perfilado de la aplicación (ver \ref{sec:arquitectura}).
+
+Sin embargo, en este punto se identificó un problema no previsto relacionado con el \textit{profiler} adaptado de \citet{loscalis22}. El hecho de almacenar los modelos ya creados y entrenados nos aliviaba esa carga computacional que en el caso de este modelo concreto era inasumible sin la utilización de hardware especializado del que no contábamos. No obstante, lo que no estaba previsto era que el empleo de este modelo simplemente para el procesado y predicción de una colección de usuarios era igualmente inasumible, debido a que se iba el tiempo de perfilado de una colección del tamaño de \acrshort{blm} a más de una hora. Por este motivo, se decidió prescindir de este algoritmo para la aplicación final, al no contar con hardware especializado para su ejecución.
+
+Finalmente, otra tarea que se realizó fue el diseño de la interfaz de usuario para el cliente web de la aplicación, mediante la realización del prototipado de la misma (sección \ref{sec:prototipo}).
+
+\section{Sprint 6: Inicio del \textit{frontend} y primeras visualizaciones}
+Aquí se comenzó con el desarrollo del \textit{frontend}. En este punto ya se había tomado la decisión de tener una separación entre capas, con la separación de \textit{backend} y \textit{frontend}. Sin embargo, aún quedaba la decisión si crear una SPA o usar SSR con un framework como Next.js\footnote{\url{https://nextjs.org/}} para React. En nuestro caso, se optó por la primera alternativa a pesar de las desventajas asociadas a las mismas como problemas de \gls{seo} o peor rendimiento en el navegador, debido principalmente a la poca experiencia del estudiante con estas librerías. Además se completaron las siguientes historias de usuario:
 \begin{itemize}
-    \item Experimentando técnicas de preprocesado de los textos de la colección como: lematización, sustitución de emojis por sus significado, etc.
-    \item Investigación y búsqueda de conjuntos de entrenamiento en idioma español para la tarea de perfilado automático de usuarios.
-    \item Estudio del lenguaje empleado en el corpus BLM con el objetivo de
-    ***** meter la cabeza en el problema*****
+    \item \hyperref[tab:user-stories]{E1 y H2}: al añadir el cliente web, finalmente se dio por finalizada la épica de \textbf{perfilar un \textit{dataset}} y además se completó igualmente la historia de poder \textbf{elegir el algoritmo de perfilado}. Para ello, se creó un formulario con dos campos el fichero que corresponde a la colección que se quiere perfilar, de carácter obligatorio; y un desplegable para el algoritmo a utilizar. Además se añadieron comprobaciones tanto en la parte cliente, como en el \textit{backend} para que el fichero tuviera el tipo adecuado y las columnas necesarias. Por otro lado, se creó un \textit{spinner} a modo de feedback mientras se estuviera perfilando el \textit{dataset}.
+    \item \hyperref[tab:user-stories]{H4 y H7}: se crearon unas visualizaciones en forma de \textbf{gráfico} para poder ver la distribución de usuarios por \textbf{edad} y \textbf{género}. Se optó por un gráfico de barras para la edad, debido principalmente a dos motivos: estos son más adecuados para comparar variables donde existen más de dos categorías, que por ejemplo un gráfico en forma de tarta donde puede no ser tan inmediato saber cual porción es mayor. La otra razón, es que las categorías tienen un orden, es decir, el grupo de 18-24 es más joven que el de 25-34, este a su vez que el de 34-49, etc.
+    
+    Por otro lado, al contrario que la edad el género no es una variable que tenga un orden en el mundo real, esto sumado al hecho de que solo se quieran comparar dos categorías hace que un gráfico en forma de tarta se considerase la mejor opción, debido a su simplicidad y estética. Además, estos resaltan de mejor forma que los gráficos de barras porcentajes o partes de un todo, como puede ser la porcentaje de usuarios de un género sobre el total. En este sentido, se consideró adecuado este gráfico también para representar la edad, no obstante, se prefirió usar únicamente un gráfico por atributo.
 \end{itemize}
 
-\subsection{Sprint 2: 29-3-2023 a 17-4-2023}
-:
+En este punto se estaba persistiendo la colección perfilada dentro de cada sesión del navegador, a través del almacenamiento web. Sin embargo, este almacenamiento tiene limitaciones en cuanto al tiempo y espacio disponible. Por este motivo, surge la necesidad de usar una base de datos para almacenar las colecciones perfiladas. Al mismo tiempo, nos damos cuenta que solo la visualización de los gráficos no nos aporta información sobre el tipo de publicaciones que realizaba un usuario según el género o edad que le fuera asignado.
+
+Para responder a estas necesidades se programó para el siguiente \textit{sprint} la tarea de añadir persistencia a la aplicación mediante una base de datos, así como las historias de usuario \hyperref[tab:user-stories]{H3} y \hyperref[tab:user-stories]{H6}.
+
+\section{Sprint 7: Lista y detalle de usuarios}
+
+Como se adelantó en la sección anterior, en este \textit{sprint} se añadió persistencia a través de una base de datos. Para ello, lo primero fue crear un módulo separado del micro-servicio de perfilado que sirviera como medio para la comunicación del \textit{frontend} con la base de datos y el micro-servicio de perfilado. Esta acción tenía dos objetivos principales: mantener la separación de responsabilidades entre capas y no extender el código del micro-servicio de perfilado que mantiene una versión de Python obsoleta (2.7), para de esta manera favorecer la extensibilidad y mantenibilidad el código (\hyperref[tab:rnf]{RNF-2}). 
+
+Este conformaría el \textit{backend} (que cumple la función de API REST) en la arquitectura final (\ref{sec:arquitectura}). Así, cada vez que se recibiera una llamada para perfilar una colección del \textit{frontend}, el \textit{backend} se encargaría de delegar esta responsabilidad en el micro-servicio y posteriormente devolvería la colección perfilada por este último, a la vez que la almacenaría en base de datos.
+
+Como base de datos, se optó por una no relacional como ya se comentó en el capítulo~\ref{chap:tecnologias}. Principalmente, debido a la posibilidad de escalarla horizontalmente de manera sencilla, así como a la flexibilidad que ofrece MongoDB, ya que al ser una base de datos basada en documentos no está atada a un esquema de datos concreto. Otra motivo importante, es la naturaleza no transaccional de los datos almacenados.
+
+A continuación, se aprovechó para encapsular cada módulo en un contenedor Docker, uno para cada elemento de la arquitectura (véase figura \ref{fig:diagrama/arquitectura}), y crear un archivo \textit{docker-compose.yml}. Con este, se pretende facilitar el arranque simultáneo de distintos módulos, a la vez que se realiza la configuración las dependencias entre ellos y la red para la inter-comunicación sin necesidad de exponer puertos innecesariamente al exterior. De esta manera, se favorecen la seguridad, mantenibilidad y portabilidad del sistema (\hyperref[tab:rnf]{RNF-2} y \hyperref[tab:rnf]{RNF-4}).
+
+A continuación, se implementaron las historias de usuario \hyperref[tab:user-stories]{H3} y \hyperref[tab:user-stories]{H6} para poder \textbf{ver la lista de usuarios} y \textbf{ver las publicaciones de un usuario} en detalle, respectivamente. Para ello, en el API se creó una operación GET para poder recuperar los usuarios de una colección perfilada de forma paginada. Así, en el \textit{frontend} se creó la capa de acceso a servicios para las llamadas al API, un componente para mostrar la lista de usuarios y una página distinta para ver el detalle de un usuario. Asimismo se aprovechó para mejorar la estética de la interfaz web en general y se incorporó la utilización \textit{CSS Modules} \footnote{\url{https://github.com/css-modules/css-modules}} para una mejor organización de los estilos.
+
+\section{Sprint 8: Persistencia y rediseño del \textit{Dashboard}}
+Aunque en el anterior incremento se añadió la funcionalidad mencionada relacionada con la persistencia del \textit{backend}, entonces, no se le dio importancia al seguimiento de unas buenas prácticas de diseño, al no realizar una correcta separación entre capa servicios, capa modelo y acceso a datos. Por este motivo, en este \textit{sprint} donde se tenía programado implementar la historia de usuario \hyperref[tab:user-stories]{H5} que involucraba añadir detalles generales de la colección a la base de datos, se vió necesario realizar una buena refactorización de la gestión de la persistencia, el enrutado en el \textit{frontend}, y sobre todo el modelo de datos y gran parte del \textit{backend}.
+
+De esta manera, se comenzó por el servidor. En la API, se reorganizó el código de forma que hubiera una separación lógica entre controlador y modelo. También se modeló la conexión a la base de datos como un \textit{singleton} y se añadieron abstracciones de clases \acrshort{dao} para modelar el acceso a la base de datos mediante operaciones \acrshort{crud}, desacoplando de esta manera el API de la base de datos concreta que se emplee. Del mismo modo, se añadieron validaciones en la capa servicios o controlador mediante la creación de \acrshort{dto}s, con la librería \textit{Pydantic} ya mencionada en~\ref{chap:tecnologias}.
+
+A pesar de estar usando una base de datos no relacional, orientada a documentos, como MongoDB, la cual no necesita emplear <<colecciones>> distintas (corresponden a las tablas SQL, en terminología de MongoDB) para modelar una relación entre dos entidades, debido a que se puede hacer uso de <<documentos>> o <<colecciones>> anidadas, se juzgó apropiado separar las entidades (modeladas en el \hyperref[fig:diagrama/ER]{diagrama entidad-relación}) en dos colecciones Mongo distintas. Esto se justifica por los siguientes motivos: 
+
 \begin{itemize}
-    \item Búsqueda, comparación y selección de algoritmos de perfilado automático
-    \item Selección de conjuntos de entrenamiento a usar para entrenar los modelos seleccionados.
+    \item Por un lado, ambas colecciones tienen patrones de lectura y acceso distintos: mientras que la entidad \textit{Colección} se espera que se acceda una vez al cargar el \textit{Dashboard} de una colección, la entidad \textit{Usuarios} se accede cada vez que se hace \textit{scroll} en la lista paginada de los mismos. El usar dos colecciones distintas permite almacenar las entidades de forma separada optimizando los accesos a cada una lo que favorece el rendimiento y escalabilidad (\hyperref[tab:rnf]{RNF-5}).
+    
+    \item Además, el uso de dos colecciones separadas se alinea con la idea de usar dos objetos \acrshort{dao} distintos para cada una. Esto beneficia la mantenibilidad al permitir en un futuro el cambio hacia otro tipo de base de datos como por ejemplo una relacional, donde esta separación lógica se vuelve necesaria, sin apenas modificaciones de la capa de acceso a datos.
 \end{itemize}
 
-\subsection{Sprint 3: 17-4-2023 a 20-6-2023}%este alomejor hay que dividirlo en 2, no sé...
-:
+Tras estas modificaciones en el servidor, se continuó por actualizar la capa acceso a servicios del \textit{frontend} para reflejar los cambios en el API. Por otro lado, se aprovechó para completar la historia \hyperref[tab:user-stories]{H5} para incluir \textbf{información general de la colección} en el \textit{dashboard}, mejorando de esta manera la utilidad y aspecto del mismo. Al mismo tiempo, se aprovechó para incluir también en el \textit{dashboard}, la lista de usuarios (ya que en el diseño inicial se encontraba a parte) y poder acceder a este sin necesidad de haber perfilado una colección en ese momento, empleando un identificador de una colección perfilada previamente. Así, se completaba la historia \hyperref[tab:user-stories]{H8} para \textbf{acceder a una colección perfilada anteriormente}. 
+
+\section{Sprint 9: Lista de colecciones y filtrado de usuarios}
+
+En este \textit{sprint} se completaron las funcionalidades restantes:
 \begin{itemize}
-    \item Carga de la colección BLM, agrupación de los usuarios y preprocesado de los posts.
-    \item Adaptación y ejecución de pruebas con algoritmo LosCalis. Investigación de malos resultados obtenidos e intento de realización de mejoras: cambios de preprocesado, hiperparámetros, asignación de pesos a salidas en la red.
-    \item Creación de scraper de twitter para poblar los ficheros que constituyen el dataset de 2016.
+    \item Primero, se completó la relativamente sencilla historia \hyperref[tab:user-stories]{H9} para \textbf{ver un registro de las colecciones perfiladas anteriormente} ordenadas temporalmente de más a menos actuales.
+    \item Luego, se finalizó el filtrado de usuarios en base a género y edad (\hyperref[tab:user-stories]{H8}).%Esta historia tuvo mayor carga de trabajo que la anterior sobre todo en el \textit{frontend} para el estilado 
 \end{itemize}
 
-\subsection{Sprint 4: 20-6-2023 a 20-7-2023}
-:
-\begin{itemize}
-    \item Ejecución en batches del scraper para descargar la colección entera.
-    \item Adaptación y ejecución de algoritmos de modaresi y grivas.
-    \item Realización de pruebas con estos (pruebas con distintos parámetros, features, preprocesado).
-    \item Documentación de resultados y redacción de los dos primeros capítulos de la memoria  (\ref{chap:introducion} y \ref{chap:fundamentos}).
-\end{itemize}
-\subsection{Sprint 5: 20-7-2023 a 5-8-2023}
-\begin{itemize}
-    \item Inicio del backend: creación del endpoint, entrenamiento y guardado de algoritmos de perfilado para producción.
-    \item Diseño arquitectura backend.
-    \item Containerización
-\end{itemize}
-\subsection{Sprint 6: 6-8-2023 a 21-8-2023}
-\begin{itemize}
-    \item Desarrollo modelo base de datos.
-    \item Diseño e implementación del frontend.
-\end{itemize}
-\subsection{Sprint 7: 21-8-2023 a 11-8-2023}
-\begin{itemize}
-    \item Como usuario quiero poder ver los distintos datos demográficos de los usuarios de la colección en forma de lista.
-    \item Como usuario quiero ver en detalle los posts que ha publicado un usuario concreto de la colección.
-    \item Estilado de elementos del frontend.
-\end{itemize}
+Finalmente, se adaptó la interfaz de usuario para que fuera compatible con diferentes dispositivos independientemente del tamaño de la pantalla de estos, es decir, que fuera \textit{responsive}. Favoreciendo así, la usabilidad y portabilidad de la misma (\hyperref[tab:rnf]{RNF-1} y \hyperref[tab:rnf]{RNF-4}).
+
+Además también se aprovechó para arreglar pequeños detalles de la interfaz de la aplicación y temas de accesibilidad, como añadir roles a ciertos elementos HTML (\hyperref[tab:rnf]{RNF-1}).
+%\section{Sprint 10: Redacción de la memoria}
+%Sprint final del proyecto, en el que se aprovechó para redactar el resto de la memoria del mismo junto con arreglar pequeños detalles de la interfaz de la aplicación y temas de accesibilidad, como añadir roles a ciertos elementos HTML (\hyperref[tab:rnf]{RNF-1})
