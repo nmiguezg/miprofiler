@@ -163,20 +163,20 @@ cython_debug/
 #.idea/
 
 # LaTeX
-# *.aux
-# *.log
-# *.out
-# *.toc
-# *.gz
-# *.bbl
-# *.blg
-# *.dvi
-# *.fdb_latexmk
-# *.fls
-# *.synctex.gz
-# *.lof
-# *.lot
-# *.lol
-# *.listing
-# *.nav
-# *.snm
+*.aux
+*.log
+*.out
+*.toc
+*.gz
+*.bbl
+*.blg
+*.dvi
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.lof
+*.lot
+*.lol
+*.listing
+*.nav
+*.snm
