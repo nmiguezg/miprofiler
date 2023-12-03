@@ -1,13 +1,33 @@
-# miprofiler
-## About
-miprofiler is a tool that lets you infer demographic characteristics from people based on their posts in social media like Reddit or Twitter.
+# spanish-author-profiler
+
+Spanish-author-profiler is a tool that lets you analyze, using automatic author profiling techniques, large corpuses of Spanish speaking users based on their posts in social media. Author profiling consists in the automatic extraction of author traits like age and gender based on their redaction style.
+
 ## Features
+
+Currently, this tool supports the following features:
+
+- Uploading files containing large collections of **Spanish-speaking social media users** with their posts.
+- Profiling of **demographic traits** like age and gender.
+- Selection of multiple **spanish author profiling algorithms**.
+- **Interactive dashboard** for analyzing the profiled users corpus including:
+  - Charts for visualizing the **profiled categories distribution** in the dataset.
+  - Collection's **users full list** for accessing individual information about each one.
+  - **Filtering** based on inferred categories like age or gender.
+- Detailed visualization of individual **posts and user information**.
+- **Historic of profiled corpuses** for accessing their respective dashboard at any time.
+- Intuitive and **responsive interface**, for accessing the tool in any device, independently form its resolution.
+
 ## Pre-requisites
+
 - Docker
 - docker-compose
+
 ## Installation
+
+```bash
+git@github.com:nmiguezg/spanish-author-profiler.git
+cd spanish-author-profiler
+docker-compose up --build -d
 ```
-git clone git@github.com:nmiguezg/miprofiler.git
-cd miprofiler
-docker-compose up -d --build
-```
+
+Then, the tool can be accessed by navigating to [http://localhost:3000](http://localhost:3000).
