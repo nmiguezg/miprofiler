@@ -17,6 +17,8 @@ Currently, this tool supports the following features:
 - **Historic of profiled corpuses** for accessing their respective dashboard at any time.
 - Intuitive and **responsive interface**, for accessing the tool in any device, independently form its resolution.
 
+**Note:** The two modules: [magic] (./profilers-sevice/magic) and [pan] (./profilers-sevice/pan) are adaptations from [modaresi16] (<https://github.com/pan-webis-de/modaresi16>) and [grivas15] (<https://github.com/pan-webis-de/grivas15>), respectively. The credit for the development of these author profiling modules goes to their respective authors.
+
 ## Pre-requisites
 
 - Docker
@@ -31,3 +33,4 @@ docker-compose up --build -d
 ```
 
 Then, the tool can be accessed by navigating to [http://localhost:3000](http://localhost:3000).
+

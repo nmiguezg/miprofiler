@@ -1,4 +1,3 @@
-Pan module. Contains:
-- Configurable Pan dataset loader
-- Configurable feature and corresponding preprocessing of texts
-- Model creator with a few utility functions
+# Credit
+
+This module was forked from [grivas15] (<https://github.com/pan-webis-de/grivas15>).
