@@ -15,8 +15,6 @@ services:
   mongodb:
     image: mongo:latest
     container_name: mongodb
-    ports:
-      - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin123
@@ -39,8 +37,6 @@ services:
     environment:
       - PROFILERS_SERVICE_URL=http://profilers:5000/profile/
     command: gunicorn -c server.conf.py wsgi:app
-    ports:
-      - "8000:8000" 
   web:
     container_name: web
     build:

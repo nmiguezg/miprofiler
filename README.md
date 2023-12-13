@@ -27,8 +27,10 @@ Currently, this tool supports the following features:
 ## Installation
 
 ```bash
-git@github.com:nmiguezg/spanish-author-profiler.git
+git lfs install
+git clone git@github.com:nmiguezg/spanish-author-profiler.git
 cd spanish-author-profiler
+git lfs pull
 docker-compose up --build -d
 ```
 
