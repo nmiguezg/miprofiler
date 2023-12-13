@@ -2,6 +2,8 @@
 
 Spanish-author-profiler is a tool that lets you analyze, using automatic author profiling techniques, large corpuses of Spanish speaking users based on their posts in social media. Author profiling consists in the automatic extraction of author traits like age and gender based on their redaction style.
 
+https://github.com/nmiguezg/spanish-author-profiler/assets/72253608/83f4354e-521a-473b-bb04-3056d26390c5
+
 ## Features
 
 Currently, this tool supports the following features:
